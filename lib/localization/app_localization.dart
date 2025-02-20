@@ -1,36 +1,61 @@
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter/widgets.dart';
-import 'package:i18next/i18next.dart';
+import 'dart:convert'; // For converting JSON strings
+import 'package:flutter/services.dart'; // For loading files
+import 'package:flutter/material.dart'; // For using Flutter widgets
 
-class AppLocalizationDelegate extends LocalizationsDelegate<I18Next> {
-  final List<Locale> supportedLocales;
+class AppLocalizations {
+  final Locale locale; // The current locale (language) of the app
 
-  AppLocalizationDelegate({required this.supportedLocales});
+  AppLocalizations(this.locale); // Constructor to set the locale
+
+  static AppLocalizations? of(BuildContext context) {
+    // Get the current AppLocalizations instance
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      AppLocalizationsDelegate();
+
+  static Map<String, String>? _localizedStrings; // Store translations
+
+  Future<bool> load() async {
+    // Load the JSON file for the current language
+    String jsonString = await rootBundle
+        .loadString('lib/localization/${locale.languageCode}.json');
+
+    // Convert JSON string to a map
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
+
+    // Map keys to strings
+    _localizedStrings = jsonMap.map((key, value) {
+      return MapEntry(key, value.toString());
+    });
+    return true; // Indicate loading is complete
+  }
+
+  String translate(String key) {
+    // Get the translated text for a given key
+    return _localizedStrings![key] ?? key; // Return key if no translation found
+  }
+}
+
+// Delegate class to manage localization
+class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+  const AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
-    return supportedLocales.any((supportedLocale) =>
-        supportedLocale.languageCode == locale.languageCode);
+    // Check if the locale is supported (English or Nepali)
+    return ['en', 'ne'].contains(locale.languageCode);
   }
 
   @override
-  Future<I18Next> load(Locale locale) async {
-    // Determine correct JSON file based on locale
-    String localeString = locale.languageCode == "ne" ? "np_NP" : "en_US";
-    String jsonString =
-        await rootBundle.loadString("assets/localization/$localeString.json");
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
-
-    // Create I18Next instance
-    return I18Next(
-      locale,
-      ResourceStore(
-        data: {locale: jsonMap},
-      ),
-    );
+  Future<AppLocalizations> load(Locale locale) async {
+    AppLocalizations localizations =
+        AppLocalizations(locale); // Create instance for the locale
+    await localizations.load(); // Load translations
+    return localizations; // Return loaded localizations
   }
 
   @override
-  bool shouldReload(covariant LocalizationsDelegate<I18Next> old) => false;
+  bool shouldReload(AppLocalizationsDelegate old) => false; // No need to reload
 }

@@ -1,15 +1,19 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageStorage {
-  static const String _keyLanguage = "language_code";
+  static const String _languageCodeKey =
+      'languageCode'; // Key for storing the language code
 
-  static Future<void> saveLanguage(String languageCode) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_keyLanguage, languageCode);
+  // Method to save the language code
+  Future<void> saveLanguageCode(String languageCode) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+        _languageCodeKey, languageCode); // Save the language code
   }
 
-  static Future<String> getLanguage() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_keyLanguage) ?? 'en'; // Default: English
+  // Method to load the language code
+  Future<String?> loadLanguageCode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_languageCodeKey); // Return the saved language code
   }
 }

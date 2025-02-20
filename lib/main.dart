@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ordertracking_flutter/app.dart';
+import 'package:ordertracking_flutter/common/language_provider.dart';
 import 'package:ordertracking_flutter/common/theme.provider.dart';
 import 'package:ordertracking_flutter/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ThemeProvider themeProvider = ThemeProvider();
+  LanguageProvider languageProvider = LanguageProvider();
   await themeProvider.loadTheme();
   runApp(
     // *Using MutliProvider for further addition of providers
@@ -15,6 +17,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => themeProvider,
         ),
+        ChangeNotifierProvider(
+          create: (_) => languageProvider,
+        )
       ],
       child: const App(),
     ),
