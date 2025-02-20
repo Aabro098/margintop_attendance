@@ -33,12 +33,12 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 34),
           child: Column(
             children: [
-              // TODO: Fix the i18next parameter issue.
-              Text(i18n?.t(
-                    'helloMessage',
-                    //! This named parameter is not working.
-                    // arguments: {'name': 'Tracker', 'world': 'Flutter'}
-                  ) ??
+              // TODO: Fix the i18next t() method issue. (Not working as intended)
+              Text(i18n?.t('helloMessage',
+                      //// This named parameter is not working.
+                      //// arguments: {'name': 'Tracker', 'world': 'Flutter'}
+                      //* Replaced with variables.
+                      variables: {'name': 'Tracker', 'world': 'Flutter'}) ??
                   "Fallback"),
               const SizedBox(height: 20),
               ElevatedButton(
