@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/common/language_provider.dart';
+import 'package:ordertracking_flutter/common/localization_provider.dart';
 import 'package:ordertracking_flutter/common/theme.provider.dart';
 import 'package:ordertracking_flutter/localization/app_localization.dart';
 import 'package:provider/provider.dart';
@@ -19,15 +19,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final languageProvider =
-        Provider.of<LanguageProvider>(context); // Get the language provider
+    final localizationProvider =
+        Provider.of<LocalizationProvider>(context); // Get the language provider
     return Scaffold(
       appBar: AppBar(
         actions: [
           PopupMenuButton<String>(
+            icon: const Icon(Icons.language), // Language icon
             onSelected: (String value) {
-              languageProvider
-                  .setLanguage(value); // Change the language on selection
+              // Change the language on selection
+              if (value == 'en') {
+                localizationProvider.switchLocale(
+                    const Locale('en', 'US')); // Switch to English
+              } else if (value == 'ne') {
+                localizationProvider
+                    .switchLocale(const Locale('ne', 'NP')); // Switch to Nepali
+              }
             },
             itemBuilder: (BuildContext context) {
               return <String>['en', 'ne'].map((String value) {
@@ -38,7 +45,6 @@ class _HomePageState extends State<HomePage> {
                 );
               }).toList();
             },
-            icon: Icon(Icons.language), // Language icon
           ),
         ],
         centerTitle: true,
@@ -50,36 +56,6 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 34),
           child: Column(
             children: [
-              Text(AppLocalizations.of(context)?.translate('select_language') ??
-                  ''),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text(AppLocalizations.of(context)
-                  //         ?.translate('select_language') ??
-                  //     ''),
-
-                  // // Display language selection text
-                  // DropdownButton<String>(
-                  //   value: languageProvider
-                  //       .languageCode, // Current language selection
-                  //   onChanged: (String? newValue) {
-                  //     if (newValue != null) {
-                  //       languageProvider
-                  //           .setLanguage(newValue); // Change the language
-                  //     }
-                  //   },
-                  //   items: <String>['en', 'ne'] // Corrected list of languages
-                  //       .map<DropdownMenuItem<String>>((String value) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: value,
-                  //       child: Text(
-                  //           value.toUpperCase()), // Show language in uppercase
-                  //     );
-                  //   }).toList(),
-                  // ),
-                ],
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
