@@ -1,0 +1,4 @@
+{
+    "helloMessage": "Hello {{name}} in the {{world, uppercase}} world",
+    "title": "Hello en_US"
+}
