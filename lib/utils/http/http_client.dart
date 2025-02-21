@@ -8,13 +8,11 @@ class HttpHelper {
 
   static const String _baseUrl = 'http://example.com';
 
-  // TODO: Create GET method
   static Future<Map<String, dynamic>> get(String endPoint) async {
     final response = await http.get(Uri.parse('$_baseUrl/$endPoint'));
     return _handleResponse(response);
   }
 
-  // TODO: Create POST method
   static Future<Map<String, dynamic>> post(
       String endPoint, dynamic data) async {
     final response = await http.post(
@@ -28,7 +26,6 @@ class HttpHelper {
     return _handleResponse(response);
   }
 
-  // TODO: Create PUT method
   static Future<Map<String, dynamic>> put(String endPoint, dynamic data) async {
     final response = await http.put(
       Uri.parse('$_baseUrl/$endPoint'),
@@ -41,13 +38,11 @@ class HttpHelper {
     return _handleResponse(response);
   }
 
-  // TODO: Create DELETE method
   static Future<Map<String, dynamic>> delete(String endPoint) async {
     final response = await http.delete(Uri.parse('$_baseUrl/$endPoint'));
     return _handleResponse(response);
   }
 
-  // TODO: Create method for handling the response
   static Map<String, dynamic> _handleResponse(http.Response response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       //Success response
@@ -58,3 +53,47 @@ class HttpHelper {
     }
   }
 }
+
+
+//* Usage for hhtp client
+
+// void fetchUsers() async {
+//   try {
+//     Map<String, dynamic> response = await HttpHelper.get("users");
+//     print("Users: $response");
+//   } catch (e) {
+//     print("Error fetching users: $e");
+//   }
+// }
+
+// void createUser() async {
+//   try {
+//     Map<String, dynamic> response = await HttpHelper.post("users", {
+//       "name": "John Doe",
+//       "email": "john@example.com",
+//     });
+//     print("User created: $response");
+//   } catch (e) {
+//     print("Error creating user: $e");
+//   }
+// }
+
+// void updateUser() async {
+//   try {
+//     Map<String, dynamic> response = await HttpHelper.put("users/1", {
+//       "name": "John Updated",
+//     });
+//     print("User updated: $response");
+//   } catch (e) {
+//     print("Error updating user: $e");
+//   }
+// }
+
+// void deleteUser() async {
+//   try {
+//     Map<String, dynamic> response = await HttpHelper.delete("users/1");
+//     print("User deleted: $response");
+//   } catch (e) {
+//     print("Error deleting user: $e");
+//   }
+// }

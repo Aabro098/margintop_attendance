@@ -45,6 +45,7 @@ class DioClient {
   // Getter for the dio
   Dio get dio => _dio;
 
+  //* Methods for get, post, put and delete
   Future<Response?> get(String endpoint,
       {Map<String, dynamic>? queryParams}) async {
     try {
@@ -87,6 +88,7 @@ class DioClient {
     }
   }
 
+  //* Error handling
   void _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
@@ -107,3 +109,47 @@ class DioClient {
     }
   }
 }
+
+//* Usage for Dilo client
+
+// void fetchData() async {
+//   DioClient dioClient = DioClient();
+//   final response = await dioClient.get("/users");
+//   if (response != null && response.statusCode == 200) {
+//     debugPrint("Response Data: ${response.data}");
+//   } else {
+//     debugPrint("Failed to fetch data");
+//   }
+// }
+
+// void createUser() async {
+//   try {
+//     Response response = await DioClient().post("/users", data: {
+//       "name": "John Doe",
+//       "email": "john@example.com",
+//     });
+//     print("User created: ${response.data}");
+//   } catch (e) {
+//     print("Error creating user: $e");
+//   }
+// }
+
+// void updateUser() async {
+//   try {
+//     Response response = await DioClient().put("/users/1", data: {
+//       "name": "John Updated",
+//     });
+//     print("User updated: ${response.data}");
+//   } catch (e) {
+//     print("Error updating user: $e");
+//   }
+// }
+
+// void deleteUser() async {
+//   try {
+//     Response response = await DioClient().delete("/users/1");
+//     print("User deleted: ${response.data}");
+//   } catch (e) {
+//     print("Error deleting user: $e");
+//   }
+// }
