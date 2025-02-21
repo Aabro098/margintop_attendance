@@ -4,6 +4,8 @@ import 'package:ordertracking_flutter/common/theme.provider.dart';
 import 'package:ordertracking_flutter/localization/app_localization.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
