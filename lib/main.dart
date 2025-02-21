@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ordertracking_flutter/app.dart';
 import 'package:ordertracking_flutter/common/localization_provider.dart';
 import 'package:ordertracking_flutter/common/theme.provider.dart';
-import 'package:ordertracking_flutter/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
