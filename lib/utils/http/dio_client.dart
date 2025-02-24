@@ -4,19 +4,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class DioClient {
-  late Dio _dio;
-
-  // Singleton instance of DioClient
-  static final DioClient _instance = DioClient._internal();
   factory DioClient() => _instance;
-
   // Constructor (_internal)
   DioClient._internal() {
     // Create a new instance of DioClient
     _dio = Dio(
       BaseOptions(
         baseUrl: 'http://localhost:3000',
-        connectTimeout: Duration(seconds: 10),
+        connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
         contentType: 'application/json',
         responseType: ResponseType.json,
@@ -41,6 +36,10 @@ class DioClient {
       ),
     ]);
   }
+  late Dio _dio;
+
+  // Singleton instance of DioClient
+  static final DioClient _instance = DioClient._internal();
 
   // Getter for the dio
   Dio get dio => _dio;

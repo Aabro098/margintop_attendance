@@ -3,9 +3,9 @@ import 'package:flutter/services.dart'; // For loading files
 import 'package:flutter/material.dart'; // For using Flutter widgets
 
 class AppLocalizations {
-  final Locale locale; // The current locale (language) of the app
-
   AppLocalizations(this.locale); // Constructor to set the locale
+
+  final Locale locale; // The current locale (language) of the app
 
   static AppLocalizations? of(BuildContext context) {
     // Get the current AppLocalizations instance

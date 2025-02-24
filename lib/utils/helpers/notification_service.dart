@@ -1,6 +1,4 @@
-import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/material.dart';
 
 class NotificationService {
 // TODO: Add Support for maxOS and Linux Systems.
@@ -20,7 +18,7 @@ class NotificationService {
 
   //* Variables
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
-  bool _isInit = false;
+  final bool _isInit = false;
 
   //* Getters
   bool get isInit {

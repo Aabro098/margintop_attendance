@@ -25,6 +25,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   // Default language
 
+  @override
   Widget build(BuildContext context) {
     @override
     final themeProvider = Provider.of<ThemeProvider>(context);

@@ -12,7 +12,7 @@ Future<Locale> loadLocaleFromSharedPreference() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? languageCode = prefs.getString('selected_language');
   String? countryCode = prefs.getString('selected_country');
-  Locale locale = Locale('en', 'US');
+  Locale locale = const Locale('en', 'US');
   if (languageCode != null) {
     locale = Locale(languageCode, countryCode);
   }
