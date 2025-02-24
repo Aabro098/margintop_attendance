@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
@@ -18,11 +19,35 @@ class NotificationService {
 
   //* Variables
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
-  final bool _isInit = false;
+  bool _isInit = false;
 
   //* Getters
   bool get isInit {
     return _isInit;
+  }
+
+  //! Request Permissions
+  Future<void> requestPermissions() async {
+    // Android 13+ (API 33) requires explicit permission
+    if (await notificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestNotificationsPermission() ??
+        false) {
+      debugPrint("🔹 Android notification permission granted");
+    } else {
+      debugPrint("⚠️ Android notification permission denied");
+    }
+
+    // iOS/macOS Permissions
+    await notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
   }
 
   //! Initialization
@@ -54,6 +79,11 @@ class NotificationService {
 
     // PLUGIN INITIALIZATION
     await notificationsPlugin.initialize(initSettings);
+
+    //* Request permissions after initialization
+    await requestPermissions();
+
+    _isInit = true; // Set initialization flag
   }
 
   //! Notification Detail Setup
