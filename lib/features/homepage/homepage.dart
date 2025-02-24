@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ordertracking_flutter/common/custom_button.dart';
 import 'package:ordertracking_flutter/common/localization_provider.dart';
 import 'package:ordertracking_flutter/common/theme.provider.dart';
+import 'package:ordertracking_flutter/utils/helpers/notification_service.dart';
 import 'package:ordertracking_flutter/utils/helpers/toast_helper.dart';
 import 'package:ordertracking_flutter/localization/app_localization.dart';
 import 'package:ordertracking_flutter/utils/helpers/helper_functions.dart';
@@ -78,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                     showToast("Info: Check details.");
                   },
                 ),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -101,6 +103,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                CustomButton(
+                  text: 'Show Notifications',
+                  onPressed: () {
+                    NotificationService().showNotification(
+                      title: "Example Notification",
+                      body: "Body of Example Notification",
+                    );
+                  },
+                )
               ],
             ),
           ),
