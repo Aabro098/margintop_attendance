@@ -1,5 +1,16 @@
 {
     "hello":"hello",
     "title": "Hello World!!", 
-    "select_language": "Select Language"
+    "select_language": "Select Language",
+    "show_success_message": "Show Success Message",
+    "operation_successful": "Operation Successful",
+    "show_error_message": "Show Error Message",
+    "something_went_wrong": "Something went wrong!",
+    "error_occurred": "Error Occurred!",
+    "show_info_message": "Show Info Message",
+    "info_message": "This is an info message.",
+    "info_check_details": "Info: Check details.",
+    "show_notifications": "Show Notifications",
+    "example_notification": "Example Notification",
+    "notification_body": "Body of Example Notification"
 }

@@ -56,37 +56,65 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
-                  text: "Show Success Message",
+                  text: AppLocalizations.of(context)
+                          ?.translate('show_success_message') ??
+                      'Show Success Message',
                   onPressed: () {
-                    HelperFunctions.showSuccessSnackbar("Operation Successful",
+                    HelperFunctions.showSuccessSnackbar(
+                        AppLocalizations.of(context)
+                                ?.translate('operation_successful') ??
+                            'Operation Successful',
                         time: 1000);
-                    showToast("Operation Successful");
+                    showToast(AppLocalizations.of(context)
+                            ?.translate('operation_successful') ??
+                        'Operation Successful');
                   },
                 ),
                 const SizedBox(height: 16),
                 CustomButton(
-                  text: "Show Error Message",
+                  text: AppLocalizations.of(context)
+                          ?.translate('show_error_message') ??
+                      'Show Error Message',
                   onPressed: () {
-                    HelperFunctions.showErrorSnackbar("Something went wrong!");
-                    showToast("Error Occurred!");
+                    HelperFunctions.showErrorSnackbar(
+                      AppLocalizations.of(context)
+                              ?.translate('something_went_wrong') ??
+                          'Something went wrong!',
+                    );
+                    showToast(AppLocalizations.of(context)
+                            ?.translate('error_occurred') ??
+                        'Error Occurred!');
                   },
                 ),
                 const SizedBox(height: 16),
                 CustomButton(
-                  text: "Show Info Message",
+                  text: AppLocalizations.of(context)
+                          ?.translate('show_info_message') ??
+                      'Show Info Message',
                   onPressed: () {
-                    HelperFunctions.showInfoSnackbar("This is an info message.",
+                    HelperFunctions.showInfoSnackbar(
+                        AppLocalizations.of(context)
+                                ?.translate('info_message') ??
+                            'This is an info message.',
                         time: 1000);
-                    showToast("Info: Check details.");
+                    showToast(AppLocalizations.of(context)
+                            ?.translate('info_check_details') ??
+                        'Info: Check details.');
                   },
                 ),
                 const SizedBox(height: 16),
                 CustomButton(
-                  text: 'Show Notifications',
+                  text: AppLocalizations.of(context)
+                          ?.translate('show_notifications') ??
+                      'Show Notifications',
                   onPressed: () {
                     NotificationService().showNotification(
-                      title: "Example Notification",
-                      body: "Body of Example Notification",
+                      title: AppLocalizations.of(context)
+                              ?.translate('example_notification') ??
+                          'Example Notification',
+                      body: AppLocalizations.of(context)
+                              ?.translate('notification_body') ??
+                          'Body of Example Notification',
                     );
                   },
                 )
