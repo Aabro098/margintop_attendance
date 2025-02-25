@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ordertracking_flutter/common/custom_button.dart';
 import 'package:ordertracking_flutter/common/localization_provider.dart';
 import 'package:ordertracking_flutter/common/theme.provider.dart';
+import 'package:ordertracking_flutter/common/widgets/app_bar_menu.dart';
+import 'package:ordertracking_flutter/common/widgets/bottom_nav_bar.dart';
+import 'package:ordertracking_flutter/common/widgets/custom_drawer.dart';
 import 'package:ordertracking_flutter/utils/helpers/notification_service.dart';
 import 'package:ordertracking_flutter/utils/helpers/toast_helper.dart';
 import 'package:ordertracking_flutter/localization/app_localization.dart';
@@ -18,41 +21,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final localizationProvider = Provider.of<LocalizationProvider>(context);
 
     return ScaffoldMessenger(
-      key: scaffoldMessengerKey, // ✅ Correctly using scaffoldMessengerKey
+      key: scaffoldMessengerKey, // Correctly using scaffoldMessengerKey
       child: Scaffold(
         appBar: AppBar(
+          title: Text(AppLocalizations.of(context)?.translate('title') ?? ''),
+          centerTitle: true,
           actions: [
-            PopupMenuButton<String>(
-              icon: const Icon(Icons.language),
-              onSelected: (String value) {
-                if (value == 'en') {
-                  localizationProvider.switchLocale(const Locale('en', 'US'));
-                } else if (value == 'ne') {
-                  localizationProvider.switchLocale(const Locale('ne', 'NP'));
-                }
-              },
-              itemBuilder: (BuildContext context) {
-                return <String>['en', 'ne'].map((String value) {
-                  return PopupMenuItem<String>(
-                    value: value,
-                    child: Text(value.toUpperCase()),
-                  );
-                }).toList();
-              },
+            //* Right Menu
+            AppBarMenu(
+              themeProvider: widget.themeProvider,
+              localizationProvider: localizationProvider,
             ),
           ],
-          centerTitle: true,
-          title: Text(AppLocalizations.of(context)?.translate('title') ?? ''),
         ),
+        //* Left Menu
+        drawer: const CustomDrawer(),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 34),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomButton(
                   text: "Show Success Message",
@@ -80,30 +81,6 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Theme:'),
-                    DropdownButton<ThemeMode>(
-                      value: widget.themeProvider.themeMode,
-                      onChanged: (ThemeMode? newMode) {
-                        if (newMode != null) {
-                          widget.themeProvider.setTheme(newMode);
-                        }
-                      },
-                      items: const [
-                        DropdownMenuItem(
-                            value: ThemeMode.system,
-                            child: Text("System Theme")),
-                        DropdownMenuItem(
-                            value: ThemeMode.light, child: Text("Light Theme")),
-                        DropdownMenuItem(
-                            value: ThemeMode.dark, child: Text("Dark Theme")),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
                 CustomButton(
                   text: 'Show Notifications',
                   onPressed: () {
@@ -116,6 +93,10 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        ),
+        bottomNavigationBar: BottomNavBar(
+          selectedIndex: _selectedIndex,
+          onItemTapped: _onItemTapped,
         ),
       ),
     );
