@@ -1,0 +1,16 @@
+{
+    "hello": "नमस्कार",
+    "title": "नमस्ते संसार",  
+    "select_language": "भाषा छान्नुहोस्",
+    "show_success_message": "सफलता सन्देश देखाउनुहोस्",
+    "operation_successful": "अपरेसन सफल भयो",
+    "show_error_message": "त्रुटि सन्देश देखाउनुहोस्",
+    "something_went_wrong": "केही गलत भयो!",
+    "error_occurred": "त्रुटि भयो!",
+    "show_info_message": "जानकारी सन्देश देखाउनुहोस्",
+    "info_message": "यो जानकारी सन्देश हो।",
+    "info_check_details": "जानकारी: विवरण जाँच गर्नुहोस्।",
+    "show_notifications": "सूचनाहरू देखाउनुहोस्",
+    "example_notification": "उदाहरण सूचना",
+    "notification_body": "सूचनाको सामग्री"
+}

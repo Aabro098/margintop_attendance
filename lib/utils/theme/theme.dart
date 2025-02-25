@@ -11,7 +11,7 @@ class AppTheme {
   TODO: Add more attributes to theme data
   */
 
-  static ThemeData lighttheme = ThemeData(
+  static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,
@@ -20,8 +20,8 @@ class AppTheme {
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    brightness: Brightness.dark,
     fontFamily: 'Poppins',
+    brightness: Brightness.dark,
     primaryColor: Colors.blue,
     textTheme: AppTextTheme.darkTextTheme,
   );

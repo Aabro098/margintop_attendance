@@ -1,34 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:ordertracking_flutter/common/localization_provider.dart';
+import 'package:ordertracking_flutter/common/theme.provider.dart';
+import 'package:ordertracking_flutter/features/homepage/homepage.dart';
+import 'package:ordertracking_flutter/localization/app_localization.dart';
+import 'package:ordertracking_flutter/utils/helpers/localization_manager.dart';
 import 'package:ordertracking_flutter/utils/theme/theme.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 /*
-TODO: Theme switching integration (provider and sharedPreferences)
 TODO: Implement Custom Made Classes for fonts, icons and images in app
 */
 
-class App extends StatelessWidget {
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
+class App extends StatefulWidget {
   const App({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  // Default language
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      themeMode: ThemeMode.system,
-      theme: AppTheme.lighttheme,
-      darkTheme: AppTheme.darkTheme,
-      title: 'Order Tracker',
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text(
-            'Order Tracker',
-            style: TextStyle(fontWeight: FontWeight.w800),
-          ),
-        ),
-        body: const Center(
-          child: Text('Body.'),
-        ),
-      ),
+    @override
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return Consumer<LocalizationProvider>(
+      builder: (context, localizationProvider, child) {
+        return MaterialApp(
+          locale: localizationProvider.locale,
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          supportedLocales: LocalizationManager.supportedLocaleList,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            return supportedLocales.firstWhere(
+              (supportedLocale) =>
+                  supportedLocale.languageCode == locale?.languageCode &&
+                  supportedLocale.countryCode == locale?.countryCode,
+              orElse: () => supportedLocales.first,
+            );
+          },
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeProvider.themeMode,
+          title: 'Order Tracker',
+          home: HomePage(themeProvider: themeProvider),
+        );
+      },
     );
   }
 }
