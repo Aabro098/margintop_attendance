@@ -56,7 +56,13 @@ class AppBarMenu extends StatelessWidget {
                   value: localizationProvider.locale.languageCode,
                   onChanged: (String? value) {
                     if (value != null) {
-                      localizationProvider.switchLocale(Locale(value, ''));
+                      if (value == 'en') {
+                        localizationProvider
+                            .switchLocale(const Locale('en', 'US'));
+                      } else if (value == 'ne') {
+                        localizationProvider
+                            .switchLocale(const Locale('ne', 'NP'));
+                      }
                       Navigator.pop(context);
                     }
                   },
