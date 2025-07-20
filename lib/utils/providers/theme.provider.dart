@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/local_storage/theme_storage.dart';
+import '../local_storage/theme_storage.dart';
 
 // *Using Provider for State management
 class ThemeProvider extends ChangeNotifier {
