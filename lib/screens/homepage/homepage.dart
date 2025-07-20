@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/common/custom_button.dart';
-import 'package:ordertracking_flutter/common/localization_provider.dart';
-import 'package:ordertracking_flutter/common/theme.provider.dart';
+import 'package:ordertracking_flutter/app.dart';
+import 'package:ordertracking_flutter/common/widgets/custom_button.dart';
+import 'package:ordertracking_flutter/utils/providers/localization_provider.dart';
+import 'package:ordertracking_flutter/utils/providers/theme.provider.dart';
 import 'package:ordertracking_flutter/common/widgets/app_bar_menu.dart';
 import 'package:ordertracking_flutter/common/widgets/bottom_nav_bar.dart';
 import 'package:ordertracking_flutter/common/widgets/custom_drawer.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     final localizationProvider = Provider.of<LocalizationProvider>(context);
 
     return ScaffoldMessenger(
-      key: scaffoldMessengerKey, // Correctly using scaffoldMessengerKey
+      key: scaffoldMessengerKey,
       child: Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)?.translate('title') ?? ''),
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                           ?.translate('show_success_message') ??
                       'Show Success Message',
                   onPressed: () {
-                    HelperFunctions.showSuccessSnackbar(
+                    showSuccessSnackbar(
                         AppLocalizations.of(context)
                                 ?.translate('operation_successful') ??
                             'Operation Successful',
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                           ?.translate('show_error_message') ??
                       'Show Error Message',
                   onPressed: () {
-                    HelperFunctions.showErrorSnackbar(
+                    showErrorSnackbar(
                       AppLocalizations.of(context)
                               ?.translate('something_went_wrong') ??
                           'Something went wrong!',
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                           ?.translate('show_info_message') ??
                       'Show Info Message',
                   onPressed: () {
-                    HelperFunctions.showInfoSnackbar(
+                    showInfoSnackbar(
                         AppLocalizations.of(context)
                                 ?.translate('info_message') ??
                             'This is an info message.',

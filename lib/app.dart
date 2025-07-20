@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/common/localization_provider.dart';
-import 'package:ordertracking_flutter/common/theme.provider.dart';
-import 'package:ordertracking_flutter/features/homepage/homepage.dart';
+import 'package:ordertracking_flutter/utils/providers/localization_provider.dart';
+import 'package:ordertracking_flutter/utils/providers/theme.provider.dart';
+import 'package:ordertracking_flutter/screens/homepage/homepage.dart';
 import 'package:ordertracking_flutter/localization/app_localization.dart';
 import 'package:ordertracking_flutter/utils/helpers/localization_manager.dart';
 import 'package:ordertracking_flutter/utils/theme/theme.dart';
@@ -52,7 +52,7 @@ class _AppState extends State<App> {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          title: 'Order Tracker',
+          title: 'Boilerplate',
           home: HomePage(themeProvider: themeProvider),
         );
       },

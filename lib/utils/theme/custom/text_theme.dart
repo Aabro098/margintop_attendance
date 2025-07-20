@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppTextTheme {
-  AppTextTheme._();
+class AppTypography {
+  AppTypography._();
 
   // *Creating TextTheme for both light and dark themes
 
