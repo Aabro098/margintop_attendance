@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ordertracking_flutter/app.dart';
-import 'package:ordertracking_flutter/common/localization_provider.dart';
-import 'package:ordertracking_flutter/common/theme.provider.dart';
+import 'package:ordertracking_flutter/utils/providers/localization_provider.dart';
+import 'package:ordertracking_flutter/utils/providers/theme.provider.dart';
 import 'package:ordertracking_flutter/utils/helpers/notification_service.dart';
 import 'package:provider/provider.dart';
 

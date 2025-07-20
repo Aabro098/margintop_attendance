@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ordertracking_flutter/utils/theme/custom/dropdown_theme.dart';
+import 'package:ordertracking_flutter/utils/theme/custom/elevated_button_theme.dart';
+import 'package:ordertracking_flutter/utils/theme/custom/input_decoration_theme.dart';
+import 'package:ordertracking_flutter/utils/theme/custom/page_transitions_theme.dart';
+import 'package:ordertracking_flutter/utils/theme/custom/snacker_bar_theme.dart';
 import 'package:ordertracking_flutter/utils/theme/custom/text_theme.dart';
 
 class AppTheme {
@@ -16,13 +21,23 @@ class AppTheme {
     fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: Colors.blue,
-    textTheme: AppTextTheme.lightTextTheme,
+    textTheme: AppTypography.lightTextTheme,
+    pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
+    inputDecorationTheme: AppInputDecoration.lightTheme,
+    elevatedButtonTheme: AppButtonTheme.lightTheme,
+    dropdownMenuTheme: AppDropdownMenuTheme.dropdownMenuTheme,
+    snackBarTheme: AppSnackerBarTheme.snackerBarTheme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
     primaryColor: Colors.blue,
-    textTheme: AppTextTheme.darkTextTheme,
+    textTheme: AppTypography.darkTextTheme,
+    pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
+    inputDecorationTheme: AppInputDecoration.darkTheme,
+    elevatedButtonTheme: AppButtonTheme.darkTheme,
+    dropdownMenuTheme: AppDropdownMenuTheme.dropdownMenuTheme,
+    snackBarTheme: AppSnackerBarTheme.snackerBarTheme,
   );
 }
