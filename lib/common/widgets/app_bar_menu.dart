@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/utils/providers/theme.provider.dart';
-import 'package:ordertracking_flutter/utils/providers/localization_provider.dart';
+import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
+import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
+import 'package:provider/provider.dart';
 
 class AppBarMenu extends StatelessWidget {
   const AppBarMenu({
     super.key,
-    required this.themeProvider,
-    required this.localizationProvider,
   });
-  final ThemeProvider themeProvider;
-  final LocalizationProvider localizationProvider;
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.read<ThemeProvider>();
+    final localizationProvider = context.read<LocalizationProvider>();
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert),
       itemBuilder: (BuildContext context) {

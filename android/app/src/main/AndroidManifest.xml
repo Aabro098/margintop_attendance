@@ -5,6 +5,7 @@
     <application
         android:label="ordertracking_flutter"
         android:name="${applicationName}"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher">
         <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.NotificationReceiver" android:exported="true"/>
         <activity

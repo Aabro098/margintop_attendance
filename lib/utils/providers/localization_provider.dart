@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/utils/local_storage/localization_storage.dart';
+import 'package:flutter_boilerplate_mts/utils/local_storage/localization_storage.dart';
 
 /// Provider for managing and persisting app localization.
 /// Handles loading, switching, and notifying listeners of locale changes.
