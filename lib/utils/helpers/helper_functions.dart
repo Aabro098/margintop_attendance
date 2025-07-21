@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/app.dart';
-import 'package:ordertracking_flutter/utils/constants/colors.dart';
-import 'package:ordertracking_flutter/utils/constants/sizes.dart';
+import 'package:flutter_boilerplate_mts/utils/constants/colors.dart';
+import 'package:flutter_boilerplate_mts/utils/constants/sizes.dart';
+import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays an error [SnackBar] with the given [message].
