@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ordertracking_flutter/utils/providers/localization_provider.dart';
-import 'package:ordertracking_flutter/utils/providers/theme.provider.dart';
-import 'package:ordertracking_flutter/screens/homepage/homepage.dart';
-import 'package:ordertracking_flutter/localization/app_localization.dart';
-import 'package:ordertracking_flutter/utils/helpers/localization_manager.dart';
-import 'package:ordertracking_flutter/utils/theme/theme.dart';
+import 'package:flutter_boilerplate_mts/localization/app_localization.dart';
+import 'package:flutter_boilerplate_mts/screens/homepage/homepage.dart';
+import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
+import 'package:flutter_boilerplate_mts/utils/helpers/localization_manager.dart';
+import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
+import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
+import 'package:flutter_boilerplate_mts/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-/*
-TODO: Implement Custom Made Classes for fonts, icons and images in app
-*/
-
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -23,15 +17,26 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  // Default language
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final contextToUse = scaffoldMessengerKey.currentContext ?? context;
+
+      await Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme();
+      await Provider.of<LocalizationProvider>(
+        contextToUse,
+        listen: false,
+      ).loadSavedLocale();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    @override
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    return Consumer<LocalizationProvider>(
-      builder: (context, localizationProvider, child) {
+    return Consumer2<LocalizationProvider, ThemeProvider>(
+      builder: (context, localizationProvider, themeProvider, child) {
         return MaterialApp(
+          navigatorKey: navigatorKey,
           locale: localizationProvider.locale,
           scaffoldMessengerKey: scaffoldMessengerKey,
           supportedLocales: LocalizationManager.supportedLocaleList,
@@ -53,7 +58,7 @@ class _AppState extends State<App> {
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
           title: 'Boilerplate',
-          home: HomePage(themeProvider: themeProvider),
+          home: const MyHomePage(),
         );
       },
     );
