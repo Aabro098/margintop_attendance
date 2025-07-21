@@ -21,8 +21,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    final isDarkMode = DeviceUtility.isDarkMode(context);
-    debugPrint(isDarkMode.toString());
     return Scaffold(
       drawer: const CustomDrawer(),
       appBar: AppBar(
@@ -33,9 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.color_lens),
             onPressed: () {
-              themeProvider.setTheme(
-                isDarkMode ? ThemeMode.light : ThemeMode.dark,
-              );
+              themeProvider.toggleTheme();
             },
           ),
         ],

@@ -10,7 +10,6 @@ void main() async {
 
   // Notification Service initialization
   NotificationService().initiNotification();
-  
 
   runApp(
     // *Using MutliProvider for further addition of providers

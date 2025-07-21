@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/common/widgets/custom_drawer.dart';
-import 'package:flutter_boilerplate_mts/common/widgets/language_selector.dart';
-import 'package:flutter_boilerplate_mts/extensions/context_extensions.dart';
 import 'package:flutter_boilerplate_mts/localization/app_localization.dart';
 import 'package:flutter_boilerplate_mts/screens/homepage/homepage.dart';
-import 'package:flutter_boilerplate_mts/utils/constants/sizes.dart';
 import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
 import 'package:flutter_boilerplate_mts/utils/helpers/localization_manager.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/notification_service.dart';
 import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
 import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
 import 'package:flutter_boilerplate_mts/utils/theme/theme.dart';
@@ -28,13 +22,12 @@ class _AppState extends State<App> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final contextToUse = scaffoldMessengerKey.currentContext ?? context;
-      Future.wait([
-        Provider.of<LocalizationProvider>(
-          contextToUse,
-          listen: false,
-        ).loadSavedLocale(),
-        Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme(),
-      ]);
+
+      await Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme();
+      await Provider.of<LocalizationProvider>(
+        contextToUse,
+        listen: false,
+      ).loadSavedLocale();
     });
   }
 
@@ -71,5 +64,3 @@ class _AppState extends State<App> {
     );
   }
 }
-
-///
