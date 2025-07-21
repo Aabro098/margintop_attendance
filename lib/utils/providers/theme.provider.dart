@@ -20,6 +20,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   Future<void> setTheme(ThemeMode mode) async {
+    debugPrint('Set Theme called');
     _themeMode = mode;
     await ThemeStorage.setTheme(mode);
     notifyListeners();

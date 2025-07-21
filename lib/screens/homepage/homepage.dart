@@ -1,85 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/common/widgets/bottom_nav_bar.dart';
-import 'package:flutter_boilerplate_mts/common/widgets/custom_button.dart';
 import 'package:flutter_boilerplate_mts/common/widgets/custom_drawer.dart';
+import 'package:flutter_boilerplate_mts/common/widgets/language_selector.dart';
 import 'package:flutter_boilerplate_mts/extensions/context_extensions.dart';
+import 'package:flutter_boilerplate_mts/utils/constants/sizes.dart';
+import 'package:flutter_boilerplate_mts/utils/device/device_utility.dart';
 import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
 import 'package:flutter_boilerplate_mts/utils/helpers/notification_service.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/toast_helper.dart';
+import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-  });
+class MyHomePage extends StatefulWidget {
+  ///
+  const MyHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final isDarkMode = DeviceUtility.isDarkMode(context);
+    debugPrint(isDarkMode.toString());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.tr('title')),
-        centerTitle: true,
-      ),
-      //* Left Menu
       drawer: const CustomDrawer(),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(context.tr('title')),
+        actions: [
+          const LanguageSelector(),
+          IconButton(
+            icon: const Icon(Icons.color_lens),
+            onPressed: () {
+              themeProvider.setTheme(
+                isDarkMode ? ThemeMode.light : ThemeMode.dark,
+              );
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 34),
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomButton(
-                text: ('show_success_message'),
-                onPressed: () {
-                  showSuccessSnackbar(('operation_successful'), time: 1000);
-                  showToast(('operation_successful'));
-                },
+              Text(context.tr('welcomeMessage')),
+              const SizedBox(height: AppSizes.md),
+              Wrap(
+                alignment: WrapAlignment.center,
+                runSpacing: 12,
+                spacing: 12,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => showSuccessSnackbar('Success Message'),
+                    child: const Text('Success SnackBar'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => showErrorSnackbar('Error Message'),
+                    child: const Text('Error SnackBar'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => showInfoSnackbar('Info Message'),
+                    child: const Text('Info SnackBar'),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              CustomButton(
-                text: ('show_error_message'),
-                onPressed: () {
-                  showErrorSnackbar(('something_went_wrong'));
-                  showToast(('error_occurred'));
-                },
-              ),
-              const SizedBox(height: 16),
-              CustomButton(
-                text: ('show_info_message'),
-                onPressed: () {
-                  showInfoSnackbar(('info_message'), time: 1000);
-                  showToast(('info_check_details'));
-                },
-              ),
-              const SizedBox(height: 16),
-              CustomButton(
-                text: ('show_notifications'),
+              const SizedBox(height: AppSizes.md),
+              ElevatedButton(
                 onPressed: () {
                   NotificationService().showNotification(
-                    title: ('example_notification'),
-                    body: ('notification_body'),
+                    title: 'example_notification',
+                    body: 'notification_body',
                   );
                 },
-              )
+                child: const Text('Show Notifications'),
+              ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
       ),
     );
   }

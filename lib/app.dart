@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate_mts/common/widgets/custom_drawer.dart';
 import 'package:flutter_boilerplate_mts/common/widgets/language_selector.dart';
 import 'package:flutter_boilerplate_mts/extensions/context_extensions.dart';
 import 'package:flutter_boilerplate_mts/localization/app_localization.dart';
+import 'package:flutter_boilerplate_mts/screens/homepage/homepage.dart';
 import 'package:flutter_boilerplate_mts/utils/constants/sizes.dart';
 import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
 import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
@@ -27,20 +28,20 @@ class _AppState extends State<App> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final contextToUse = scaffoldMessengerKey.currentContext ?? context;
-      await Provider.of<LocalizationProvider>(
-        contextToUse,
-        listen: false,
-      ).loadSavedLocale();
-      await Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme();
+      Future.wait([
+        Provider.of<LocalizationProvider>(
+          contextToUse,
+          listen: false,
+        ).loadSavedLocale(),
+        Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme(),
+      ]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    @override
-    final themeProvider = context.read<ThemeProvider>();
-    return Consumer<LocalizationProvider>(
-      builder: (context, localizationProvider, child) {
+    return Consumer2<LocalizationProvider, ThemeProvider>(
+      builder: (context, localizationProvider, themeProvider, child) {
         return MaterialApp(
           navigatorKey: navigatorKey,
           locale: localizationProvider.locale,
@@ -72,65 +73,3 @@ class _AppState extends State<App> {
 }
 
 ///
-class MyHomePage extends StatefulWidget {
-  ///
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const CustomDrawer(),
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(context.tr('title')),
-        actions: const [LanguageSelector()],
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(context.tr('welcomeMessage')),
-              const SizedBox(height: AppSizes.md),
-              Wrap(
-                alignment: WrapAlignment.center,
-                runSpacing: 12,
-                spacing: 12,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => showSuccessSnackbar('Success Message'),
-                    child: const Text('Success SnackBar'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => showErrorSnackbar('Error Message'),
-                    child: const Text('Error SnackBar'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => showInfoSnackbar('Info Message'),
-                    child: const Text('Info SnackBar'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSizes.md),
-              ElevatedButton(
-                onPressed: () {
-                  NotificationService().showNotification(
-                    title: 'example_notification',
-                    body: 'notification_body',
-                  );
-                },
-                child: const Text('Show Notifications'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
