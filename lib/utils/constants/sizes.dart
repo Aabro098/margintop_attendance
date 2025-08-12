@@ -7,6 +7,7 @@ class AppSizes {
   static const double md = 16.0;
   static const double lg = 24.0;
   static const double xl = 32.0;
+  static const double padding = 12.0;
 
   //! Icon sizes
   static const double iconXs = 12.0;
@@ -28,6 +29,9 @@ class AppSizes {
 
   //! AppBar height
   static const double appBarHeight = 56.0;
+
+  //! Form height
+  static const double formHeight = 6.0;
 
   //! Image sizes
   static const double imageThumbSize = 89.0;

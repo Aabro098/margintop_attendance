@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:margintop_attendance/utils/constants/colors_light.dart';
+import 'package:margintop_attendance/utils/theme/custom/app_bar_theme.dart';
+import 'package:margintop_attendance/utils/constants/colors_dark.dart';
 import 'package:margintop_attendance/utils/theme/custom/elevated_button_theme.dart';
 import 'package:margintop_attendance/utils/theme/custom/input_decoration_theme.dart';
 import 'package:margintop_attendance/utils/theme/custom/page_transitions_theme.dart';
@@ -11,20 +14,22 @@ class AppTheme {
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,
-    primaryColor: Colors.blue,
+    primaryColor: AppColorsLight.primary,
     textTheme: AppTypography.lightTextTheme,
     pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.lightTheme,
-    elevatedButtonTheme: AppButtonTheme.lightTheme,
+    elevatedButtonTheme: AppElevatedButtonTheme.lightTheme,
+    appBarTheme: AppAppBarTheme.lightTheme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
-    primaryColor: Colors.blue,
+    primaryColor: AppColorsDark.primary,
     textTheme: AppTypography.darkTextTheme,
     pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.darkTheme,
-    elevatedButtonTheme: AppButtonTheme.darkTheme,
+    elevatedButtonTheme: AppElevatedButtonTheme.darkTheme,
+    appBarTheme: AppAppBarTheme.darkTheme,
   );
 }

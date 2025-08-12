@@ -6,6 +6,3 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 
 /// Navigator State Key
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-/// Form State Key
-final GlobalKey<FormState> formKey = GlobalKey<FormState>();
