@@ -32,8 +32,8 @@ class _AppSettingsState extends State<AppSettings> {
   bool _isNameLoading = false;
   late Locale selectedLocale;
 
-  String name = '*****';
-  String email = '***@gmail.com';
+  String name = 'Arbin Shrestha';
+  String email = 'arbinstha71@gmail.com';
 
   @override
   void initState() {
