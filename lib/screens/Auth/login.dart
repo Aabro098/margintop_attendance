@@ -1,13 +1,16 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/common/reusables/back_button.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/common/widgets/text_field.dart';
-import 'package:margintop_attendance/screens/homepage/homepage.dart';
+import 'package:margintop_attendance/screens/Auth/change_request.dart';
+import 'package:margintop_attendance/screens/Homepage/homepage.dart';
 import 'package:margintop_attendance/services/user_services.dart';
+import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:margintop_attendance/utils/device/device_utility.dart';
 
 //* The login screen uses the text field data which is a text form field in the common widgets
 class LoginScreen extends StatefulWidget {
@@ -89,22 +92,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppBackButton(
-                    theme: theme,
-                  ),
                   const SizedBox(
-                    height: 102,
+                    height: 12,
+                  ),
+                  Center(
+                    child: SizedBox(
+                      height: DeviceUtility.getScreenHeight(context) * 0.3,
+                      width: DeviceUtility.getScreenWidth(context) * 0.8,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: SvgPicture.asset(
+                          AppLogos.verticalLight,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
                   ),
                   AutoSizeText(
-                    'Login',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: AppSizes.sm),
-                  AutoSizeText(
-                    'Fill the details below to login for the MarginTop Solutions Attendance app.',
-                    style: Theme.of(context).textTheme.titleMedium,
-                    textAlign: TextAlign.center,
+                    'Dear workmate fill the details below to login for the MarginTop Solutions Attendance.',
+                    style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: AppSizes.lg),
                   TextFieldData(
@@ -140,14 +146,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => PasswordChangeRequest(
-                        //       role: widget.user,
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PasswordChangeRequest(),
+                          ),
+                        );
                       },
                       child: const AutoSizeText(
                         'Forgot Password?',

@@ -1,5 +1,5 @@
 name: margintop_attendance
-description: "A boilerplate for new Flutter Project."
+description: "An attendance app for the MarginTop Solutions team."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -49,6 +49,8 @@ dependencies:
   timezone: ^0.10.0
   permission_handler: ^12.0.1
   auto_size_text: ^3.0.0
+  iconsax: ^0.0.8
+  flutter_svg: ^2.2.0
 
 
 dev_dependencies:

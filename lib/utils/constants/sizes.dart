@@ -31,7 +31,7 @@ class AppSizes {
   static const double appBarHeight = 56.0;
 
   //! Form height
-  static const double formHeight = 6.0;
+  static const double formHeight = 12.0;
 
   //! Image sizes
   static const double imageThumbSize = 89.0;
