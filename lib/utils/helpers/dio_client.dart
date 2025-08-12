@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DioClient {
@@ -41,7 +40,5 @@ class DioClient {
     }
 
     debugPrint("Dio Error: $errorMessage");
-
-    showErrorSnackbar(errorMessage);
   }
 }

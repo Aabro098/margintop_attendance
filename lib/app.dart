@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/localization/app_localization.dart';
-import 'package:flutter_boilerplate_mts/screens/homepage/homepage.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/localization_manager.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/theme.dart';
+import 'package:margintop_attendance/screens/homepage/homepage.dart';
+import 'package:margintop_attendance/utils/helpers/app_globals.dart';
+import 'package:margintop_attendance/utils/providers/theme.provider.dart';
+import 'package:margintop_attendance/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -17,48 +14,55 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  bool _isAuthenticated = false;
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
+    final themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final contextToUse = scaffoldMessengerKey.currentContext ?? context;
+      await themeProvider.loadTheme();
+      _checkAuthentication();
+    });
+  }
 
-      await Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme();
-      await Provider.of<LocalizationProvider>(
-        contextToUse,
-        listen: false,
-      ).loadSavedLocale();
+  Future<void> _checkAuthentication() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token');
+
+    setState(() {
+      _isAuthenticated = (token != null && token.isNotEmpty);
+      _isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<LocalizationProvider, ThemeProvider>(
-      builder: (context, localizationProvider, themeProvider, child) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
         return MaterialApp(
           navigatorKey: navigatorKey,
-          locale: localizationProvider.locale,
+          debugShowCheckedModeBanner: false,
           scaffoldMessengerKey: scaffoldMessengerKey,
-          supportedLocales: LocalizationManager.supportedLocaleList,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          localeResolutionCallback: (locale, supportedLocales) {
-            return supportedLocales.firstWhere(
-              (supportedLocale) =>
-                  supportedLocale.languageCode == locale?.languageCode &&
-                  supportedLocale.countryCode == locale?.countryCode,
-              orElse: () => supportedLocales.first,
-            );
-          },
+          // localizationsDelegates: const [
+          //   GlobalMaterialLocalizations.delegate,
+          //   GlobalWidgetsLocalizations.delegate,
+          //   GlobalCupertinoLocalizations.delegate,
+          // ],
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          title: 'Boilerplate',
-          home: const MyHomePage(),
+          title: 'Margintop Solutions Attendance',
+          home: _isLoading
+              ? Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                )
+              : (_isAuthenticated ? const MyHomePage() : const MyHomePage()),
         );
       },
     );

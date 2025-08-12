@@ -1,8 +1,3 @@
-import 'package:app_settings/app_settings.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
-import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// Requests all required permissions and services at application startup.
@@ -72,25 +67,25 @@ Future<bool> checkLocationPermission() async {
 /// Returns:
 ///   - `true` if location service is enabled or successfully enabled by the user.
 ///   - `false` if the service remains disabled after prompting the user.
-Future<bool> checkLocationService() async {
-  final isLocationEnabled = await Permission.location.serviceStatus.isEnabled;
-  if (isLocationEnabled) {
-    return true;
-  } else {
-    final location = Location();
-    if (await location.requestService()) {
-      return true;
-    }
-    showInfoSnackbar(
-      'Location services are disabled. Please enable Location.',
-      actionLabel: 'Enable',
-      actionMethod: () {
-        AppSettings.openAppSettings(type: AppSettingsType.location);
-      },
-    );
-    return false;
-  }
-}
+// Future<bool> checkLocationService() async {
+//   final isLocationEnabled = await Permission.location.serviceStatus.isEnabled;
+//   if (isLocationEnabled) {
+//     return true;
+//   } else {
+//     final location = Location();
+//     if (await location.requestService()) {
+//       return true;
+//     }
+//     showInfoSnackbar(
+//       'Location services are disabled. Please enable Location.',
+//       actionLabel: 'Enable',
+//       actionMethod: () {
+//         AppSettings.openAppSettings(type: AppSettingsType.location);
+//       },
+//     );
+//     return false;
+//   }
+// }
 
 /// Checks if the Bluetooth permission is granted.
 ///
@@ -120,14 +115,14 @@ Future<bool> checkLocationService() async {
 ///
 /// Returns a [Future] that completes with `true` if the permission is granted,
 /// or `false` otherwise.
-Future<bool> checkBluetoothConnectPermission() async {
-  if (await Permission.bluetoothConnect.isGranted) {
-    return true;
-  } else {
-    final status = await Permission.bluetoothConnect.request();
-    return status.isGranted;
-  }
-}
+// Future<bool> checkBluetoothConnectPermission() async {
+//   if (await Permission.bluetoothConnect.isGranted) {
+//     return true;
+//   } else {
+//     final status = await Permission.bluetoothConnect.request();
+//     return status.isGranted;
+//   }
+// }
 
 /// Checks if the Bluetooth service is enabled on the device.
 ///
@@ -142,32 +137,32 @@ Future<bool> checkBluetoothConnectPermission() async {
 /// Returns:
 ///   - `true` if Bluetooth is enabled or successfully turned on.
 ///   - `false` if Bluetooth remains disabled after all attempts.
-Future<bool> checkBluetoothService() async {
-  final isBluetoothOn =
-      await FlutterBluePlus.adapterState.first == BluetoothAdapterState.on;
-  if (isBluetoothOn) {
-    return true;
-  } else {
-    try {
-      await FlutterBluePlus.turnOn();
-      final isNowOn =
-          await FlutterBluePlus.adapterState.first == BluetoothAdapterState.on;
-      if (isNowOn) {
-        return true;
-      }
-    } on Exception catch (e) {
-      debugPrint('Failed to turn on Bluetooth programmatically: $e');
-    }
-    showInfoSnackbar(
-      'Bluetooth is turned off. Please enable Bluetooth.',
-      actionLabel: 'Enable',
-      actionMethod: () {
-        AppSettings.openAppSettings(type: AppSettingsType.bluetooth);
-      },
-    );
-    return false;
-  }
-}
+// Future<bool> checkBluetoothService() async {
+//   final isBluetoothOn =
+//       await FlutterBluePlus.adapterState.first == BluetoothAdapterState.on;
+//   if (isBluetoothOn) {
+//     return true;
+//   } else {
+//     try {
+//       await FlutterBluePlus.turnOn();
+//       final isNowOn =
+//           await FlutterBluePlus.adapterState.first == BluetoothAdapterState.on;
+//       if (isNowOn) {
+//         return true;
+//       }
+//     } on Exception catch (e) {
+//       debugPrint('Failed to turn on Bluetooth programmatically: $e');
+//     }
+//     showInfoSnackbar(
+//       'Bluetooth is turned off. Please enable Bluetooth.',
+//       actionLabel: 'Enable',
+//       actionMethod: () {
+//         AppSettings.openAppSettings(type: AppSettingsType.bluetooth);
+//       },
+//     );
+//     return false;
+//   }
+// }
 
 /// Checks and returns whether all required permissions and services are granted/enabled.
 Future<bool> checkPermssions() async {
