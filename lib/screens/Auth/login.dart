@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/common/widgets/text_field.dart';
 import 'package:margintop_attendance/screens/Auth/change_request.dart';
-import 'package:margintop_attendance/screens/Homepage/homepage.dart';
-import 'package:margintop_attendance/services/user_services.dart';
+import 'package:margintop_attendance/screens/Profile/app_settings.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,27 +39,28 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
+      debugPrint("The entered email is $email and password is $password");
 
-      final response = await UserServices().loginUser(
-        email: email,
-        password: password,
+      // final response = await UserServices().loginUser(
+      //   email: email,
+      //   password: password,
+      // );
+
+      // if (response != null) {
+      //   if (response['message'] == "Success" && response['status'] == 1) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AppSettings(),
+        ),
+        (route) => false,
       );
-
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MyHomePage(),
-            ),
-            (route) => false,
-          );
-        } else {
-          // showErrorSnackbar(response['message'], context: context);
-        }
-      } else {
-        // showErrorSnackbar('error_occured', context: context);
-      }
+      // } else {
+      // showErrorSnackbar(response['message'], context: context);
+      // }
+      // } else {
+      // showErrorSnackbar('error_occured', context: context);
+      // }
     } catch (e) {
       debugPrint("Login Error: $e");
       // showErrorSnackbar('error_occured', context: context);

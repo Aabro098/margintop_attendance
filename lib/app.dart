@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:margintop_attendance/screens/Auth/login.dart';
 import 'package:margintop_attendance/screens/Homepage/homepage.dart';
-import 'package:margintop_attendance/screens/Profile/app_settings.dart';
 import 'package:margintop_attendance/utils/helpers/app_globals.dart';
 import 'package:margintop_attendance/utils/providers/theme.provider.dart';
 import 'package:margintop_attendance/utils/theme/theme.dart';
@@ -63,7 +63,7 @@ class _AppState extends State<App> {
                     ),
                   ),
                 )
-              : (_isAuthenticated ? const MyHomePage() : const AppSettings()),
+              : (_isAuthenticated ? const MyHomePage() : const LoginScreen()),
         );
       },
     );
