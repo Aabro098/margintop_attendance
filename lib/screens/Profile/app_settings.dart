@@ -1,13 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/screens/Auth/change_password.dart';
 import 'package:margintop_attendance/screens/Auth/login.dart';
-import 'package:margintop_attendance/screens/Settings/setting_items.dart';
+import 'package:margintop_attendance/screens/Profile/setting_items.dart';
 import 'package:margintop_attendance/services/user_services.dart';
+import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
 import 'package:margintop_attendance/utils/local_storage/localization_storage.dart';
@@ -18,14 +21,13 @@ import 'package:provider/provider.dart';
 class AppSettings extends StatefulWidget {
   const AppSettings({
     super.key,
-    required this.role,
   });
-  final String role;
   @override
   State<AppSettings> createState() => _AppSettingsState();
 }
 
 class _AppSettingsState extends State<AppSettings> {
+  File? imageFile;
   bool _isLoading = false;
   bool _isNameLoading = false;
   late Locale selectedLocale;
@@ -36,39 +38,49 @@ class _AppSettingsState extends State<AppSettings> {
   @override
   void initState() {
     super.initState();
-    _getUserDetails();
+    // _getUserDetails();
   }
 
-  Future<void> _getUserDetails() async {
-    if (mounted) {
-      setState(() {
-        _isNameLoading = true;
-      });
-    }
-    try {
-      final response = await UserServices().userDetails();
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          if (mounted) {
-            setState(() {
-              name = response['data']['name'];
-              email = response['data']['email'];
-            });
-          }
-        }
-      } else {
-        // showErrorSnackbar('error_occured', context: context);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isNameLoading = false;
-        });
-      }
+  ImageProvider getProfileImage() {
+    if (imageFile != null) {
+      return FileImage(imageFile!);
+      // } else if (provider.profileImage.isNotEmpty) {
+      //   return NetworkImage(provider.profileImage);
+    } else {
+      return const AssetImage(AppLogos.nullProfile);
     }
   }
+
+  // Future<void> _getUserDetails() async {
+  //   if (mounted) {
+  //     setState(() {
+  //       _isNameLoading = true;
+  //     });
+  //   }
+  //   try {
+  //     final response = await UserServices().userDetails();
+  //     if (response != null) {
+  //       if (response['message'] == "Success" && response['status'] == 1) {
+  //         if (mounted) {
+  //           setState(() {
+  //             name = response['data']['name'];
+  //             email = response['data']['email'];
+  //           });
+  //         }
+  //       }
+  //     } else {
+  //       // showErrorSnackbar('error_occured', context: context);
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   } finally {
+  //     if (mounted) {
+  //       setState(() {
+  //         _isNameLoading = false;
+  //       });
+  //     }
+  //   }
+  // }
 
   //* This is to logout the user and remove the auth token from the shared prefs
   Future<void> _logout() async {
@@ -115,7 +127,7 @@ class _AppSettingsState extends State<AppSettings> {
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText(
-          "Settings",
+          "Profile",
         ),
       ),
       body: SafeArea(
@@ -124,9 +136,70 @@ class _AppSettingsState extends State<AppSettings> {
             Padding(
               padding: const EdgeInsets.all(AppSizes.padding),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(
+                    height: AppSizes.xl,
+                  ),
                   // Profile Row
+                  Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: 160,
+                        height: 160,
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.indigo,
+                            width: 2,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: Colors.grey[200],
+                          backgroundImage: getProfileImage(),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 12,
+                        right: 6,
+                        child: GestureDetector(
+                          onTap: () async {
+                            final pickedImage = await FilePicker.platform
+                                .pickFiles(type: FileType.image);
+                            if (pickedImage != null &&
+                                pickedImage.files.isNotEmpty) {
+                              final filePath = pickedImage.files.first.path;
+                              if (filePath != null) {
+                                setState(() {
+                                  imageFile = File(filePath);
+                                });
+                              }
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.indigo[400],
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                              size: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: AppSizes.md,
+                  ),
                   _isNameLoading
                       ? const Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),
