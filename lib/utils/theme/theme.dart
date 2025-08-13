@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:margintop_attendance/utils/constants/colors_light.dart';
+import 'package:margintop_attendance/utils/theme/color_scheme.dart';
 import 'package:margintop_attendance/utils/theme/custom/app_bar_theme.dart';
 import 'package:margintop_attendance/utils/constants/colors_dark.dart';
 import 'package:margintop_attendance/utils/theme/custom/drawer_theme.dart';
@@ -16,6 +17,7 @@ class AppTheme {
     fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: AppColorsLight.primary,
+    colorScheme: AppColorSchemes.lightColorScheme,
     textTheme: AppTypography.lightTextTheme,
     pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.lightTheme,
@@ -28,6 +30,7 @@ class AppTheme {
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
     primaryColor: AppColorsDark.primary,
+    colorScheme: AppColorSchemes.darkColorScheme,
     textTheme: AppTypography.darkTextTheme,
     pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.darkTheme,

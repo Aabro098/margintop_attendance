@@ -7,7 +7,8 @@ class AppAppBarTheme {
   static AppBarTheme lightTheme = AppBarTheme(
     backgroundColor: AppColorsLight.primary,
     foregroundColor: Colors.white,
-    titleTextStyle: AppTypography.lightTextTheme.displaySmall,
+    titleTextStyle:
+        AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),
     centerTitle: true,
     toolbarHeight: 56,
     leadingWidth: 72,
@@ -17,7 +18,8 @@ class AppAppBarTheme {
   static AppBarTheme darkTheme = AppBarTheme(
     backgroundColor: AppColorsDark.primary,
     foregroundColor: Colors.white,
-    titleTextStyle: AppTypography.darkTextTheme.displaySmall,
+    titleTextStyle:
+        AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),
     centerTitle: true,
     toolbarHeight: 56,
     leadingWidth: 72,

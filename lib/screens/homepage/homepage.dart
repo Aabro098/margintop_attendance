@@ -18,7 +18,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
-      drawer: const CustomDrawer(),
+      drawer: const CustomDrawer(
+        userName: "Jane Doe",
+        userEmail: "jane.doe@example.com",
+        profileImageUrl: "https://randomuser.me/api/portraits/women/44.jpg",
+      ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('title'),

@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
+import 'package:margintop_attendance/common/widgets/custom_drawer.dart';
 import 'package:margintop_attendance/screens/Auth/change_password.dart';
 import 'package:margintop_attendance/screens/Auth/login.dart';
 import 'package:margintop_attendance/screens/Profile/setting_items.dart';
@@ -129,6 +130,11 @@ class _AppSettingsState extends State<AppSettings> {
         title: const AutoSizeText(
           "Profile",
         ),
+      ),
+      drawer: const CustomDrawer(
+        userName: "Jane Doe",
+        userEmail: "jane.doe@example.com",
+        profileImageUrl: "https://randomuser.me/api/portraits/women/44.jpg",
       ),
       body: SafeArea(
         child: Stack(
