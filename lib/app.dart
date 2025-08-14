@@ -46,14 +46,9 @@ class _AppState extends State<App> {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           scaffoldMessengerKey: scaffoldMessengerKey,
-          // localizationsDelegates: const [
-          //   GlobalMaterialLocalizations.delegate,
-          //   GlobalWidgetsLocalizations.delegate,
-          //   GlobalCupertinoLocalizations.delegate,
-          // ],
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: themeProvider.themeMode,
+          themeMode: ThemeMode.system,
           title: 'Margintop Solutions Attendance',
           home: _isLoading
               ? Scaffold(
@@ -63,7 +58,7 @@ class _AppState extends State<App> {
                     ),
                   ),
                 )
-              : (_isAuthenticated ? const MyHomePage() : const LoginScreen()),
+              : (_isAuthenticated ? const HomePage() : const LoginScreen()),
         );
       },
     );

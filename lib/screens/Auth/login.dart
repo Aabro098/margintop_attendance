@@ -2,10 +2,11 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/common/widgets/text_field.dart';
 import 'package:margintop_attendance/screens/Auth/change_request.dart';
-import 'package:margintop_attendance/screens/Profile/app_settings.dart';
+import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => const AppSettings(),
+          builder: (context) => const BottomNavBar(),
         ),
         (route) => false,
       );
@@ -103,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fit: BoxFit.contain,
                         child: SvgPicture.asset(
                           AppLogos.verticalLight,
-                          color: theme.colorScheme.primary,
+                          color: AppColorsLight.logoColor,
                         ),
                       ),
                     ),

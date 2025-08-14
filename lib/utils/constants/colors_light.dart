@@ -37,4 +37,7 @@ class AppColorsLight {
   static const Color textSecondary = Color(0x99111111); // 60% opacity
   static const Color textTertiary = Color(0x73111111); // 45% opacity
   static const Color textQuaternary = Color(0xA6111111);
+
+  // logo color
+  static const Color logoColor = Color(0xFF9C8CC4);
 }
