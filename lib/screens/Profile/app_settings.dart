@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/screens/Auth/change_password.dart';
 import 'package:margintop_attendance/screens/Auth/login.dart';
+import 'package:margintop_attendance/screens/Profile/profile_details.dart';
 import 'package:margintop_attendance/screens/Profile/setting_items.dart';
 import 'package:margintop_attendance/services/user_services.dart';
 import 'package:margintop_attendance/utils/constants/colors_light.dart';
@@ -97,7 +98,17 @@ class _AppSettingsState extends State<AppSettings> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: AppSizes.xl,
+                    height: AppSizes.sm,
+                  ),
+                  AutoSizeText(
+                    "Profile",
+                    overflow: TextOverflow.visible,
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: AppColorsLight.logoColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: AppSizes.lg,
                   ),
                   // Profile Row
                   Stack(
@@ -186,7 +197,20 @@ class _AppSettingsState extends State<AppSettings> {
                     thickness: 1,
                     color: Colors.grey.shade300,
                   ),
-                  const SizedBox(height: AppSizes.sm),
+                  const SizedBox(
+                    height: AppSizes.xs,
+                  ),
+                  const ProfileDetails(),
+                  const SizedBox(
+                    height: AppSizes.xs,
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey.shade300,
+                  ),
+                  const SizedBox(
+                    height: AppSizes.xs,
+                  ),
                   AutoSizeText(
                     "Settings",
                     style: theme.textTheme.titleSmall?.copyWith(

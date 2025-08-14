@@ -48,7 +48,7 @@ class _AppState extends State<App> {
           scaffoldMessengerKey: scaffoldMessengerKey,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
+          themeMode: themeProvider.themeMode,
           title: 'Margintop Solutions Attendance',
           home: _isLoading
               ? Scaffold(
