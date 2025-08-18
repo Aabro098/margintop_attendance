@@ -9,7 +9,7 @@ class DioClient {
 
     final Dio dio = Dio(
       BaseOptions(
-        baseUrl: "http://192.168.1.74:8000/api/v1",
+        baseUrl: "https://api.margintopsolutions.com",
         connectTimeout: const Duration(seconds: 12),
         receiveTimeout: const Duration(seconds: 12),
         headers: {

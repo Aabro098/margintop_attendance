@@ -29,6 +29,18 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const HeadingTitle(),
+          const SizedBox(height: AppSizes.md),
+
+          // Welcome text
+          Padding(
+            padding: const EdgeInsets.only(
+                left: AppSizes.padding, right: AppSizes.padding),
+            child: AutoSizeText(
+              "Welcome, Arbin Shrestha",
+              style: theme.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(AppSizes.padding),
@@ -41,9 +53,10 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(AppSizes.lg),
                       boxShadow: const [
                         BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: AppSizes.lg,
-                            offset: Offset(0, 4))
+                          color: Colors.black12,
+                          blurRadius: AppSizes.lg,
+                          offset: Offset(0, 4),
+                        )
                       ],
                     ),
                     child: Column(

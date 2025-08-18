@@ -6,6 +6,7 @@ import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
 import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/common/widgets/text_field.dart';
 import 'package:margintop_attendance/screens/Auth/change_request.dart';
+import 'package:margintop_attendance/services/user_services.dart';
 import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
@@ -42,26 +43,26 @@ class _LoginScreenState extends State<LoginScreen> {
       final password = _passwordController.text.trim();
       debugPrint("The entered email is $email and password is $password");
 
-      // final response = await UserServices().loginUser(
-      //   email: email,
-      //   password: password,
-      // );
-
-      // if (response != null) {
-      //   if (response['message'] == "Success" && response['status'] == 1) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const BottomNavBar(),
-        ),
-        (route) => false,
+      final response = await UserServices().loginUser(
+        email: email,
+        password: password,
       );
-      // } else {
-      // showErrorSnackbar(response['message'], context: context);
-      // }
-      // } else {
-      // showErrorSnackbar('error_occured', context: context);
-      // }
+
+      if (response != null) {
+        // if (response['message'] == "Success" && response['status'] == 1) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BottomNavBar(),
+          ),
+          (route) => false,
+        );
+        // } else {
+        // showErrorSnackbar(response['message'], context: context);
+        // }
+      } else {
+        // showErrorSnackbar('error_occured', context: context);
+      }
     } catch (e) {
       debugPrint("Login Error: $e");
       // showErrorSnackbar('error_occured', context: context);
@@ -110,8 +111,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   AutoSizeText(
-                    'Dear workmate fill the details below to login for the MarginTop Solutions Attendance.',
-                    style: theme.textTheme.titleMedium,
+                    'This is MarginTop Solutions User App.',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: theme.colorScheme.primary,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppSizes.lg),
                   TextFieldData(

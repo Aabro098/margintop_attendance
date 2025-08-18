@@ -1,8 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:margintop_attendance/utils/constants/colors_light.dart';
-import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 
 class HeadingTitle extends StatefulWidget {
@@ -33,22 +30,12 @@ class _HeadingTitleState extends State<HeadingTitle> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(
-            height: AppSizes.xl,
+            height: 52,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                AppLogos.markWhite,
-                // ignore: deprecated_member_use
-                color: AppColorsLight.logoColor,
-                height: 72,
-                width: 72,
-              ),
-              const SizedBox(
-                width: AppSizes.sm,
-              ),
               Expanded(
                 child: AutoSizeText(
                   "MarginTop Solutions",
@@ -58,22 +45,11 @@ class _HeadingTitleState extends State<HeadingTitle> {
                   style: theme.textTheme.headlineLarge?.copyWith(
                     color: Colors.white,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: AppSizes.md),
-
-          // Welcome text
-          AutoSizeText(
-            "Welcome! Arbin Shrestha",
-            style: theme.textTheme.headlineSmall?.copyWith(
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(
-            height: AppSizes.sm,
-          )
         ],
       ),
     );

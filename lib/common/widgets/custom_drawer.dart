@@ -1,101 +1,83 @@
-import 'package:auto_size_text/auto_size_text.dart';
+// ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_attendance/common/widgets/drawer_items.dart';
+import 'package:margintop_attendance/screens/Profile/app_settings.dart';
+import 'package:provider/provider.dart';
+import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
+import 'package:margintop_attendance/utils/constants/colors_light.dart';
+import 'package:margintop_attendance/utils/constants/image_strings.dart';
+import 'package:margintop_attendance/utils/constants/sizes.dart';
+import 'package:margintop_attendance/utils/providers/drawer_provider.dart';
 
-class CustomDrawer extends StatelessWidget {
-  final String userName;
-  final String userEmail;
-  final String profileImageUrl;
+class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({super.key});
 
-  const CustomDrawer({
-    super.key,
-    required this.userName,
-    required this.userEmail,
-    required this.profileImageUrl,
-  });
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
 
+class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = DeviceUtility.isDarkMode(context);
+    final drawerProvider = Provider.of<DrawerProvider>(context);
 
-    return Drawer(
+    return Padding(
+      padding: const EdgeInsets.only(right: AppSizes.sm),
       child: Container(
-        color: isDarkMode ? Colors.black87 : Colors.white,
-        child: ListView(
-          padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.secondary,
+          borderRadius: BorderRadius.circular(AppSizes.xl),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    theme.colorScheme.secondary,
-                    theme.colorScheme.primary
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 36,
-                    backgroundImage: NetworkImage(profileImageUrl),
-                    backgroundColor: theme.colorScheme.inversePrimary,
-                  ),
-                  const SizedBox(height: 12),
-                  AutoSizeText(
-                    userName,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  AutoSizeText(
-                    userEmail,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+            // Company Logo at Top
+            Container(
+              width: 120.0,
+              height: 120.0,
+              margin: const EdgeInsets.only(top: 36.0, bottom: 36.0),
+              child: SvgPicture.asset(
+                AppLogos.markWhite,
+                color: AppColorsLight.logoColor,
+                height: 82,
+                width: 82,
               ),
             ),
 
-            // Drawer items
-            _buildDrawerItem(Iconsax.home, "Home", theme),
-            _buildDrawerItem(Iconsax.settings, "Settings", theme),
+            // Home
+            DrawerItems(
+              drawerProvider: drawerProvider,
+              theme: theme,
+              label: 'Attendance',
+              icon: Iconsax.home,
+              onTap: () {
+                drawerProvider.setSelectedItem('Attendance');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BottomNavBar()),
+                );
+              },
+            ),
+
+            // Profile
+            DrawerItems(
+              drawerProvider: drawerProvider,
+              theme: theme,
+              label: 'Profile',
+              icon: Iconsax.user,
+              onTap: () {
+                drawerProvider.setSelectedItem('Profile');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AppSettings()),
+                );
+              },
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildDrawerItem(
-    IconData icon,
-    String title,
-    ThemeData theme,
-  ) {
-    return Center(
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: theme.colorScheme.secondary,
-        ),
-        dense: true,
-        title: Text(
-          title,
-          style: theme.textTheme.headlineSmall
-              ?.copyWith(color: theme.colorScheme.secondary),
-        ),
-        onTap: () {
-          // Handle drawer item tap if needed
-        },
       ),
     );
   }
