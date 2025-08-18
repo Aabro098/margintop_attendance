@@ -72,7 +72,25 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 drawerProvider.setSelectedItem('Profile');
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AppSettings()),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AppSettings(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      // Example: slide from right
+                      const begin = Offset(1.0, 0.0);
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  ),
                 );
               },
             ),

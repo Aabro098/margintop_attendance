@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String selected = "Home";
+  bool _isCheckIn = false;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -72,6 +73,7 @@ class _HomePageState extends State<HomePage> {
                                 setState(() => selected = "Home");
                               },
                               theme: theme,
+                              isCheckIn: _isCheckIn,
                             ),
                             const SizedBox(width: 8),
                             _buildToggleButton(
@@ -82,6 +84,7 @@ class _HomePageState extends State<HomePage> {
                                 setState(() => selected = "Office");
                               },
                               theme: theme,
+                              isCheckIn: _isCheckIn,
                             ),
                           ],
                         ),
@@ -92,14 +95,23 @@ class _HomePageState extends State<HomePage> {
                           width: 172,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                              backgroundColor: _isCheckIn
+                                  ? Colors.red
+                                  : theme.colorScheme.primary,
                               shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(AppSizes.lg),
                               ),
                             ),
-                            onPressed: () {},
-                            child: const Text(
-                              "Check In",
+                            onPressed: () {
+                              if (mounted) {
+                                setState(() {
+                                  _isCheckIn = !_isCheckIn;
+                                });
+                              }
+                            },
+                            child: Text(
+                              _isCheckIn ? "Check Out" : "Check In",
                             ),
                           ),
                         ),
@@ -107,8 +119,8 @@ class _HomePageState extends State<HomePage> {
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            TimeInfo(time: "10:00 AM", label: "Check In"),
-                            TimeInfo(time: "06:30 PM", label: "Check Out"),
+                            TimeInfo(time: "--", label: "Check In"),
+                            TimeInfo(time: "--", label: "Check Out"),
                           ],
                         ),
                       ],
@@ -157,9 +169,10 @@ class _HomePageState extends State<HomePage> {
     required bool selected,
     required ThemeData theme,
     required VoidCallback onTap,
+    required bool isCheckIn,
   }) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isCheckIn ? null : onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(

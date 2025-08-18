@@ -28,6 +28,7 @@ class _AppDrawerWrapperState extends State<AppDrawerWrapper> {
       controller: widget.controller,
       openRatio: 0.7,
       openScale: 0.8,
+      animationCurve: Curves.easeInOut,
       backdrop: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
