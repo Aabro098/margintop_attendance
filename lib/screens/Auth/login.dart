@@ -41,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      debugPrint("The entered email is $email and password is $password");
 
       final response = await UserServices().loginUser(
         email: email,
@@ -49,17 +48,17 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response != null) {
-        // if (response['message'] == "Success" && response['status'] == 1) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const BottomNavBar(),
-          ),
-          (route) => false,
-        );
-        // } else {
-        // showErrorSnackbar(response['message'], context: context);
-        // }
+        if (response['message'] == "Success" && response['status'] == 1) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(),
+            ),
+            (route) => false,
+          );
+        } else {
+          // showErrorSnackbar(response['message'], context: context);
+        }
       } else {
         // showErrorSnackbar('error_occured', context: context);
       }

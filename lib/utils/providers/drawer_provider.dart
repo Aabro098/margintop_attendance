@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class DrawerProvider extends ChangeNotifier {
-  String _selectedItem = 'Home';
+  String _selectedItem = 'Attendance';
 
   String get selectedItem => _selectedItem;
 

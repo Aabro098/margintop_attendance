@@ -9,13 +9,12 @@ class DioClient {
 
     final Dio dio = Dio(
       BaseOptions(
-        baseUrl: "https://api.margintopsolutions.com",
+        baseUrl: "https://api.margintopsolutions.com/api/v1",
         connectTimeout: const Duration(seconds: 12),
         receiveTimeout: const Duration(seconds: 12),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'multipart/form-data',
-          'Accept-Language': 'ne',
         },
       ),
     );

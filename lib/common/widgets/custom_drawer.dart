@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:margintop_attendance/common/widgets/animation_slide.dart';
 import 'package:margintop_attendance/common/widgets/drawer_items.dart';
 import 'package:margintop_attendance/screens/Profile/app_settings.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 drawerProvider.setSelectedItem('Attendance');
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BottomNavBar()),
+                  SlidePageRoute(
+                    page: const BottomNavBar(),
+                  ),
                 );
               },
             ),
@@ -72,24 +75,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 drawerProvider.setSelectedItem('Profile');
                 Navigator.push(
                   context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        const AppSettings(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      // Example: slide from right
-                      const begin = Offset(1.0, 0.0);
-                      const end = Offset.zero;
-                      const curve = Curves.easeInOut;
-
-                      var tween = Tween(begin: begin, end: end)
-                          .chain(CurveTween(curve: curve));
-
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
-                    },
+                  SlidePageRoute(
+                    page: const AppSettings(),
                   ),
                 );
               },
