@@ -7,6 +7,7 @@ import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
 import 'package:margintop_attendance/common/widgets/text_field.dart';
 import 'package:margintop_attendance/screens/Auth/change_request.dart';
 import 'package:margintop_attendance/services/user_services.dart';
+import 'package:margintop_attendance/utils/constants/app_strings.dart';
 import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
@@ -63,11 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
               context: context);
         }
       } else {
-        showErrorSnackbar('error_occured', context: context);
+        showErrorSnackbar(AppStrings.error, context: context);
       }
     } catch (e) {
       debugPrint("Login Error: $e");
-      showErrorSnackbar('error_occured', context: context);
+      showErrorSnackbar('Error Occured : Server/Internet Issue',
+          context: context);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

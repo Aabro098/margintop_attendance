@@ -1,14 +1,21 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
+import 'package:margintop_attendance/common/reusables/text_dialog.dart';
 import 'package:margintop_attendance/common/widgets/attendance_report.dart';
 import 'package:margintop_attendance/common/widgets/clock_widget.dart';
 import 'package:margintop_attendance/common/widgets/heading_title.dart';
 import 'package:margintop_attendance/common/widgets/time_info.dart';
+import 'package:margintop_attendance/services/attendance_services.dart';
+import 'package:margintop_attendance/utils/constants/app_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
+import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +26,88 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String selected = "Home";
-  bool _isCheckIn = false;
+  bool _isLoading = false;
+  final TextEditingController _workController = TextEditingController();
+
+  Future<void> _checkIn() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    try {
+      String status;
+      if (selected == "Home") {
+        status = "present";
+      } else if (selected == "Office") {
+        status = "remote";
+      } else {
+        showErrorSnackbar("Select valid option.", context: context);
+        return;
+      }
+      final response =
+          await AttendanceServices().checkIn(context: context, status: status);
+      if (response != null) {
+        if (response['message'] == "Success" && response['status'] == 1) {
+          showSuccessSnackbar(
+              "Check in successfull. Hope you have a wonderful day workmate.",
+              context: context);
+        } else {
+          showErrorSnackbar(response['message'], context: context);
+        }
+      } else {
+        showErrorSnackbar(AppStrings.error, context: context);
+      }
+    } catch (e) {
+      showErrorSnackbar(AppStrings.error, context: context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _checkOut() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    try {
+      final response = await AttendanceServices().checkOut(
+        context: context,
+        workSummary: _workController.text.trim(),
+      );
+      if (response != null) {
+        if (response['message'] == "Success" && response['status'] == 1) {
+          showSuccessSnackbar(
+              "Check out successfull. Hope you had a wonderful day workmate.",
+              context: context);
+        } else {
+          showErrorSnackbar(response['message'], context: context);
+        }
+      } else {
+        showErrorSnackbar(AppStrings.error, context: context);
+      }
+    } catch (e) {
+      showErrorSnackbar(AppStrings.error, context: context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _workController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -47,85 +135,103 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(AppSizes.padding),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(AppSizes.padding),
-                    decoration: BoxDecoration(
-                      color: isDarkMode ? Colors.white10 : Colors.white,
-                      borderRadius: BorderRadius.circular(AppSizes.lg),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: AppSizes.lg,
-                          offset: Offset(0, 4),
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _buildToggleButton(
-                              text: "Home",
-                              icon: Iconsax.home_1,
-                              selected: selected == "Home",
-                              onTap: () {
-                                setState(() => selected = "Home");
+                  Consumer<AttendanceProvider>(
+                      builder: (context, provider, child) {
+                    return Container(
+                      padding: const EdgeInsets.all(AppSizes.padding),
+                      decoration: BoxDecoration(
+                        color: isDarkMode ? Colors.white10 : Colors.white,
+                        borderRadius: BorderRadius.circular(AppSizes.lg),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: AppSizes.lg,
+                            offset: Offset(0, 4),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          _isLoading
+                              ? const Center(child: LoadingIndicator())
+                              : Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    _buildToggleButton(
+                                      text: "Home",
+                                      icon: Iconsax.home_1,
+                                      selected: selected == "Home",
+                                      onTap: () {
+                                        setState(() => selected = "Home");
+                                      },
+                                      theme: theme,
+                                      isCheckIn: provider.checkIn,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    _buildToggleButton(
+                                      text: "Office",
+                                      icon: Iconsax.building,
+                                      selected: selected == "Office",
+                                      onTap: () {
+                                        setState(() => selected = "Office");
+                                      },
+                                      theme: theme,
+                                      isCheckIn: provider.checkIn,
+                                    ),
+                                  ],
+                                ),
+                          const SizedBox(height: AppSizes.formHeight),
+                          const RealTimeClock(),
+                          const SizedBox(height: AppSizes.formHeight),
+                          SizedBox(
+                            width: 172,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: provider.checkIn != null
+                                    ? Colors.red
+                                    : theme.colorScheme.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSizes.lg),
+                                ),
+                              ),
+                              onPressed: () {
+                                provider.checkIn == null
+                                    ? _checkIn()
+                                    : StylishInputDialog(
+                                        context: context,
+                                        title:
+                                            'Write in short about your day, dear workmate.',
+                                        hintText: 'Write something...',
+                                        controller: _workController,
+                                        onSubmit: () {
+                                          _checkOut();
+                                        },
+                                      );
                               },
-                              theme: theme,
-                              isCheckIn: _isCheckIn,
-                            ),
-                            const SizedBox(width: 8),
-                            _buildToggleButton(
-                              text: "Office",
-                              icon: Iconsax.building,
-                              selected: selected == "Office",
-                              onTap: () {
-                                setState(() => selected = "Office");
-                              },
-                              theme: theme,
-                              isCheckIn: _isCheckIn,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSizes.formHeight),
-                        const RealTimeClock(),
-                        const SizedBox(height: AppSizes.formHeight),
-                        SizedBox(
-                          width: 172,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: _isCheckIn
-                                  ? Colors.red
-                                  : theme.colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppSizes.lg),
+                              child: Text(
+                                provider.checkIn != null
+                                    ? "Check Out"
+                                    : "Check In",
                               ),
                             ),
-                            onPressed: () {
-                              if (mounted) {
-                                setState(() {
-                                  _isCheckIn = !_isCheckIn;
-                                });
-                              }
-                            },
-                            child: Text(
-                              _isCheckIn ? "Check Out" : "Check In",
-                            ),
                           ),
-                        ),
-                        const SizedBox(height: AppSizes.formHeight),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            TimeInfo(time: "--", label: "Check In"),
-                            TimeInfo(time: "--", label: "Check Out"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                          const SizedBox(height: AppSizes.formHeight),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              TimeInfo(
+                                  time: provider.checkIn ?? "--",
+                                  label: "Check In"),
+                              TimeInfo(
+                                  time: provider.checkOut ?? "--",
+                                  label: "Check Out"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
 
                   const SizedBox(height: AppSizes.formHeight),
 
@@ -169,10 +275,10 @@ class _HomePageState extends State<HomePage> {
     required bool selected,
     required ThemeData theme,
     required VoidCallback onTap,
-    required bool isCheckIn,
+    required String? isCheckIn,
   }) {
     return GestureDetector(
-      onTap: isCheckIn ? null : onTap,
+      onTap: isCheckIn != null ? null : onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(

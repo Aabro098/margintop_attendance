@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:margintop_attendance/app.dart';
 import 'package:margintop_attendance/utils/helpers/notification_service.dart';
+import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
 import 'package:margintop_attendance/utils/providers/drawer_provider.dart';
 import 'package:margintop_attendance/utils/providers/index_provider.dart';
 import 'package:margintop_attendance/utils/providers/theme.provider.dart';
@@ -18,6 +19,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => IndexProvider()),
         ChangeNotifierProvider(create: (_) => DrawerProvider()),
+        ChangeNotifierProvider(create: (_) => AttendanceProvider()),
       ],
       child: const App(),
     ),

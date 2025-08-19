@@ -6,11 +6,12 @@ class AppSnackbarTheme {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSizes.md),
     ),
+    behavior: SnackBarBehavior.floating,
     contentTextStyle: const TextStyle(
-      fontSize: 16,
+      fontSize: 17,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
-    elevation: 6,
+    elevation: 5,
   );
 }

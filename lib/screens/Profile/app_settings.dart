@@ -15,6 +15,7 @@ import 'package:margintop_attendance/screens/Auth/login.dart';
 import 'package:margintop_attendance/screens/Profile/profile_details.dart';
 import 'package:margintop_attendance/screens/Profile/setting_items.dart';
 import 'package:margintop_attendance/services/user_services.dart';
+import 'package:margintop_attendance/utils/constants/app_strings.dart';
 import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
@@ -76,10 +77,11 @@ class _AppSettingsState extends State<AppSettings> {
           showErrorSnackbar(response['message'], context: context);
         }
       } else {
-        showErrorSnackbar('error_occured', context: context);
+        showErrorSnackbar(AppStrings.error, context: context);
       }
     } catch (e) {
       debugPrint(e.toString());
+      showErrorSnackbar(AppStrings.error, context: context);
     } finally {
       if (mounted) {
         setState(() {
