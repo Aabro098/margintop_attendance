@@ -27,7 +27,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String selected = "Home";
   bool _isLoading = false;
+  bool _isAbsent = false;
   final TextEditingController _workController = TextEditingController();
+  final TextEditingController _reasonController = TextEditingController();
 
   Future<void> _checkIn() async {
     if (mounted) {
@@ -102,9 +104,43 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _absent() async {
+    if (mounted) {
+      setState(() {
+        _isAbsent = true;
+      });
+    }
+    try {
+      final response = await AttendanceServices().absent(
+        context: context,
+        reason: _reasonController.text.trim(),
+      );
+      if (response != null) {
+        if (response['message'] == "Success" && response['status'] == 1) {
+          showErrorSnackbar(
+              "We will miss you dear workmate. Hope to see you soon",
+              context: context);
+        } else {
+          showErrorSnackbar(response['message'], context: context);
+        }
+      } else {
+        showErrorSnackbar(AppStrings.error, context: context);
+      }
+    } catch (e) {
+      showErrorSnackbar(AppStrings.error, context: context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAbsent = false;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     _workController.dispose();
+    _reasonController.dispose();
     super.dispose();
   }
 
@@ -195,19 +231,23 @@ class _HomePageState extends State<HomePage> {
                                       BorderRadius.circular(AppSizes.lg),
                                 ),
                               ),
-                              onPressed: () {
-                                provider.checkIn == null
-                                    ? _checkIn()
-                                    : StylishInputDialog(
-                                        context: context,
-                                        title:
-                                            'Write in short about your day, dear workmate.',
-                                        hintText: 'Write something...',
-                                        controller: _workController,
-                                        onSubmit: () {
-                                          _checkOut();
-                                        },
-                                      );
+                              onPressed: () async {
+                                if (provider.checkIn == null) {
+                                  _checkIn();
+                                } else {
+                                  final dialog = StylishInputDialog(
+                                    context: context,
+                                    title:
+                                        'Write in short about your day, dear workmate.',
+                                    hintText: 'Write something...',
+                                    controller: _workController,
+                                    onSubmit: () {
+                                      _checkOut();
+                                    },
+                                  );
+
+                                  await dialog.show();
+                                }
                               },
                               child: Text(
                                 provider.checkIn != null
@@ -241,25 +281,47 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: AppSizes.formHeight),
 
                   // Request Button
-                  SizedBox(
-                    width: 172,
-                    child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        side: const BorderSide(color: Colors.red),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Absent",
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                  Consumer<AttendanceProvider>(
+                      builder: (context, provider, child) {
+                    return provider.checkIn != null
+                        ? const SizedBox.shrink()
+                        : SizedBox(
+                            width: 172,
+                            child: _isAbsent
+                                ? const Center(
+                                    child: LoadingIndicator(),
+                                  )
+                                : OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      side: const BorderSide(color: Colors.red),
+                                    ),
+                                    onPressed: () async {
+                                      final dialog = StylishInputDialog(
+                                        context: context,
+                                        title:
+                                            'Please provide the reason for the leave.',
+                                        hintText: 'Write something...',
+                                        controller: _workController,
+                                        onSubmit: () {
+                                          _absent();
+                                        },
+                                      );
+                                      await dialog.show();
+                                    },
+                                    child: Text(
+                                      "Absent",
+                                      style:
+                                          theme.textTheme.titleLarge?.copyWith(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                          );
+                  }),
                 ],
               ),
             ),

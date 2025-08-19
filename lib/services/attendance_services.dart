@@ -63,4 +63,31 @@ class AttendanceServices {
       return apiResponse;
     }
   }
+
+  Future<Map<String, dynamic>?> absent({
+    required BuildContext context,
+    required String reason,
+  }) async {
+    try {
+      final provider = context.read<AttendanceProvider>();
+      final dio = await DioClient().initClient();
+      final formData = FormData.fromMap({
+        'work_summary': reason,
+      });
+
+      final response =
+          await dio.post('/user/attendance/absent', data: formData);
+      final Map<String, dynamic> data = response.data;
+
+      if (data['message'] == "Success" && data["status"] == 1) {
+        // Update the provider
+        provider.absent = true;
+      }
+
+      return data;
+    } on DioException catch (e) {
+      final apiResponse = DioClient.getErrorResponse(e);
+      return apiResponse;
+    }
+  }
 }

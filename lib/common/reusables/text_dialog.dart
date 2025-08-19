@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_attendance/common/widgets/text_field.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
+import 'package:margintop_attendance/utils/device/device_utility.dart';
 
 class StylishInputDialog {
   final BuildContext context;
@@ -24,51 +26,51 @@ class StylishInputDialog {
       barrierDismissible: true,
       builder: (context) {
         final theme = Theme.of(context);
+        final isDarkMode = DeviceUtility.isDarkMode(context);
         return Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSizes.lg),
           ),
           elevation: 6,
-          backgroundColor: theme.colorScheme.surface,
+          backgroundColor: isDarkMode ? Colors.black : Colors.grey.shade300,
           child: Padding(
-            padding: const EdgeInsets.all(AppSizes.padding),
+            padding: const EdgeInsets.all(AppSizes.md),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.min, // important! shrink vertically
+              crossAxisAlignment:
+                  CrossAxisAlignment.stretch, // stretch to fit width
               children: [
                 AutoSizeText(
                   title,
                   style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: AppSizes.formHeight),
-                TextField(
+                TextFieldData(
                   controller: controller,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.lg),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.all(AppSizes.padding),
-                  ),
+                  hintText: hintText,
+                  maxLines: 4,
                 ),
-                const SizedBox(height: AppSizes.xl),
+                const SizedBox(height: AppSizes.formHeight),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(null),
-                      child: const Text("Cancel"),
+                    Flexible(
+                      child: TextButton(
+                        onPressed: () => Navigator.of(context).pop(null),
+                        child: const Text("Cancel"),
+                      ),
                     ),
-                    const SizedBox(width: 8),
-                    ElevatedButton(
-                      onPressed: () {
-                        onSubmit();
-                      },
-                      child: const Text("Submit"),
+                    const SizedBox(width: AppSizes.sm),
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          onSubmit();
+                          Navigator.of(context).pop(controller.text);
+                        },
+                        child: const Text("Submit"),
+                      ),
                     ),
                   ],
                 ),
