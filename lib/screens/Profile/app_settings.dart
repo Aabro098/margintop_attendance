@@ -19,6 +19,7 @@ import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
 import 'package:margintop_attendance/utils/local_storage/localization_storage.dart';
 import 'package:margintop_attendance/utils/providers/theme.provider.dart';
 import 'package:provider/provider.dart';
@@ -72,10 +73,10 @@ class _AppSettingsState extends State<AppSettings> {
             (Route<dynamic> route) => false,
           );
         } else {
-          // showErrorSnackbar(response['message'], context: context);
+          showErrorSnackbar(response['message'], context: context);
         }
       } else {
-        // showErrorSnackbar('error_occured', context: context);
+        showErrorSnackbar('error_occured', context: context);
       }
     } catch (e) {
       debugPrint(e.toString());

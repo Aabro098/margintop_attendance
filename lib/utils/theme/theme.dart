@@ -6,6 +6,7 @@ import 'package:margintop_attendance/utils/constants/colors_dark.dart';
 import 'package:margintop_attendance/utils/theme/custom/elevated_button_theme.dart';
 import 'package:margintop_attendance/utils/theme/custom/input_decoration_theme.dart';
 import 'package:margintop_attendance/utils/theme/custom/page_transitions_theme.dart';
+import 'package:margintop_attendance/utils/theme/custom/snackbar_theme.dart';
 import 'package:margintop_attendance/utils/theme/custom/text_theme.dart';
 
 class AppTheme {
@@ -22,6 +23,7 @@ class AppTheme {
     inputDecorationTheme: AppInputDecoration.lightTheme,
     elevatedButtonTheme: AppElevatedButtonTheme.lightTheme,
     appBarTheme: AppAppBarTheme.lightTheme,
+    snackBarTheme: AppSnackbarTheme.theme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -34,5 +36,6 @@ class AppTheme {
     inputDecorationTheme: AppInputDecoration.darkTheme,
     elevatedButtonTheme: AppElevatedButtonTheme.darkTheme,
     appBarTheme: AppAppBarTheme.darkTheme,
+    snackBarTheme: AppSnackbarTheme.theme,
   );
 }

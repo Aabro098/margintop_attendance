@@ -12,6 +12,7 @@ import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
 
 //* The login screen uses the text field data which is a text form field in the common widgets
 class LoginScreen extends StatefulWidget {
@@ -49,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
+          showSuccessSnackbar(response['message'], context: context);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -57,14 +59,15 @@ class _LoginScreenState extends State<LoginScreen> {
             (route) => false,
           );
         } else {
-          // showErrorSnackbar(response['message'], context: context);
+          showErrorSnackbar("The provided crediential is wrong.",
+              context: context);
         }
       } else {
-        // showErrorSnackbar('error_occured', context: context);
+        showErrorSnackbar('error_occured', context: context);
       }
     } catch (e) {
       debugPrint("Login Error: $e");
-      // showErrorSnackbar('error_occured', context: context);
+      showErrorSnackbar('error_occured', context: context);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
