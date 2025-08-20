@@ -72,6 +72,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _checkOut() async {
+    if (_workController.text.trim().isEmpty) {
+      showSuccessSnackbar("Your work details cannot be empty.",
+          context: context);
+      return;
+    }
     if (mounted) {
       setState(() {
         _isLoading = true;
@@ -105,6 +110,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _absent() async {
+    if (_workController.text.trim().isEmpty) {
+      showSuccessSnackbar("Your absent reason cannot be empty.",
+          context: context);
+      return;
+    }
     if (mounted) {
       setState(() {
         _isAbsent = true;
@@ -219,43 +229,47 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: AppSizes.formHeight),
                           const RealTimeClock(),
                           const SizedBox(height: AppSizes.formHeight),
-                          SizedBox(
-                            width: 172,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: provider.checkIn != null
-                                    ? Colors.red
-                                    : theme.colorScheme.primary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(AppSizes.lg),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (provider.checkIn == null) {
-                                  _checkIn();
-                                } else {
-                                  final dialog = StylishInputDialog(
-                                    context: context,
-                                    title:
-                                        'Write in short about your day, dear workmate.',
-                                    hintText: 'Write something...',
-                                    controller: _workController,
-                                    onSubmit: () {
-                                      _checkOut();
-                                    },
-                                  );
+                          _isLoading
+                              ? const LoadingIndicator()
+                              : SizedBox(
+                                  width: 172,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: provider.checkIn != null
+                                          ? Colors.red
+                                          : theme.colorScheme.primary,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(AppSizes.lg),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      if (provider.checkIn == null) {
+                                        _checkIn();
+                                      } else {
+                                        final dialog = StylishInputDialog(
+                                          context: context,
+                                          title:
+                                              'Write in short about your day, dear workmate.',
+                                          hintText: 'Write something...',
+                                          controller: _workController,
+                                          onSubmit: () {
+                                            _checkOut();
+                                          },
+                                        );
 
-                                  await dialog.show();
-                                }
-                              },
-                              child: Text(
-                                provider.checkIn != null
-                                    ? "Check Out"
-                                    : "Check In",
-                              ),
-                            ),
-                          ),
+                                        await dialog.show();
+                                      }
+                                    },
+                                    child: Text(
+                                      provider.checkIn != null
+                                          ? provider.checkOut != null
+                                              ? "Done"
+                                              : "Check Out"
+                                          : "Check In",
+                                    ),
+                                  ),
+                                ),
                           const SizedBox(height: AppSizes.formHeight),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
