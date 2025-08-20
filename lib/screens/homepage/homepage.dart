@@ -73,8 +73,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _checkOut() async {
     if (_workController.text.trim().isEmpty) {
-      showSuccessSnackbar("Your work details cannot be empty.",
-          context: context);
+      showErrorSnackbar("Your work details cannot be empty.", context: context);
       return;
     }
     if (mounted) {
@@ -111,7 +110,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _absent() async {
     if (_workController.text.trim().isEmpty) {
-      showSuccessSnackbar("Your absent reason cannot be empty.",
+      showErrorSnackbar("Your absent reason cannot be empty.",
           context: context);
       return;
     }
