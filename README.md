@@ -1,3 +1,4 @@
+
 # margintop_attendance
 
 A new Flutter project.
@@ -52,13 +53,3 @@ lib
 ├── app.dart             # Main application entry point
 ├── main.dart            # Flutter app startup file
 ```
-
-## ⚒️ How to Contribute
-1. Clone the repository.
-2. Create a new branch for your feature.
-3. Follow the folder structure conventions.
-4. Submit a pull request with your changes.
-
-## 📌 Notes
-- Add documentation/comments for better maintainability.
-- Ensure translations are added in the `localization/` folder and append locale in `helper/localization_manager.dart`
