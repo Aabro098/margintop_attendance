@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/constants/colors.dart';
+import 'package:margintop_attendance/utils/constants/colors_light.dart';
+import 'package:margintop_attendance/utils/constants/colors_dark.dart';
 
 class AppColorSchemes {
-  static const Color seedColor = Color(0xFF37474F); // Base color
+  AppColorSchemes._();
 
   /// Light Color Scheme
-  static ColorScheme lightColorScheme = ColorScheme.fromSeed(
-    seedColor: seedColor,
+  static const ColorScheme lightColorScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: AppColors.primaryLight,
-    secondary: AppColors.secondaryLight,
-    surface: Colors.white,
+    primary: AppColorsLight.primary,
     onPrimary: Colors.white,
-    onSecondary: Colors.black,
-    onSurface: Colors.black87,
+    secondary: AppColorsLight.secondary,
+    onSecondary: Colors.white,
+    surface: Colors.white,
+    onSurface: AppColorsLight.textPrimary,
+    error: AppColorsLight.error,
+    onError: Colors.white,
   );
 
   /// Dark Color Scheme
-  static ColorScheme darkColorScheme = ColorScheme.fromSeed(
-    seedColor: seedColor,
+  static const ColorScheme darkColorScheme = ColorScheme(
     brightness: Brightness.dark,
-    primary: AppColors.primaryLight,
-    secondary: AppColors.secondaryLight,
-    surface: const Color(0xFF1E1E1E),
-    onPrimary: Colors.white,
+    primary: AppColorsDark.primary,
+    onPrimary: Colors.black,
+    secondary: AppColorsDark.secondary,
     onSecondary: Colors.white,
-    onSurface: Colors.white70,
+    surface: AppColorsDark.surface,
+    onSurface: AppColorsDark.textPrimary,
+    error: AppColorsDark.error,
+    onError: Colors.black,
   );
 }
