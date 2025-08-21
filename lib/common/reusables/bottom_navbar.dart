@@ -5,8 +5,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:margintop_attendance/common/reusables/app_drawer_wrapper.dart';
 import 'package:margintop_attendance/common/reusables/menu_icon.dart';
 import 'package:margintop_attendance/common/widgets/custom_drawer.dart';
+import 'package:margintop_attendance/screens/Homepage/calendar.dart';
 import 'package:margintop_attendance/screens/Homepage/homepage.dart';
-import 'package:margintop_attendance/screens/Profile/app_settings.dart';
 import 'package:margintop_attendance/utils/providers/index_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -31,8 +31,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> screens = [
     const HomePage(), // index 0
-    const Scaffold(), // index 1
-    const AppSettings(), // index 2
+    const AppCalendar(), // index 1
   ];
 
   final _advancedDrawerController = AdvancedDrawerController();

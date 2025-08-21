@@ -2,13 +2,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_attendance/common/widgets/dropdown.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
 
 class AttendanceReport extends StatefulWidget {
-  const AttendanceReport({
-    super.key,
-  });
+  const AttendanceReport({super.key});
 
   @override
   State<AttendanceReport> createState() => _AttendanceReportState();
@@ -32,9 +31,7 @@ class AttendanceReport extends StatefulWidget {
               fontSize: 14,
             ),
           ),
-          const SizedBox(
-            height: AppSizes.sm,
-          ),
+          const SizedBox(height: AppSizes.sm),
           AutoSizeText(
             count,
             style: TextStyle(
@@ -54,6 +51,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
   Widget build(BuildContext context) {
     final isDarkMode = DeviceUtility.isDarkMode(context);
     final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -70,15 +68,39 @@ class _AttendanceReportState extends State<AttendanceReport> {
             children: [
               AutoSizeText(
                 "Attendance for this Month",
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const Row(
-                children: [
-                  Text("APR", style: TextStyle(fontSize: 16)),
-                  SizedBox(width: 4),
-                  Icon(Icons.arrow_drop_down),
+              CustomMonthDropdown(
+                months: const [
+                  "JAN",
+                  "FEB",
+                  "MAR",
+                  "APR",
+                  "MAY",
+                  "JUN",
+                  "JUL",
+                  "AUG",
+                  "SEP",
+                  "OCT",
+                  "NOV",
+                  "DEC"
                 ],
+                initialMonth: const [
+                  "JAN",
+                  "FEB",
+                  "MAR",
+                  "APR",
+                  "MAY",
+                  "JUN",
+                  "JUL",
+                  "AUG",
+                  "SEP",
+                  "OCT",
+                  "NOV",
+                  "DEC"
+                ][DateTime.now().month - 1], // current month
               ),
             ],
           ),

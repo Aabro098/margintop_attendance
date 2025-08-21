@@ -47,13 +47,16 @@ class _HomePageState extends State<HomePage> {
         showErrorSnackbar("Select valid option.", context: context);
         return;
       }
-      final response =
-          await AttendanceServices().checkIn(context: context, status: status);
+      final response = await AttendanceServices().checkIn(
+        context: context,
+        status: status,
+      );
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
           showSuccessSnackbar(
-              "Check in successfull. Hope you have a wonderful day workmate.",
-              context: context);
+            "Check in successfull. Hope you have a wonderful day workmate.",
+            context: context,
+          );
         } else {
           showErrorSnackbar(response['message'], context: context);
         }
@@ -89,8 +92,10 @@ class _HomePageState extends State<HomePage> {
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
           showSuccessSnackbar(
-              "Check out successfull. Hope you had a wonderful day workmate.",
-              context: context);
+            "Check out successfull. Hope you had a wonderful day workmate.",
+            context: context,
+          );
+          _workController.clear();
         } else {
           showErrorSnackbar(response['message'], context: context);
         }
@@ -110,8 +115,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _absent() async {
     if (_workController.text.trim().isEmpty) {
-      showErrorSnackbar("Your absent reason cannot be empty.",
-          context: context);
+      showErrorSnackbar(
+        "Your absent reason cannot be empty.",
+        context: context,
+      );
       return;
     }
     if (mounted) {
@@ -127,8 +134,10 @@ class _HomePageState extends State<HomePage> {
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
           showErrorSnackbar(
-              "We will miss you dear workmate. Hope to see you soon",
-              context: context);
+            "We will miss you dear workmate. Hope to see you soon",
+            context: context,
+          );
+          _reasonController.clear();
         } else {
           showErrorSnackbar(response['message'], context: context);
         }
@@ -168,11 +177,14 @@ class _HomePageState extends State<HomePage> {
           // Welcome text
           Padding(
             padding: const EdgeInsets.only(
-                left: AppSizes.padding, right: AppSizes.padding),
+              left: AppSizes.padding,
+              right: AppSizes.padding,
+            ),
             child: AutoSizeText(
               "Welcome, Arbin Shrestha",
-              style: theme.textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(
@@ -181,110 +193,120 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   Consumer<AttendanceProvider>(
-                      builder: (context, provider, child) {
-                    return Container(
-                      padding: const EdgeInsets.all(AppSizes.padding),
-                      decoration: BoxDecoration(
-                        color: isDarkMode ? Colors.white10 : Colors.white,
-                        borderRadius: BorderRadius.circular(AppSizes.lg),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: AppSizes.lg,
-                            offset: Offset(0, 4),
-                          )
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          _isLoading
-                              ? const Center(child: LoadingIndicator())
-                              : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    _buildToggleButton(
-                                      text: "Home",
-                                      icon: Iconsax.home_1,
-                                      selected: selected == "Home",
-                                      onTap: () {
-                                        setState(() => selected = "Home");
+                    builder: (context, provider, child) {
+                      return Container(
+                        padding: const EdgeInsets.all(AppSizes.padding),
+                        decoration: BoxDecoration(
+                          color: isDarkMode ? Colors.white10 : Colors.white,
+                          borderRadius: BorderRadius.circular(AppSizes.lg),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: AppSizes.lg,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            _isLoading
+                                ? const Center(child: LoadingIndicator())
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      _buildToggleButton(
+                                        text: "Home",
+                                        icon: Iconsax.home_1,
+                                        selected: selected == "Home",
+                                        onTap: () {
+                                          setState(() => selected = "Home");
+                                        },
+                                        theme: theme,
+                                        isCheckIn: provider.checkIn,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      _buildToggleButton(
+                                        text: "Office",
+                                        icon: Iconsax.building,
+                                        selected: selected == "Office",
+                                        onTap: () {
+                                          setState(() => selected = "Office");
+                                        },
+                                        theme: theme,
+                                        isCheckIn: provider.checkIn,
+                                      ),
+                                    ],
+                                  ),
+                            const SizedBox(height: AppSizes.formHeight),
+                            const RealTimeClock(),
+                            const SizedBox(height: AppSizes.formHeight),
+                            _isLoading
+                                ? const LoadingIndicator()
+                                : SizedBox(
+                                    width: 172,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            provider.checkIn != null
+                                                ? provider.checkOut != null
+                                                    ? Colors.green
+                                                    : Colors.red
+                                                : theme.colorScheme.primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            AppSizes.lg,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        if (provider.checkIn == null) {
+                                          _checkIn();
+                                        } else if (provider.checkIn != null &&
+                                            provider.checkOut == null) {
+                                          final dialog = StylishInputDialog(
+                                            context: context,
+                                            title:
+                                                'Write in short about your day, dear workmate.',
+                                            hintText: 'Write something...',
+                                            controller: _workController,
+                                            onSubmit: () {
+                                              _checkOut();
+                                            },
+                                          );
+
+                                          await dialog.show();
+                                        } else {
+                                          null;
+                                        }
                                       },
-                                      theme: theme,
-                                      isCheckIn: provider.checkIn,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    _buildToggleButton(
-                                      text: "Office",
-                                      icon: Iconsax.building,
-                                      selected: selected == "Office",
-                                      onTap: () {
-                                        setState(() => selected = "Office");
-                                      },
-                                      theme: theme,
-                                      isCheckIn: provider.checkIn,
-                                    ),
-                                  ],
-                                ),
-                          const SizedBox(height: AppSizes.formHeight),
-                          const RealTimeClock(),
-                          const SizedBox(height: AppSizes.formHeight),
-                          _isLoading
-                              ? const LoadingIndicator()
-                              : SizedBox(
-                                  width: 172,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: provider.checkIn != null
-                                          ? Colors.red
-                                          : theme.colorScheme.primary,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(AppSizes.lg),
+                                      child: Text(
+                                        provider.checkIn != null
+                                            ? provider.checkOut != null
+                                                ? "Done"
+                                                : "Check Out"
+                                            : "Check In",
                                       ),
                                     ),
-                                    onPressed: () async {
-                                      if (provider.checkIn == null) {
-                                        _checkIn();
-                                      } else {
-                                        final dialog = StylishInputDialog(
-                                          context: context,
-                                          title:
-                                              'Write in short about your day, dear workmate.',
-                                          hintText: 'Write something...',
-                                          controller: _workController,
-                                          onSubmit: () {
-                                            _checkOut();
-                                          },
-                                        );
-
-                                        await dialog.show();
-                                      }
-                                    },
-                                    child: Text(
-                                      provider.checkIn != null
-                                          ? provider.checkOut != null
-                                              ? "Done"
-                                              : "Check Out"
-                                          : "Check In",
-                                    ),
                                   ),
-                                ),
-                          const SizedBox(height: AppSizes.formHeight),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              TimeInfo(
+                            const SizedBox(height: AppSizes.formHeight),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                TimeInfo(
                                   time: provider.checkIn ?? "--",
-                                  label: "Check In"),
-                              TimeInfo(
+                                  label: "Check In",
+                                ),
+                                TimeInfo(
                                   time: provider.checkOut ?? "--",
-                                  label: "Check Out"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                                  label: "Check Out",
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
 
                   const SizedBox(height: AppSizes.formHeight),
 
@@ -295,46 +317,49 @@ class _HomePageState extends State<HomePage> {
 
                   // Request Button
                   Consumer<AttendanceProvider>(
-                      builder: (context, provider, child) {
-                    return provider.checkIn != null
-                        ? const SizedBox.shrink()
-                        : SizedBox(
-                            width: 172,
-                            child: _isAbsent
-                                ? const Center(
-                                    child: LoadingIndicator(),
-                                  )
-                                : OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
+                    builder: (context, provider, child) {
+                      return provider.checkIn != null
+                          ? const SizedBox.shrink()
+                          : SizedBox(
+                              width: 172,
+                              child: _isAbsent
+                                  ? const Center(child: LoadingIndicator())
+                                  : OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            30,
+                                          ),
+                                        ),
+                                        side: const BorderSide(
+                                          color: Colors.red,
+                                        ),
                                       ),
-                                      side: const BorderSide(color: Colors.red),
-                                    ),
-                                    onPressed: () async {
-                                      final dialog = StylishInputDialog(
-                                        context: context,
-                                        title:
-                                            'Please provide the reason for the leave.',
-                                        hintText: 'Write something...',
-                                        controller: _workController,
-                                        onSubmit: () {
-                                          _absent();
-                                        },
-                                      );
-                                      await dialog.show();
-                                    },
-                                    child: Text(
-                                      "Absent",
-                                      style:
-                                          theme.textTheme.titleLarge?.copyWith(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
+                                      onPressed: () async {
+                                        final dialog = StylishInputDialog(
+                                          context: context,
+                                          title:
+                                              'Please provide the reason for the leave.',
+                                          hintText: 'Write something...',
+                                          controller: _workController,
+                                          onSubmit: () {
+                                            _absent();
+                                          },
+                                        );
+                                        await dialog.show();
+                                      },
+                                      child: Text(
+                                        "Absent",
+                                        style: theme.textTheme.titleLarge
+                                            ?.copyWith(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                          );
-                  }),
+                            );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -359,9 +384,7 @@ class _HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           color: selected ? theme.colorScheme.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(32),
-          border: Border.all(
-            color: theme.colorScheme.primary,
-          ),
+          border: Border.all(color: theme.colorScheme.primary),
         ),
         child: Row(
           children: [
@@ -370,9 +393,7 @@ class _HomePageState extends State<HomePage> {
               color: selected ? Colors.white : theme.colorScheme.primary,
               size: AppSizes.iconSm,
             ),
-            const SizedBox(
-              width: 8,
-            ),
+            const SizedBox(width: 8),
             AutoSizeText(
               text,
               style: theme.textTheme.titleMedium?.copyWith(

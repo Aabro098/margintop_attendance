@@ -20,7 +20,7 @@ class _MenuIconState extends State<MenuIcon> {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
+      padding: const EdgeInsets.fromLTRB(24, 24, 8, 0),
       child: Align(
         alignment: Alignment.topLeft,
         child: Container(
