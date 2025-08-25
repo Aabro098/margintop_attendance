@@ -9,6 +9,7 @@ import 'package:margintop_attendance/common/widgets/attendance_report.dart';
 import 'package:margintop_attendance/common/widgets/clock_widget.dart';
 import 'package:margintop_attendance/common/widgets/heading_title.dart';
 import 'package:margintop_attendance/common/widgets/time_info.dart';
+import 'package:margintop_attendance/screens/Homepage/checkout_details.dart';
 import 'package:margintop_attendance/services/attendance_services.dart';
 import 'package:margintop_attendance/utils/constants/app_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
@@ -209,34 +210,36 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Column(
                           children: [
-                            _isLoading
-                                ? const Center(child: LoadingIndicator())
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      _buildToggleButton(
-                                        text: "Home",
-                                        icon: Iconsax.home_1,
-                                        selected: selected == "Home",
-                                        onTap: () {
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _buildToggleButton(
+                                  text: "Home",
+                                  icon: Iconsax.home_1,
+                                  selected: selected == "Home",
+                                  onTap: _isLoading
+                                      ? null
+                                      : () {
                                           setState(() => selected = "Home");
                                         },
-                                        theme: theme,
-                                        isCheckIn: provider.checkIn,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      _buildToggleButton(
-                                        text: "Office",
-                                        icon: Iconsax.building,
-                                        selected: selected == "Office",
-                                        onTap: () {
+                                  theme: theme,
+                                  isCheckIn: provider.checkIn,
+                                ),
+                                const SizedBox(width: 8),
+                                _buildToggleButton(
+                                  text: "Office",
+                                  icon: Iconsax.building,
+                                  selected: selected == "Office",
+                                  onTap: _isLoading
+                                      ? null
+                                      : () {
                                           setState(() => selected = "Office");
                                         },
-                                        theme: theme,
-                                        isCheckIn: provider.checkIn,
-                                      ),
-                                    ],
-                                  ),
+                                  theme: theme,
+                                  isCheckIn: provider.checkIn,
+                                ),
+                              ],
+                            ),
                             const SizedBox(height: AppSizes.formHeight),
                             const RealTimeClock(),
                             const SizedBox(height: AppSizes.formHeight),
@@ -336,17 +339,24 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        final dialog = StylishInputDialog(
-                                          context: context,
-                                          title:
-                                              'Please provide the reason for the leave.',
-                                          hintText: 'Write something...',
-                                          controller: _workController,
-                                          onSubmit: () {
-                                            _absent();
-                                          },
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CheckoutDetails(),
+                                          ),
                                         );
-                                        await dialog.show();
+                                        // final dialog = StylishInputDialog(
+                                        //   context: context,
+                                        //   title:
+                                        //       'Please provide the reason for the leave.',
+                                        //   hintText: 'Write something...',
+                                        //   controller: _workController,
+                                        //   onSubmit: () {
+                                        //     _absent();
+                                        //   },
+                                        // );
+                                        // await dialog.show();
                                       },
                                       child: Text(
                                         "Absent",
@@ -359,6 +369,9 @@ class _HomePageState extends State<HomePage> {
                                     ),
                             );
                     },
+                  ),
+                  const SizedBox(
+                    height: 64,
                   ),
                 ],
               ),
@@ -374,7 +387,7 @@ class _HomePageState extends State<HomePage> {
     required IconData icon,
     required bool selected,
     required ThemeData theme,
-    required VoidCallback onTap,
+    required VoidCallback? onTap,
     required String? isCheckIn,
   }) {
     return GestureDetector(

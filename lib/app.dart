@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
 import 'package:margintop_attendance/screens/Auth/login.dart';
 import 'package:margintop_attendance/utils/helpers/app_globals.dart';
@@ -49,6 +51,15 @@ class _AppState extends State<App> {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
+          supportedLocales: const [
+            Locale('en'),
+          ],
+          localizationsDelegates: const [
+            FlutterQuillLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           title: 'Margintop Solutions Attendance',
           home: _isLoading
               ? Scaffold(

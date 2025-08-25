@@ -56,7 +56,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Iconsax.home,
               onTap: () {
                 drawerProvider.setSelectedItem('Attendance');
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   SlidePageRoute(
                     page: const BottomNavBar(),
@@ -73,7 +73,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               icon: Iconsax.user,
               onTap: () {
                 drawerProvider.setSelectedItem('Profile');
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   SlidePageRoute(
                     page: const AppSettings(),
