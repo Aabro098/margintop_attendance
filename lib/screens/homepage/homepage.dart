@@ -165,7 +165,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print("Hello");
     final theme = Theme.of(context);
     final isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
