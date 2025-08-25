@@ -8,10 +8,8 @@ import 'package:margintop_attendance/common/widgets/text_field.dart';
 import 'package:margintop_attendance/screens/Auth/change_request.dart';
 import 'package:margintop_attendance/services/user_services.dart';
 import 'package:margintop_attendance/utils/constants/app_strings.dart';
-import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
 import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
 
@@ -85,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final bool isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -98,20 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 12,
-                  ),
                   Center(
-                    child: SizedBox(
-                      height: DeviceUtility.getScreenHeight(context) * 0.3,
-                      width: DeviceUtility.getScreenWidth(context) * 0.8,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: SvgPicture.asset(
-                          AppLogos.verticalLight,
-                          color: AppColorsLight.logoColor,
-                        ),
-                      ),
+                    child: Image.asset(
+                      isDarkMode ? AppLogos.markDark : AppLogos.markWhite,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width * 0.8,
                     ),
                   ),
                   AutoSizeText(
