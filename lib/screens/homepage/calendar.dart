@@ -173,11 +173,12 @@ class _AttendanceCardState extends State<AttendanceCard> {
                           ),
                         ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: AppSizes.xs),
+                      Padding(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: AppSizes.xs),
                         child: Divider(
                           thickness: 2,
-                          color: Colors.grey,
+                          color: Colors.grey.shade300,
                         ),
                       ),
                       Wrap(

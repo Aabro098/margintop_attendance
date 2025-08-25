@@ -1,13 +1,13 @@
 // ignore_for_file: deprecated_member_use
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_attendance/common/widgets/animation_slide.dart';
 import 'package:margintop_attendance/common/widgets/drawer_items.dart';
 import 'package:margintop_attendance/screens/Profile/app_settings.dart';
+import 'package:margintop_attendance/utils/device/device_utility.dart';
 import 'package:provider/provider.dart';
 import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
-import 'package:margintop_attendance/utils/constants/colors_light.dart';
 import 'package:margintop_attendance/utils/constants/image_strings.dart';
 import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:margintop_attendance/utils/providers/drawer_provider.dart';
@@ -24,6 +24,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final drawerProvider = Provider.of<DrawerProvider>(context);
+    final bool isDarkMode = DeviceUtility.isDarkMode(context);
 
     return Padding(
       padding: const EdgeInsets.only(right: AppSizes.sm),
@@ -36,15 +37,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
           mainAxisSize: MainAxisSize.max,
           children: [
             // Company Logo at Top
-            Container(
-              width: 120.0,
-              height: 120.0,
-              margin: const EdgeInsets.only(top: 36.0, bottom: 36.0),
-              child: SvgPicture.asset(
-                AppLogos.markWhite,
-                color: AppColorsLight.logoColor,
-                height: 82,
-                width: 82,
+            Padding(
+              padding: const EdgeInsets.all(AppSizes.sm),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 24.0,
+                    ),
+                    child: Image.asset(
+                      isDarkMode ? AppLogos.markDark : AppLogos.markWhite,
+                      height: 152,
+                      width: 136,
+                    ),
+                  ),
+                  AutoSizeText(
+                    "MarginTop Solutions",
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                ],
               ),
             ),
 

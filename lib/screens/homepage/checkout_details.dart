@@ -15,6 +15,8 @@ class CheckoutDetails extends StatefulWidget {
 
 class _CheckoutDetailsState extends State<CheckoutDetails> {
   final QuillController _controller = QuillController.basic();
+  final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   void _sendToApi() {
     // Get the Delta JSON
@@ -24,6 +26,14 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
     final jsonString = jsonEncode(deltaJson);
 
     debugPrint(jsonString); // For debugging
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -70,11 +80,13 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppSizes.sm),
                     border: Border.all(width: 2, color: Colors.grey)),
-                child: QuillEditor.basic(
+                child: QuillEditor(
                   controller: _controller,
                   config: const QuillEditorConfig(
                     placeholder: "Tell us about your day...",
                   ),
+                  focusNode: _focusNode,
+                  scrollController: _scrollController,
                 ),
               ),
               const SizedBox(
