@@ -16,6 +16,7 @@ import 'package:margintop_attendance/utils/constants/sizes.dart';
 import 'package:margintop_attendance/utils/device/device_utility.dart';
 import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
 import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
+import 'package:margintop_attendance/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,8 +30,13 @@ class _HomePageState extends State<HomePage> {
   String selected = "Home";
   bool _isLoading = false;
   bool _isAbsent = false;
-  final TextEditingController _workController = TextEditingController();
   final TextEditingController _reasonController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getStatus();
+  }
 
   Future<void> _checkIn() async {
     if (mounted) {
@@ -75,47 +81,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _checkOut() async {
-    if (_workController.text.trim().isEmpty) {
-      showErrorSnackbar("Your work details cannot be empty.", context: context);
-      return;
-    }
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    try {
-      final response = await AttendanceServices().checkOut(
-        context: context,
-        workSummary: _workController.text.trim(),
-      );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showSuccessSnackbar(
-            "Check out successfull. Hope you had a wonderful day workmate.",
-            context: context,
-          );
-          _workController.clear();
-        } else {
-          showErrorSnackbar(response['message'], context: context);
-        }
-      } else {
-        showErrorSnackbar(AppStrings.error, context: context);
-      }
-    } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   Future<void> _absent() async {
-    if (_workController.text.trim().isEmpty) {
+    if (_reasonController.text.trim().isEmpty) {
       showErrorSnackbar(
         "Your absent reason cannot be empty.",
         context: context,
@@ -156,9 +123,49 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _getStatus() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    try {
+      final provider = context.read<AttendanceProvider>();
+      final response = await AttendanceServices().getStatus();
+      if (response != null) {
+        if (response['message'] == "Success" && response["status"] == 1) {
+          String? checkIn = response['data']['check_in_time'];
+          String? checkOut = response['data']['check_out_time'];
+
+          if (response['data']['status'] == "absent") {
+            provider.updateStatus(isAbsent: true);
+          }
+          if (checkIn != null) {
+            provider.updateStatus(checkIn: formatToTime(checkIn));
+          }
+
+          if (checkOut != null) {
+            provider.updateStatus(checkOut: formatToTime(checkOut));
+          }
+        } else {
+          showErrorSnackbar(response['message'], context: context);
+        }
+      } else {
+        showErrorSnackbar(AppStrings.error, context: context);
+      }
+    } catch (e) {
+      showErrorSnackbar(AppStrings.error, context: context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
-    _workController.dispose();
     _reasonController.dispose();
     super.dispose();
   }
@@ -181,12 +188,14 @@ class _HomePageState extends State<HomePage> {
               left: AppSizes.padding,
               right: AppSizes.padding,
             ),
-            child: AutoSizeText(
-              "Welcome, Arbin Shrestha",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child: Consumer<UserProvider>(builder: (context, provider, child) {
+              return AutoSizeText(
+                "Welcome, ${provider.name}",
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            }),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -220,7 +229,9 @@ class _HomePageState extends State<HomePage> {
                                   onTap: _isLoading
                                       ? null
                                       : () {
-                                          setState(() => selected = "Home");
+                                          if (mounted) {
+                                            setState(() => selected = "Home");
+                                          }
                                         },
                                   theme: theme,
                                   isCheckIn: provider.checkIn,
@@ -233,7 +244,9 @@ class _HomePageState extends State<HomePage> {
                                   onTap: _isLoading
                                       ? null
                                       : () {
-                                          setState(() => selected = "Office");
+                                          if (mounted) {
+                                            setState(() => selected = "Office");
+                                          }
                                         },
                                   theme: theme,
                                   isCheckIn: provider.checkIn,
@@ -266,18 +279,13 @@ class _HomePageState extends State<HomePage> {
                                           _checkIn();
                                         } else if (provider.checkIn != null &&
                                             provider.checkOut == null) {
-                                          final dialog = StylishInputDialog(
-                                            context: context,
-                                            title:
-                                                'Write in short about your day, dear workmate.',
-                                            hintText: 'Write something...',
-                                            controller: _workController,
-                                            onSubmit: () {
-                                              _checkOut();
-                                            },
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const CheckoutDetails(),
+                                            ),
                                           );
-
-                                          await dialog.show();
                                         } else {
                                           null;
                                         }
@@ -339,24 +347,17 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CheckoutDetails(),
-                                          ),
+                                        final dialog = StylishInputDialog(
+                                          context: context,
+                                          title:
+                                              'Please provide the reason for the leave.',
+                                          hintText: 'Write something...',
+                                          controller: _reasonController,
+                                          onSubmit: () {
+                                            _absent();
+                                          },
                                         );
-                                        // final dialog = StylishInputDialog(
-                                        //   context: context,
-                                        //   title:
-                                        //       'Please provide the reason for the leave.',
-                                        //   hintText: 'Write something...',
-                                        //   controller: _workController,
-                                        //   onSubmit: () {
-                                        //     _absent();
-                                        //   },
-                                        // );
-                                        // await dialog.show();
+                                        await dialog.show();
                                       },
                                       child: Text(
                                         "Absent",

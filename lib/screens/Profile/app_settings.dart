@@ -23,6 +23,7 @@ import 'package:margintop_attendance/utils/device/device_utility.dart';
 import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
 import 'package:margintop_attendance/utils/local_storage/localization_storage.dart';
 import 'package:margintop_attendance/utils/providers/theme.provider.dart';
+import 'package:margintop_attendance/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 //* This file is part of the Nayan Saathi User App for managing the app settings like the language and the theme data
@@ -38,9 +39,6 @@ class _AppSettingsState extends State<AppSettings> {
   File? imageFile;
   bool _isLoading = false;
   late Locale selectedLocale;
-
-  String name = 'Arbin Shrestha';
-  String email = 'arbinstha71@gmail.com';
 
   final _advancedDrawerController = AdvancedDrawerController();
 
@@ -91,12 +89,18 @@ class _AppSettingsState extends State<AppSettings> {
     }
   }
 
-  // label: context.tr('settings_screen_feature'),
+  @override
+  void dispose() {
+    _advancedDrawerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     final isDarkMode = DeviceUtility.isDarkMode(context);
+    final provider = context.read<UserProvider>();
     return AppDrawerWrapper(
       drawer: const CustomDrawer(),
       controller: _advancedDrawerController,
@@ -181,7 +185,7 @@ class _AppSettingsState extends State<AppSettings> {
                     height: AppSizes.md,
                   ),
                   AutoSizeText(
-                    name,
+                    provider.name,
                     style: theme.textTheme.headlineMedium?.copyWith(
                       color: theme.colorScheme.primary,
                       fontSize: 24,
@@ -195,7 +199,7 @@ class _AppSettingsState extends State<AppSettings> {
                   ),
 
                   AutoSizeText(
-                    email,
+                    provider.email,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontSize: 16,
                         ),

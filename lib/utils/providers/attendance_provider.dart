@@ -9,18 +9,15 @@ class AttendanceProvider with ChangeNotifier {
   String? get checkOut => _checkOut;
   bool get isAbsent => _isAbsent;
 
-  void setCheckIn(String? value) {
-    _checkIn = value;
-    notifyListeners();
-  }
+  void updateStatus({
+    String? checkIn,
+    String? checkOut,
+    bool? isAbsent,
+  }) {
+    if (checkIn != null) _checkIn = checkIn;
+    if (checkOut != null) _checkOut = checkOut;
+    if (isAbsent != null) _isAbsent = isAbsent;
 
-  void setCheckOut(String? value) {
-    _checkOut = value;
-    notifyListeners();
-  }
-
-  set absent(bool value) {
-    _isAbsent = value;
     notifyListeners();
   }
 }

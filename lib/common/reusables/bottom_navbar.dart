@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -7,7 +9,10 @@ import 'package:margintop_attendance/common/reusables/menu_icon.dart';
 import 'package:margintop_attendance/common/widgets/custom_drawer.dart';
 import 'package:margintop_attendance/screens/Homepage/calendar.dart';
 import 'package:margintop_attendance/screens/Homepage/homepage.dart';
+import 'package:margintop_attendance/services/user_services.dart';
+import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
 import 'package:margintop_attendance/utils/providers/index_provider.dart';
+import 'package:margintop_attendance/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -35,6 +40,38 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
 
   final _advancedDrawerController = AdvancedDrawerController();
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = context.read<UserProvider>();
+    if (provider.name == "--") {
+      _getUserDetails();
+    }
+  }
+
+  Future<void> _getUserDetails() async {
+    final provider = context.read<UserProvider>();
+    try {
+      final response = await UserServices().userDetails();
+      if (response != null) {
+        if (response['message'] == "Success" && response["status"] == 1) {
+          provider.setUserDetails(
+              name: response['data']['name'], email: response['data']['email']);
+        } else {
+          showErrorSnackbar(response['message'], context: context);
+        }
+      } else {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    _advancedDrawerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
