@@ -2,16 +2,16 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
-import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
-import 'package:margintop_attendance/common/widgets/text_field.dart';
-import 'package:margintop_attendance/screens/Auth/change_request.dart';
-import 'package:margintop_attendance/services/user_services.dart';
-import 'package:margintop_attendance/utils/constants/app_strings.dart';
-import 'package:margintop_attendance/utils/constants/image_strings.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/common/widgets/text_field.dart';
+import 'package:margintop_solutions/screens/Auth/change_request.dart';
+import 'package:margintop_solutions/services/user_services.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/image_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 
 //* The login screen uses the text field data which is a text form field in the common widgets
 class LoginScreen extends StatefulWidget {

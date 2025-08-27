@@ -1,4 +1,4 @@
-name: margintop_attendance
+name: margintop_solutions
 description: "An attendance app for the MarginTop Solutions team."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

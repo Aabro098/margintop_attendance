@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
 
 class AppDrawerWrapper extends StatefulWidget {
   final Widget child;

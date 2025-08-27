@@ -4,15 +4,15 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_attendance/common/reusables/app_drawer_wrapper.dart';
-import 'package:margintop_attendance/common/reusables/menu_icon.dart';
-import 'package:margintop_attendance/common/widgets/custom_drawer.dart';
-import 'package:margintop_attendance/screens/Homepage/calendar.dart';
-import 'package:margintop_attendance/screens/Homepage/homepage.dart';
-import 'package:margintop_attendance/services/user_services.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
-import 'package:margintop_attendance/utils/providers/index_provider.dart';
-import 'package:margintop_attendance/utils/providers/user_provider.dart';
+import 'package:margintop_solutions/common/reusables/app_drawer_wrapper.dart';
+import 'package:margintop_solutions/common/reusables/menu_icon.dart';
+import 'package:margintop_solutions/common/widgets/custom_drawer.dart';
+import 'package:margintop_solutions/screens/Homepage/calendar.dart';
+import 'package:margintop_solutions/screens/Homepage/homepage.dart';
+import 'package:margintop_solutions/services/user_services.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/index_provider.dart';
+import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {

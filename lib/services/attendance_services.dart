@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/helpers/dio_client.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
-import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
+import 'package:margintop_solutions/utils/helpers/dio_client.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
 
 class AttendanceServices {

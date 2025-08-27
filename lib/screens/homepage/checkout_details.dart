@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
-import 'package:margintop_attendance/common/widgets/appbar_back_button.dart';
-import 'package:margintop_attendance/services/attendance_services.dart';
-import 'package:margintop_attendance/utils/constants/app_strings.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
+import 'package:margintop_solutions/services/attendance_services.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 
 class CheckoutDetails extends StatefulWidget {
   const CheckoutDetails({super.key});

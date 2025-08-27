@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/helpers/app_globals.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 
 void showErrorSnackbar(
   String message, {

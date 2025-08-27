@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:margintop_attendance/utils/helpers/dio_client.dart';
+import 'package:margintop_solutions/utils/helpers/dio_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices {

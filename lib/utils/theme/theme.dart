@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/constants/colors_light.dart';
-import 'package:margintop_attendance/utils/theme/color_scheme.dart';
-import 'package:margintop_attendance/utils/theme/custom/app_bar_theme.dart';
-import 'package:margintop_attendance/utils/constants/colors_dark.dart';
-import 'package:margintop_attendance/utils/theme/custom/card_theme.dart';
-import 'package:margintop_attendance/utils/theme/custom/elevated_button_theme.dart';
-import 'package:margintop_attendance/utils/theme/custom/input_decoration_theme.dart';
-import 'package:margintop_attendance/utils/theme/custom/page_transitions_theme.dart';
-import 'package:margintop_attendance/utils/theme/custom/snackbar_theme.dart';
-import 'package:margintop_attendance/utils/theme/custom/text_theme.dart';
+import 'package:margintop_solutions/utils/constants/colors_light.dart';
+import 'package:margintop_solutions/utils/theme/color_scheme.dart';
+import 'package:margintop_solutions/utils/theme/custom/app_bar_theme.dart';
+import 'package:margintop_solutions/utils/constants/colors_dark.dart';
+import 'package:margintop_solutions/utils/theme/custom/card_theme.dart';
+import 'package:margintop_solutions/utils/theme/custom/elevated_button_theme.dart';
+import 'package:margintop_solutions/utils/theme/custom/input_decoration_theme.dart';
+import 'package:margintop_solutions/utils/theme/custom/page_transitions_theme.dart';
+import 'package:margintop_solutions/utils/theme/custom/snackbar_theme.dart';
+import 'package:margintop_solutions/utils/theme/custom/text_theme.dart';
 
 class AppTheme {
   AppTheme._();

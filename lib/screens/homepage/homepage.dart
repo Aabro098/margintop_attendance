@@ -3,20 +3,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
-import 'package:margintop_attendance/common/reusables/text_dialog.dart';
-import 'package:margintop_attendance/common/widgets/attendance_report.dart';
-import 'package:margintop_attendance/common/widgets/clock_widget.dart';
-import 'package:margintop_attendance/common/widgets/heading_title.dart';
-import 'package:margintop_attendance/common/widgets/time_info.dart';
-import 'package:margintop_attendance/screens/Homepage/checkout_details.dart';
-import 'package:margintop_attendance/services/attendance_services.dart';
-import 'package:margintop_attendance/utils/constants/app_strings.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
-import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
-import 'package:margintop_attendance/utils/providers/user_provider.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/common/reusables/text_dialog.dart';
+import 'package:margintop_solutions/common/widgets/attendance_report.dart';
+import 'package:margintop_solutions/common/widgets/clock_widget.dart';
+import 'package:margintop_solutions/common/widgets/heading_title.dart';
+import 'package:margintop_solutions/common/widgets/time_info.dart';
+import 'package:margintop_solutions/screens/Homepage/checkout_details.dart';
+import 'package:margintop_solutions/services/attendance_services.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
+import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

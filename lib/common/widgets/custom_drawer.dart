@@ -2,15 +2,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_attendance/common/widgets/animation_slide.dart';
-import 'package:margintop_attendance/common/widgets/drawer_items.dart';
-import 'package:margintop_attendance/screens/Profile/app_settings.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_solutions/common/widgets/animation_slide.dart';
+import 'package:margintop_solutions/common/widgets/drawer_items.dart';
+import 'package:margintop_solutions/screens/Profile/app_settings.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:provider/provider.dart';
-import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
-import 'package:margintop_attendance/utils/constants/image_strings.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/providers/drawer_provider.dart';
+import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
+import 'package:margintop_solutions/utils/constants/image_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/providers/drawer_provider.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});

@@ -2,9 +2,9 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/common/widgets/dropdown.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_solutions/common/widgets/dropdown.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
 
 class AttendanceReport extends StatefulWidget {
   const AttendanceReport({super.key});
