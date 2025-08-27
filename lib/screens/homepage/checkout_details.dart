@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -10,6 +9,7 @@ import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
 class CheckoutDetails extends StatefulWidget {
   const CheckoutDetails({super.key});
@@ -25,13 +25,17 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
   bool _isLoading = false;
 
   String _getString() {
-    // Get the Delta JSON
-    final deltaJson = _controller.document.toDelta().toJson();
+    // Get document from controller
+    final doc = _controller.document;
 
-    // Convert to string to send in API
-    final jsonString = jsonEncode(deltaJson);
+    // Convert document to Delta
+    final delta = doc.toDelta();
 
-    return jsonString;
+    // Convert Delta to HTML
+    final converter = QuillDeltaToHtmlConverter(delta.toJson());
+    final html = converter.convert();
+
+    return html;
   }
 
   Future<void> _checkOut() async {
