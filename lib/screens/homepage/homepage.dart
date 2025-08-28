@@ -3,7 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/common/reusables/shimmer.dart';
 import 'package:margintop_solutions/common/reusables/text_dialog.dart';
 import 'package:margintop_solutions/common/widgets/attendance_report.dart';
 import 'package:margintop_solutions/common/widgets/clock_widget.dart';
@@ -188,14 +188,16 @@ class _HomePageState extends State<HomePage> {
               left: AppSizes.padding,
               right: AppSizes.padding,
             ),
-            child: Consumer<UserProvider>(builder: (context, provider, child) {
-              return AutoSizeText(
-                "Welcome, ${provider.name}",
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            }),
+            child: Consumer<UserProvider>(
+              builder: (context, provider, child) {
+                return AutoSizeText(
+                  "Welcome, ${provider.name}",
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -257,7 +259,10 @@ class _HomePageState extends State<HomePage> {
                             const RealTimeClock(),
                             const SizedBox(height: AppSizes.formHeight),
                             _isLoading
-                                ? const LoadingIndicator()
+                                ? const ShimmerLoading(
+                                    height: 48,
+                                    width: 172,
+                                  )
                                 : SizedBox(
                                     width: 172,
                                     child: ElevatedButton(
@@ -334,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                           : SizedBox(
                               width: 172,
                               child: _isAbsent
-                                  ? const Center(child: LoadingIndicator())
+                                  ? const ShimmerLoading(height: 48, width: 172)
                                   : OutlinedButton(
                                       style: OutlinedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
@@ -371,9 +376,7 @@ class _HomePageState extends State<HomePage> {
                             );
                     },
                   ),
-                  const SizedBox(
-                    height: 64,
-                  ),
+                  const SizedBox(height: 72),
                 ],
               ),
             ),

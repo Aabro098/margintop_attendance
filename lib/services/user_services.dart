@@ -36,8 +36,6 @@ class UserServices {
 
       final Map<String, dynamic> data = response.data;
 
-      print("The response is $response");
-
       return data;
     } on DioException catch (e) {
       DioClient.checkDioError(e);
