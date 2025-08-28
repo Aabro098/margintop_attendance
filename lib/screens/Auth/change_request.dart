@@ -3,7 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/back_button.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/common/reusables/shimmer.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/services/user_services.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
@@ -111,7 +111,10 @@ class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
                   height: 32,
                 ),
                 _isLoading
-                    ? const LoadingIndicator()
+                    ? const ShimmerLoading(
+                        height: 48,
+                        width: double.infinity,
+                      )
                     : ElevatedButton(
                         onPressed: () {
                           _isLoading ? null : _handleRequest();

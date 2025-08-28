@@ -34,8 +34,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    final provider = context.read<AttendanceProvider>();
     super.initState();
-    _getStatus();
+    provider.isFirst ? _getStatus() : null;
   }
 
   Future<void> _checkIn() async {
@@ -147,6 +148,8 @@ class _HomePageState extends State<HomePage> {
           if (checkOut != null) {
             provider.updateStatus(checkOut: formatToTime(checkOut));
           }
+
+          provider.first = false;
         } else {
           showErrorSnackbar(response['message'], context: context);
         }

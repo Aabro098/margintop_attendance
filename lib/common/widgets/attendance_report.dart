@@ -67,7 +67,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AutoSizeText(
-                "Attendance for this Month",
+                "Check Attendance",
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

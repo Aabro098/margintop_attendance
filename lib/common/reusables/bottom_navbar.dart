@@ -45,7 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void initState() {
     super.initState();
     final provider = context.read<UserProvider>();
-    if (provider.name == "--") {
+    if (provider.name == "...") {
       _getUserDetails();
     }
   }

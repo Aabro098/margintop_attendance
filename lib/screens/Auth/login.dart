@@ -3,7 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/common/reusables/shimmer.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/screens/Auth/change_request.dart';
 import 'package:margintop_solutions/services/user_services.dart';
@@ -162,7 +162,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: AppSizes.md,
                   ),
                   _isLoading
-                      ? const LoadingIndicator()
+                      ? const ShimmerLoading(
+                          height: 48,
+                          width: double.infinity,
+                        )
                       : ElevatedButton(
                           onPressed: () {
                             _isLoading ? null : _handleLogin();
