@@ -19,4 +19,10 @@ class UserProvider extends ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
+
+  void clearUserData() {
+    _name = "...";
+    _email = "...";
+    notifyListeners();
+  }
 }

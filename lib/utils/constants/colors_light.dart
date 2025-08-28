@@ -17,7 +17,7 @@ class AppColorsLight {
   static const Color info = Color(0xFF29B6F6); // bright sky blue
 
   //! === Background / Surface ===
-  static const Color background = Color(0xFFFFFFFF); // clean white
+  static const Color background = Color(0xFFB2DFDB);
   static const Color surface = Color(0xFFF0F4F3); // light minty grey
   static const Color container = Color(0xFFE0F2F1); // very light teal container
 

@@ -22,6 +22,8 @@ import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/local_storage/localization_storage.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
+import 'package:margintop_solutions/utils/providers/drawer_provider.dart';
 import 'package:margintop_solutions/utils/providers/theme.provider.dart';
 import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -60,10 +62,17 @@ class _AppSettingsState extends State<AppSettings> {
       });
     }
     try {
+      final provider = context.read<AttendanceProvider>();
+      final drawerProvider = context.read<DrawerProvider>();
+      final userProvider = context.read<UserProvider>();
       final response = await UserServices().logout();
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
           await clearSharedPreferences();
+          provider.updateStatus(checkIn: null, checkOut: null, isAbsent: false);
+          provider.first = true;
+          drawerProvider.setSelectedItem('Attendance');
+          userProvider.clearUserData();
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -107,181 +116,176 @@ class _AppSettingsState extends State<AppSettings> {
       child: Scaffold(
         body: Stack(
           children: [
-            Positioned.fill(
-              child: Container(
-                color: isDarkMode
-                    ? Colors.transparent
-                    : AppColorsLight.secondaryOpacity.withAlpha(92),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSizes.padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: AppSizes.xl,
+            Padding(
+              padding: const EdgeInsets.all(AppSizes.padding),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: AppSizes.xl,
+                    ),
+                    AutoSizeText(
+                      "Profile",
+                      overflow: TextOverflow.visible,
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        color: AppColorsLight.logoColor,
                       ),
-                      AutoSizeText(
-                        "Profile",
-                        overflow: TextOverflow.visible,
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          color: AppColorsLight.logoColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: AppSizes.lg,
-                      ),
-                      // Profile Row
-                      Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 160,
-                            height: 160,
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppColorsLight.logoColor,
-                                width: 2,
-                              ),
-                            ),
-                            child: CircleAvatar(
-                              radius: 80,
-                              backgroundColor: Colors.grey[200],
-                              backgroundImage: getProfileImage(),
+                    ),
+                    const SizedBox(
+                      height: AppSizes.lg,
+                    ),
+                    // Profile Row
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 160,
+                          height: 160,
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColorsLight.logoColor,
+                              width: 2,
                             ),
                           ),
-                          Positioned(
-                            bottom: 12,
-                            right: 6,
-                            child: GestureDetector(
-                              onTap: () async {
-                                final pickedImage = await FilePicker.platform
-                                    .pickFiles(type: FileType.image);
-                                if (pickedImage != null &&
-                                    pickedImage.files.isNotEmpty) {
-                                  final filePath = pickedImage.files.first.path;
-                                  if (filePath != null) {
-                                    setState(() {
-                                      imageFile = File(filePath);
-                                    });
-                                  }
+                          child: CircleAvatar(
+                            radius: 80,
+                            backgroundColor: Colors.grey[200],
+                            backgroundImage: getProfileImage(),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 12,
+                          right: 6,
+                          child: GestureDetector(
+                            onTap: () async {
+                              final pickedImage = await FilePicker.platform
+                                  .pickFiles(type: FileType.image);
+                              if (pickedImage != null &&
+                                  pickedImage.files.isNotEmpty) {
+                                final filePath = pickedImage.files.first.path;
+                                if (filePath != null) {
+                                  setState(() {
+                                    imageFile = File(filePath);
+                                  });
                                 }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(AppSizes.sm),
-                                decoration: BoxDecoration(
-                                  color: AppColorsLight.logoColor,
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.white, width: 2),
-                                ),
-                                child: const Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.white,
-                                  size: 14,
-                                ),
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(AppSizes.sm),
+                              decoration: BoxDecoration(
+                                color: AppColorsLight.logoColor,
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 14,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: AppSizes.md,
-                      ),
-                      AutoSizeText(
-                        provider.name,
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontSize: 24,
                         ),
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      ],
+                    ),
+                    const SizedBox(
+                      height: AppSizes.md,
+                    ),
+                    AutoSizeText(
+                      provider.name,
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontSize: 24,
                       ),
-                      const SizedBox(
-                        height: AppSizes.xs,
-                      ),
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(
+                      height: AppSizes.xs,
+                    ),
 
-                      AutoSizeText(
-                        provider.email,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontSize: 16,
-                            ),
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                    AutoSizeText(
+                      provider.email,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 16,
+                          ),
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: AppSizes.sm),
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                    const SizedBox(
+                      height: AppSizes.xs,
+                    ),
+                    const ProfileDetails(),
+                    const SizedBox(
+                      height: AppSizes.xs,
+                    ),
+                    Divider(
+                      thickness: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                    const SizedBox(
+                      height: AppSizes.xs,
+                    ),
+                    AutoSizeText(
+                      "Settings",
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontSize: 20,
                       ),
-                      const SizedBox(height: AppSizes.sm),
-                      Divider(
-                        thickness: 1,
-                        color: Colors.grey.shade300,
-                      ),
-                      const SizedBox(
-                        height: AppSizes.xs,
-                      ),
-                      const ProfileDetails(),
-                      const SizedBox(
-                        height: AppSizes.xs,
-                      ),
-                      Divider(
-                        thickness: 1,
-                        color: Colors.grey.shade300,
-                      ),
-                      const SizedBox(
-                        height: AppSizes.xs,
-                      ),
-                      AutoSizeText(
-                        "Settings",
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontSize: 20,
-                        ),
-                        softWrap: true,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: AppSizes.sm),
-                      SettingItem(
-                        icon: Iconsax.sun_14,
-                        label: isDarkMode
-                            ? "Change to Light Theme"
-                            : "Change to Dark Theme",
-                        onTap: () {
-                          isDarkMode
-                              ? themeProvider.setTheme(ThemeMode.light)
-                              : themeProvider.setTheme(ThemeMode.dark);
-                        },
-                      ),
-                      SettingItem(
-                        icon: Icons.change_circle_outlined,
-                        label: "Change Password",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ChangePassword(),
-                            ),
-                          );
-                        },
-                        showArrow: true,
-                      ),
-                      _isLoading
-                          ? const LoadingAnimation(
-                              height: 100,
-                              width: double.infinity,
-                            )
-                          : SettingItem(
-                              icon: Iconsax.logout,
-                              label: "Logout",
-                              onTap: () {
-                                _isLoading ? null : _logout();
-                              },
-                              showArrow: true,
-                            ),
-                    ],
-                  ),
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: AppSizes.sm),
+                    SettingItem(
+                      icon: Iconsax.sun_14,
+                      label: isDarkMode
+                          ? "Change to Light Theme"
+                          : "Change to Dark Theme",
+                      onTap: () {
+                        isDarkMode
+                            ? themeProvider.setTheme(ThemeMode.light)
+                            : themeProvider.setTheme(ThemeMode.dark);
+                      },
+                    ),
+                    SettingItem(
+                      icon: Icons.change_circle_outlined,
+                      label: "Change Password",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangePassword(),
+                          ),
+                        );
+                      },
+                      showArrow: true,
+                    ),
+                    _isLoading
+                        ? const LoadingAnimation(
+                            height: 100,
+                            width: double.infinity,
+                          )
+                        : SettingItem(
+                            icon: Iconsax.logout,
+                            label: "Logout",
+                            onTap: () {
+                              _isLoading ? null : _logout();
+                            },
+                            showArrow: true,
+                          ),
+                  ],
                 ),
               ),
             ),

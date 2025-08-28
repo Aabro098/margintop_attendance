@@ -46,11 +46,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
     super.initState();
     final provider = context.read<UserProvider>();
     if (provider.name == "...") {
-      _getUserDetails();
+      getUserDetails();
     }
   }
 
-  Future<void> _getUserDetails() async {
+  Future<void> getUserDetails() async {
     final provider = context.read<UserProvider>();
     try {
       final response = await UserServices().userDetails();

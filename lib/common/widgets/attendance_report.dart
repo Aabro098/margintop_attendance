@@ -14,8 +14,7 @@ class AttendanceReport extends StatefulWidget {
 
   static Widget _buildAttendanceCard(String title, String count, Color color) {
     return Container(
-      width: 90,
-      padding: const EdgeInsets.all(AppSizes.md),
+      padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
         color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(AppSizes.sm),
@@ -106,22 +105,34 @@ class _AttendanceReportState extends State<AttendanceReport> {
           ),
           const SizedBox(height: AppSizes.formHeight),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AttendanceReport._buildAttendanceCard(
-                "Present",
-                "13",
-                Colors.green,
+              Expanded(
+                child: AttendanceReport._buildAttendanceCard(
+                  "Present",
+                  "13",
+                  Colors.green,
+                ),
               ),
-              AttendanceReport._buildAttendanceCard(
-                "Absent",
-                "02",
-                Colors.red,
+              const SizedBox(
+                width: AppSizes.sm,
               ),
-              AttendanceReport._buildAttendanceCard(
-                "Work Hours",
-                "04",
-                Colors.orange,
+              Expanded(
+                child: AttendanceReport._buildAttendanceCard(
+                  "Absent",
+                  "02",
+                  Colors.red,
+                ),
+              ),
+              const SizedBox(
+                width: AppSizes.sm,
+              ),
+              Expanded(
+                child: AttendanceReport._buildAttendanceCard(
+                  "Work Hour",
+                  "04",
+                  Colors.orange,
+                ),
               ),
             ],
           ),

@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   String selected = "Home";
   bool _isLoading = false;
   bool _isAbsent = false;
+  bool _networkError = false;
   final TextEditingController _reasonController = TextEditingController();
 
   @override
@@ -138,6 +139,11 @@ class _HomePageState extends State<HomePage> {
       final response = await AttendanceServices().getStatus();
       if (response != null) {
         if (response['message'] == "Success" && response["status"] == 1) {
+          if (mounted) {
+            setState(() {
+              _networkError = false;
+            });
+          }
           String? checkIn = response['data']['check_in_time'];
           String? checkOut = response['data']['check_out_time'];
           if (response['data']['status'] == "absent") {
@@ -156,9 +162,19 @@ class _HomePageState extends State<HomePage> {
           showErrorSnackbar(response['message'], context: context);
         }
       } else {
+        if (mounted) {
+          setState(() {
+            _networkError = true;
+          });
+        }
         showErrorSnackbar(AppStrings.error, context: context);
       }
     } catch (e) {
+      if (mounted) {
+        setState(() {
+          _networkError = true;
+        });
+      }
       showErrorSnackbar(AppStrings.error, context: context);
     } finally {
       if (mounted) {
@@ -180,9 +196,6 @@ class _HomePageState extends State<HomePage> {
     final theme = Theme.of(context);
     final isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
-      backgroundColor: isDarkMode
-          ? Colors.transparent
-          : AppColorsLight.secondaryOpacity.withAlpha(92),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -203,6 +216,9 @@ class _HomePageState extends State<HomePage> {
                     "Welcome, ${provider.name} !",
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: isDarkMode
+                          ? theme.colorScheme.primary
+                          : AppColorsLight.logoColor,
                     ),
                   ),
                 );
@@ -229,120 +245,136 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        child: provider.isAbsent
-                            ? Lottie.asset(
-                                AppLogos.sadRobot,
-                                repeat: true,
-                                height: 160,
-                                width: double.infinity,
+                        child: _networkError
+                            ? Center(
+                                child: IconButton(
+                                  onPressed: () {
+                                    _getStatus();
+                                  },
+                                  icon: const Icon(Iconsax.refresh),
+                                ),
                               )
-                            : Column(
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
+                            : provider.isAbsent
+                                ? Lottie.asset(
+                                    AppLogos.sadRobot,
+                                    repeat: true,
+                                    height: 160,
+                                    width: double.infinity,
+                                  )
+                                : Column(
                                     children: [
-                                      _buildToggleButton(
-                                        text: "Home",
-                                        icon: Iconsax.home_1,
-                                        selected: selected == "Home",
-                                        onTap: _isLoading
-                                            ? null
-                                            : () {
-                                                if (mounted) {
-                                                  setState(
-                                                      () => selected = "Home");
-                                                }
-                                              },
-                                        theme: theme,
-                                        isCheckIn: provider.checkIn,
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          _buildToggleButton(
+                                            text: "Home",
+                                            icon: Iconsax.home_1,
+                                            selected: selected == "Home",
+                                            onTap: _isLoading
+                                                ? null
+                                                : () {
+                                                    if (mounted) {
+                                                      setState(() =>
+                                                          selected = "Home");
+                                                    }
+                                                  },
+                                            theme: theme,
+                                            isCheckIn: provider.checkIn,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          _buildToggleButton(
+                                            text: "Office",
+                                            icon: Iconsax.building,
+                                            selected: selected == "Office",
+                                            onTap: _isLoading
+                                                ? null
+                                                : () {
+                                                    if (mounted) {
+                                                      setState(() =>
+                                                          selected = "Office");
+                                                    }
+                                                  },
+                                            theme: theme,
+                                            isCheckIn: provider.checkIn,
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(width: 8),
-                                      _buildToggleButton(
-                                        text: "Office",
-                                        icon: Iconsax.building,
-                                        selected: selected == "Office",
-                                        onTap: _isLoading
-                                            ? null
-                                            : () {
-                                                if (mounted) {
-                                                  setState(() =>
-                                                      selected = "Office");
-                                                }
-                                              },
-                                        theme: theme,
-                                        isCheckIn: provider.checkIn,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: AppSizes.formHeight),
-                                  const RealTimeClock(),
-                                  const SizedBox(height: AppSizes.formHeight),
-                                  _isLoading
-                                      ? const ShimmerLoading(
-                                          height: 48,
-                                          width: 172,
-                                        )
-                                      : SizedBox(
-                                          width: 172,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: provider
-                                                          .checkIn !=
-                                                      null
-                                                  ? provider.checkOut != null
-                                                      ? Colors.green
-                                                      : Colors.red
-                                                  : theme.colorScheme.primary,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  AppSizes.lg,
+                                      const SizedBox(
+                                          height: AppSizes.formHeight),
+                                      const RealTimeClock(),
+                                      const SizedBox(
+                                          height: AppSizes.formHeight),
+                                      _isLoading
+                                          ? const ShimmerLoading(
+                                              height: 48,
+                                              width: 172,
+                                            )
+                                          : SizedBox(
+                                              width: 172,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      provider.checkIn != null
+                                                          ? provider.checkOut !=
+                                                                  null
+                                                              ? Colors.green
+                                                              : Colors.red
+                                                          : theme.colorScheme
+                                                              .primary,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      AppSizes.lg,
+                                                    ),
+                                                  ),
+                                                ),
+                                                onPressed: () async {
+                                                  if (provider.checkIn ==
+                                                      null) {
+                                                    _checkIn();
+                                                  } else if (provider.checkIn !=
+                                                          null &&
+                                                      provider.checkOut ==
+                                                          null) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const CheckoutDetails(),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    null;
+                                                  }
+                                                },
+                                                child: Text(
+                                                  provider.checkIn != null
+                                                      ? provider.checkOut !=
+                                                              null
+                                                          ? "Done"
+                                                          : "Check Out"
+                                                      : "Check In",
                                                 ),
                                               ),
                                             ),
-                                            onPressed: () async {
-                                              if (provider.checkIn == null) {
-                                                _checkIn();
-                                              } else if (provider.checkIn !=
-                                                      null &&
-                                                  provider.checkOut == null) {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const CheckoutDetails(),
-                                                  ),
-                                                );
-                                              } else {
-                                                null;
-                                              }
-                                            },
-                                            child: Text(
-                                              provider.checkIn != null
-                                                  ? provider.checkOut != null
-                                                      ? "Done"
-                                                      : "Check Out"
-                                                  : "Check In",
-                                            ),
+                                      const SizedBox(
+                                          height: AppSizes.formHeight),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          TimeInfo(
+                                            time: provider.checkIn ?? "--",
+                                            label: "Check In",
                                           ),
-                                        ),
-                                  const SizedBox(height: AppSizes.formHeight),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      TimeInfo(
-                                        time: provider.checkIn ?? "--",
-                                        label: "Check In",
-                                      ),
-                                      TimeInfo(
-                                        time: provider.checkOut ?? "--",
-                                        label: "Check Out",
+                                          TimeInfo(
+                                            time: provider.checkOut ?? "--",
+                                            label: "Check Out",
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
                       );
                     },
                   ),
@@ -421,7 +453,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
           color: selected ? theme.colorScheme.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(color: theme.colorScheme.primary),
         ),
         child: Row(
