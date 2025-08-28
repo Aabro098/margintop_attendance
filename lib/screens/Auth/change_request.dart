@@ -68,6 +68,7 @@ class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
 
   @override
   Widget build(BuildContext context) {
+    // final bool isDarkMode = DeviceUtility.isDarkMode(context);
     final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(

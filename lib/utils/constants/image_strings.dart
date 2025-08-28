@@ -7,4 +7,7 @@ class AppLogos {
 
   // Paper plane animation
   static const String paperPlane = "assets/animations/paper_plane.json";
+
+  // Sad Robot animation
+  static const String sadRobot = "assets/animations/sad_robot.json";
 }

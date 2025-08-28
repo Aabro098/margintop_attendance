@@ -1,43 +1,42 @@
 // ignore_for_file: public_member_api_docs
-
 import 'package:flutter/material.dart';
 
 class AppColorsLight {
   AppColorsLight._();
 
   //! === Primary Brand Colors ===
-  static const Color primary = Color(0xFF007E6E);
-  static const Color secondary = Color(0xFF00594E);
-  static const Color primaryDisabled = Color(0xFFE5E5E5);
+  static const Color primary = Color(0xFF26A69A); // fresh mint teal
+  static const Color secondary = Color(0xFF00796B); // darker teal accent
+  static const Color primaryDisabled = Color(0xFFE0E0E0); // light grey disabled
 
   //! === Secondary Colors ===
-  static const Color secondaryOpacity = Color(0x2B948685); // 53% opacity
-  static const Color secondaryClicked = Color(0xCC00594E); // 80% opacity
+  static const Color secondaryOpacity = Color(0x8026A69A); // 50% opacity
+  static const Color secondaryClicked = Color(0xCC00796B); // 80% opacity
 
   //! === Info Button ===
-  static const Color info = Color(0xFF1E99DC);
+  static const Color info = Color(0xFF29B6F6); // bright sky blue
 
   //! === Background / Surface ===
-  static const Color background = Color(0xFFFFFFFF);
-  static const Color surface = Color(0x1A111111); // 10% opacity
-  static const Color container = Color(0x52E0E6E6); // 32% opacity
+  static const Color background = Color(0xFFFFFFFF); // clean white
+  static const Color surface = Color(0xFFF0F4F3); // light minty grey
+  static const Color container = Color(0xFFE0F2F1); // very light teal container
 
   //! === Tile / Hover / Selector ===
-  static const Color tile = Color(0x14007E6E); // 8% opacity
+  static const Color tile = Color(0x14007E6E); // subtle teal hover
 
   //! === Pills ===
-  static const Color pillBackground = Color(0x0F007E6E); // 6% opacity
-  static const Color pillText = Color(0xFF007E6E);
+  static const Color pillBackground = Color(0x0F26A69A); // soft mint overlay
+  static const Color pillText = Color(0xFF26A69A); // mint text
 
   //! === Error ===
-  static const Color error = Color(0xFFCF0124);
+  static const Color error = Color(0xFFB00020); // modern red
 
   //! === Text Colors ===
-  static const Color textPrimary = Color(0xFF111111);
-  static const Color textSecondary = Color(0x99111111); // 60% opacity
-  static const Color textTertiary = Color(0x73111111); // 45% opacity
-  static const Color textQuaternary = Color(0xA6111111);
+  static const Color textPrimary = Color(0xFF212121); // dark text
+  static const Color textSecondary = Color(0x99121212); // 60% opacity
+  static const Color textTertiary = Color(0x73121212); // 45% opacity
+  static const Color textQuaternary = Color(0xA6212121); // subtle dark
 
-  // logo color
-  static const Color logoColor = Color(0xFF9C8CC4);
+  //! === Logo / Accent ===
+  static const Color logoColor = Color(0xFF26A69A); // mint teal for brand
 }

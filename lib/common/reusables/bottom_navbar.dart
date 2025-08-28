@@ -96,8 +96,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
               child: CurvedNavigationBar(
                 backgroundColor: Colors.transparent,
                 animationDuration: const Duration(milliseconds: 300),
-                color: theme.colorScheme.primary,
-                height: 65,
+                color: theme.colorScheme.secondary,
+                height: 48,
                 index: selectedIndex,
                 items: <Widget>[
                   BottomNavBar._buildNavItem(

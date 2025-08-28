@@ -17,7 +17,7 @@ class AttendanceReport extends StatefulWidget {
       width: 90,
       padding: const EdgeInsets.all(AppSizes.md),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(AppSizes.sm),
       ),
       child: Column(
@@ -55,7 +55,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.white12 : Colors.white,
+        color: isDarkMode ? Colors.white10 : Colors.white30,
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 12, offset: Offset(0, 4))

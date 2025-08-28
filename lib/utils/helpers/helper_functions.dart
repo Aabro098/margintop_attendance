@@ -49,7 +49,7 @@ void showSuccessSnackbar(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Iconsax.tick_circle1, color: Colors.white),
+            const Icon(Iconsax.tick_circle, color: Colors.white),
             const SizedBox(width: 8),
             Expanded(
               child: AutoSizeText(

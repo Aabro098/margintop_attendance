@@ -71,6 +71,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
+    // final bool isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Change Password"),

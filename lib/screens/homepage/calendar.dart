@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:margintop_solutions/screens/Homepage/details_screen.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AppCalendar extends StatefulWidget {
@@ -40,7 +41,11 @@ class _AppCalendarState extends State<AppCalendar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
+      backgroundColor: isDarkMode
+          ? Colors.transparent
+          : AppColorsLight.secondaryOpacity.withAlpha(92),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.padding),

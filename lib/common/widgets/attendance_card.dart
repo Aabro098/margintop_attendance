@@ -54,7 +54,7 @@ class _AttendanceCardState extends State<AttendanceCard> {
             const Spacer(),
             Container(
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: theme.colorScheme.secondary,
                 borderRadius: BorderRadius.circular(AppSizes.md),
               ),
               padding: const EdgeInsets.symmetric(

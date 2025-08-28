@@ -60,7 +60,7 @@ class _AppState extends State<App> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          title: 'Margintop Solutions Attendance',
+          title: 'Margintop Solutions',
           home: _isLoading
               ? Scaffold(
                   body: Center(

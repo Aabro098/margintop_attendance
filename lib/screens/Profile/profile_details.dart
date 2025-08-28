@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
-import 'package:margintop_solutions/utils/device/device_utility.dart';
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({
@@ -40,18 +39,11 @@ class _ProfileDetailsState extends State<ProfileDetails> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = DeviceUtility.isDarkMode(context);
 
     return Container(
       padding: const EdgeInsets.all(AppSizes.padding),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.white10 : Colors.white,
-        boxShadow: const [
-          BoxShadow(
-              color: Colors.black12,
-              blurRadius: AppSizes.lg,
-              offset: Offset(0, 4))
-        ],
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(
           AppSizes.md,
         ),
