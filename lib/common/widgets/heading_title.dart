@@ -52,7 +52,7 @@ class _HeadingTitleState extends State<HeadingTitle> {
               color: Colors.white,
             ),
             textAlign: TextAlign.center,
-          ),
+          )
         ],
       ),
     );

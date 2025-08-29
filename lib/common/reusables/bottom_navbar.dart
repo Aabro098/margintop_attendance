@@ -8,6 +8,7 @@ import 'package:margintop_solutions/common/reusables/app_drawer_wrapper.dart';
 import 'package:margintop_solutions/common/reusables/menu_icon.dart';
 import 'package:margintop_solutions/common/widgets/custom_drawer.dart';
 import 'package:margintop_solutions/screens/Blog/main_blog.dart';
+import 'package:margintop_solutions/screens/Blog/your_blog.dart';
 import 'package:margintop_solutions/screens/Homepage/calendar.dart';
 import 'package:margintop_solutions/screens/Homepage/homepage.dart';
 import 'package:margintop_solutions/services/user_services.dart';
@@ -44,7 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   final List<Widget> blogs = [
     const MainBlog(), // index 0
-    const Scaffold(),
+    const YourBlog(), // index 1
   ];
 
   final _advancedDrawerController = AdvancedDrawerController();
@@ -53,6 +54,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void initState() {
     super.initState();
     final provider = context.read<UserProvider>();
+    final indexProvider = context.read<IndexProvider>();
+    indexProvider.setIndex(0);
     if (provider.name == "...") {
       getUserDetails();
     }

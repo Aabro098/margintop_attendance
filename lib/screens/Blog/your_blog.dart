@@ -4,14 +4,14 @@ import 'package:margintop_solutions/screens/Blog/blog_card.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 
-class MainBlog extends StatefulWidget {
-  const MainBlog({super.key});
+class YourBlog extends StatefulWidget {
+  const YourBlog({super.key});
 
   @override
-  State<MainBlog> createState() => _MainBlogState();
+  State<YourBlog> createState() => _YourBlogState();
 }
 
-class _MainBlogState extends State<MainBlog> {
+class _YourBlogState extends State<YourBlog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -25,7 +25,7 @@ class _MainBlogState extends State<MainBlog> {
             const SizedBox(height: AppSizes.xl),
             Center(
               child: AutoSizeText(
-                "Blog",
+                "Your Blogs",
                 overflow: TextOverflow.visible,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   color: AppColorsLight.logoColor,
@@ -42,18 +42,29 @@ class _MainBlogState extends State<MainBlog> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.only(
-                      bottom: index == 1
-                          ? 62
-                          : AppSizes.md, // extra space for last item
+                      bottom: index == 1 ? 62 : AppSizes.md,
                     ),
                     child: const BlogCard(
-                      title: 'blog',
+                      title: 'pending',
                     ),
                   );
                 },
               ),
             )
           ],
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 68.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {},
+          backgroundColor: theme.colorScheme.secondary,
+          label: AutoSizeText(
+            "Add Blog",
+            style: theme.textTheme.titleMedium
+                ?.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
+          ),
+          icon: const Icon(Icons.add),
         ),
       ),
     );

@@ -6,7 +6,8 @@ import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class BlogCard extends StatefulWidget {
-  const BlogCard({super.key});
+  const BlogCard({super.key, required this.title});
+  final String title;
 
   @override
   State<BlogCard> createState() => _BlogCardState();
@@ -59,6 +60,7 @@ class _BlogCardState extends State<BlogCard> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.all(2),
@@ -79,10 +81,23 @@ class _BlogCardState extends State<BlogCard> {
                 ),
               ),
               const SizedBox(width: AppSizes.sm),
-              AutoSizeText(
-                "Arbin Shrestha",
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    "Arbin Shrestha",
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  widget.title == "pending"
+                      ? AutoSizeText(
+                          "Pending",
+                          style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold, color: Colors.green),
+                        )
+                      : const SizedBox.shrink(),
+                ],
               ),
             ],
           ),

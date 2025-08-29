@@ -253,8 +253,8 @@ class _HomePageState extends State<HomePage> {
                           child: _networkError
                               ? Center(
                                   child: IconButton(
-                                    onPressed: () {
-                                      _getStatus();
+                                    onPressed: () async {
+                                      await _getStatus();
                                     },
                                     icon: const Icon(Iconsax.refresh),
                                   ),
@@ -397,7 +397,14 @@ class _HomePageState extends State<HomePage> {
                     Consumer<AttendanceProvider>(
                       builder: (context, provider, child) {
                         return provider.checkIn != null || provider.isAbsent
-                            ? const SizedBox.shrink()
+                            ? AutoSizeText(
+                                "Hope to see you soon at work dear workmate !",
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
+                              )
                             : SizedBox(
                                 width: 172,
                                 child: _isAbsent
