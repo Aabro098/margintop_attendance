@@ -118,9 +118,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 );
               },
             ),
+            const Spacer(),
           ],
         ),
       ),
     );
   }
 }
+
+
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: AppSizes.padding),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       IconButton(
+            //         icon: const FaIcon(FontAwesomeIcons.facebook),
+            //         color: Colors.blue.shade800,
+            //         onPressed: () {},
+            //       ),
+            //       IconButton(
+            //         icon: const FaIcon(FontAwesomeIcons.instagram),
+            //         color: Colors.pinkAccent,
+            //         onPressed: () {},
+            //       ),
+            //       IconButton(
+            //         icon: const FaIcon(FontAwesomeIcons.linkedin),
+            //         color: Colors.blueAccent.shade700,
+            //         onPressed: () {},
+            //       ),
+            //     ],
+            //   ),
+            // )

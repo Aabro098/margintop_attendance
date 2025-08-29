@@ -53,12 +53,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   void initState() {
     super.initState();
-    final provider = context.read<UserProvider>();
-    final indexProvider = context.read<IndexProvider>();
-    indexProvider.setIndex(0);
-    if (provider.name == "...") {
-      getUserDetails();
-    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<UserProvider>();
+      final indexProvider = context.read<IndexProvider>();
+      indexProvider.setIndex(0);
+      if (provider.name == "...") {
+        getUserDetails();
+      }
+    });
   }
 
   Future<void> getUserDetails() async {

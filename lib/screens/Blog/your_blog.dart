@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:margintop_solutions/screens/Blog/add_blog.dart';
 import 'package:margintop_solutions/screens/Blog/blog_card.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
@@ -57,14 +59,23 @@ class _YourBlogState extends State<YourBlog> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 68.0),
         child: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return const AddBlog();
+              },
+            ));
+          },
           backgroundColor: theme.colorScheme.secondary,
           label: AutoSizeText(
             "Add Blog",
             style: theme.textTheme.titleMedium
                 ?.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
           ),
-          icon: const Icon(Icons.add),
+          icon: const Icon(
+            Iconsax.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );
