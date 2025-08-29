@@ -10,9 +10,9 @@ class AppElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColorsLight.secondary,
       foregroundColor: Colors.white, // Text/Icon color
-      minimumSize: const Size(double.infinity, 48),
+      minimumSize: const Size(double.infinity, 42),
       textStyle: AppTypography.lightTextTheme.titleLarge,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 1,
     ),
@@ -21,9 +21,9 @@ class AppElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColorsDark.secondary,
       foregroundColor: Colors.white, // Dark surface for contrast
-      minimumSize: const Size(double.infinity, 48),
+      minimumSize: const Size(double.infinity, 42),
       textStyle: AppTypography.lightTextTheme.titleLarge,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 1,
     ),

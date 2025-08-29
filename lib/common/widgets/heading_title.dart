@@ -28,20 +28,30 @@ class _HeadingTitleState extends State<HeadingTitle> {
       child: Column(
         children: [
           const SizedBox(
-            height: AppSizes.xl,
+            height: AppSizes.lg,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 48.0),
-            child: AutoSizeText(
-              "MarginTop Solutions",
-              maxLines: null, // Allow unlimited lines
-              softWrap: true, // Enable text wrapping
-              overflow: TextOverflow.visible, // Show all text
-              style: theme.textTheme.headlineLarge?.copyWith(
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+          AutoSizeText(
+            "MarginTop Solutions",
+            maxLines: null, // Allow unlimited lines
+            softWrap: true, // Enable text wrapping
+            overflow: TextOverflow.visible, // Show all text
+            style: theme.textTheme.headlineLarge?.copyWith(
+              color: Colors.white,
             ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(
+            height: AppSizes.sm,
+          ),
+          AutoSizeText(
+            "Diamond Marg, Lalitpur 44600",
+            maxLines: null, // Allow unlimited lines
+            softWrap: true, // Enable text wrapping
+            overflow: TextOverflow.visible, // Show all text
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

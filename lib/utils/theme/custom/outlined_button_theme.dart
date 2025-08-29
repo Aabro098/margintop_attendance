@@ -10,8 +10,8 @@ class AppOutlinedButtonTheme {
     style: OutlinedButton.styleFrom(
       foregroundColor: AppColorsLight.primary,
       textStyle: AppTypography.lightTextTheme.titleLarge,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      minimumSize: const Size(double.infinity, 48),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      minimumSize: const Size(double.infinity, 42),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8), // Less circular
       ),
@@ -26,8 +26,8 @@ class AppOutlinedButtonTheme {
     style: OutlinedButton.styleFrom(
       textStyle: AppTypography.lightTextTheme.titleLarge,
       foregroundColor: AppColorsDark.primary,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      minimumSize: const Size(double.infinity, 48),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      minimumSize: const Size(double.infinity, 42),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8), // Match light theme
       ),

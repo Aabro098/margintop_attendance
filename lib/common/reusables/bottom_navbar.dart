@@ -97,7 +97,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 backgroundColor: Colors.transparent,
                 animationDuration: const Duration(milliseconds: 300),
                 color: theme.colorScheme.secondary,
-                height: 48,
+                height: 56,
                 index: selectedIndex,
                 items: <Widget>[
                   BottomNavBar._buildNavItem(

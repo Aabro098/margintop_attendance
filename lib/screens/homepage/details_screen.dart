@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/loading_animation.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/common/widgets/attendance_card.dart';
-import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
-import 'package:margintop_solutions/utils/device/device_utility.dart';
 
 class AttendanceDetails extends StatefulWidget {
   final DateTime date;
@@ -36,42 +34,35 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Attendance Details"),
         leading: const AppbarBackButton(),
       ),
-      body: Container(
-        width: double.infinity,
-        color: isDarkMode
-            ? Colors.transparent
-            : AppColorsLight.secondaryOpacity.withAlpha(92),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.padding),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              AttendanceCard(
-                date: widget.date,
-                attendanceData: widget.attendanceData,
-              ),
-              const SizedBox(height: AppSizes.md),
-              _isLoading
-                  ? const LoadingAnimation(
-                      height: 120,
-                      width: double.infinity,
-                    )
-                  : const Text(
-                      "✅ Data Loaded!",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSizes.padding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            AttendanceCard(
+              date: widget.date,
+              attendanceData: widget.attendanceData,
+            ),
+            const SizedBox(height: AppSizes.md),
+            _isLoading
+                ? const LoadingAnimation(
+                    height: 120,
+                    width: double.infinity,
+                  )
+                : const Text(
+                    "✅ Data Loaded!",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                     ),
-            ],
-          ),
+                  ),
+          ],
         ),
       ),
     );

@@ -5,7 +5,7 @@ import 'package:margintop_solutions/utils/theme/custom/text_theme.dart';
 
 class AppAppBarTheme {
   static AppBarTheme lightTheme = AppBarTheme(
-    backgroundColor: AppColorsLight.primary,
+    backgroundColor: AppColorsLight.secondary,
     foregroundColor: Colors.white,
     titleTextStyle:
         AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),
@@ -16,7 +16,7 @@ class AppAppBarTheme {
   );
 
   static AppBarTheme darkTheme = AppBarTheme(
-    backgroundColor: AppColorsDark.primary,
+    backgroundColor: AppColorsDark.secondary,
     foregroundColor: Colors.white,
     titleTextStyle:
         AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),

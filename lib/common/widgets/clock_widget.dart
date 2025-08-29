@@ -69,7 +69,10 @@ class RealTimeClockState extends State<RealTimeClock> {
   Widget build(BuildContext context) {
     return AutoSizeText(
       _currentTime,
-      style: Theme.of(context).textTheme.headlineMedium,
+      style: Theme.of(context)
+          .textTheme
+          .headlineSmall
+          ?.copyWith(fontWeight: FontWeight.w600),
       maxLines: 1,
     );
   }
