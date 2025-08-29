@@ -56,6 +56,7 @@ dependencies:
   vsc_quill_delta_to_html: ^1.0.5
   shimmer: ^3.0.0
   lottie: ^3.3.1
+  flutter_html: ^3.0.0
 
 
 dev_dependencies:
@@ -80,6 +81,7 @@ flutter:
     - assets/fonts/
     - assets/logos/
     - assets/animations/
+    - assets/blog_sample.html
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

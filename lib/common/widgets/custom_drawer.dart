@@ -76,7 +76,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 Navigator.pushReplacement(
                   context,
                   SlidePageRoute(
-                    page: const BottomNavBar(),
+                    page: const BottomNavBar(
+                      title: 'Home',
+                    ),
+                  ),
+                );
+              },
+            ),
+
+            DrawerItems(
+              drawerProvider: drawerProvider,
+              theme: theme,
+              label: 'Blog',
+              icon: Iconsax.activity,
+              onTap: () {
+                drawerProvider.setSelectedItem('Blog');
+                Navigator.pushReplacement(
+                  context,
+                  SlidePageRoute(
+                    page: const BottomNavBar(
+                      title: 'Blog',
+                    ),
                   ),
                 );
               },

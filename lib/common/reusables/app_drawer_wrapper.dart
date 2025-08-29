@@ -34,7 +34,7 @@ class _AppDrawerWrapperState extends State<AppDrawerWrapper> {
           gradient: LinearGradient(
             colors: [
               theme.colorScheme.primary,
-              isDarkMode ? Colors.white10 : Colors.grey.shade300
+              isDarkMode ? Colors.white12 : Colors.grey.shade500
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

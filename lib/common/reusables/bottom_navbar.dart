@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/app_drawer_wrapper.dart';
 import 'package:margintop_solutions/common/reusables/menu_icon.dart';
 import 'package:margintop_solutions/common/widgets/custom_drawer.dart';
+import 'package:margintop_solutions/screens/Blog/main_blog.dart';
 import 'package:margintop_solutions/screens/Homepage/calendar.dart';
 import 'package:margintop_solutions/screens/Homepage/homepage.dart';
 import 'package:margintop_solutions/services/user_services.dart';
@@ -16,7 +17,9 @@ import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  const BottomNavBar({super.key, required this.title});
+
+  final String title;
 
   static Widget _buildNavItem({
     required IconData icon,
@@ -37,6 +40,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> screens = [
     const HomePage(), // index 0
     const AppCalendar(), // index 1
+  ];
+
+  final List<Widget> blogs = [
+    const MainBlog(), // index 0
+    const Scaffold(),
   ];
 
   final _advancedDrawerController = AdvancedDrawerController();
@@ -87,7 +95,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            screens[selectedIndex],
+            widget.title == "Home"
+                ? screens[selectedIndex]
+                : blogs[selectedIndex],
             MenuIcon(
               drawerController: _advancedDrawerController,
             ),
@@ -99,16 +109,27 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: theme.colorScheme.secondary,
                 height: 56,
                 index: selectedIndex,
-                items: <Widget>[
-                  BottomNavBar._buildNavItem(
-                    icon: Iconsax.home,
-                    isSelected: selectedIndex == 0,
-                  ),
-                  BottomNavBar._buildNavItem(
-                    icon: Iconsax.calendar,
-                    isSelected: selectedIndex == 1,
-                  ),
-                ],
+                items: widget.title == "Home"
+                    ? <Widget>[
+                        BottomNavBar._buildNavItem(
+                          icon: Iconsax.home,
+                          isSelected: selectedIndex == 0,
+                        ),
+                        BottomNavBar._buildNavItem(
+                          icon: Iconsax.calendar,
+                          isSelected: selectedIndex == 1,
+                        ),
+                      ]
+                    : <Widget>[
+                        BottomNavBar._buildNavItem(
+                          icon: Iconsax.activity,
+                          isSelected: selectedIndex == 0,
+                        ),
+                        BottomNavBar._buildNavItem(
+                          icon: Iconsax.status,
+                          isSelected: selectedIndex == 1,
+                        ),
+                      ],
                 onTap: (index) {
                   navProvider.setIndex(index);
                 },

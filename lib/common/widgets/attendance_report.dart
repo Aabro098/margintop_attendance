@@ -27,14 +27,14 @@ class AttendanceReport extends StatefulWidget {
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.bold,
-              fontSize: 14,
+              fontSize: 13,
             ),
           ),
           const SizedBox(height: AppSizes.sm),
           AutoSizeText(
             count,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: color,
             ),
@@ -68,7 +68,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
               AutoSizeText(
                 "Check Attendance",
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               CustomMonthDropdown(

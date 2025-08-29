@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                   child: AutoSizeText(
                     "Welcome, ${provider.name} !",
                     style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       color: isDarkMode
                           ? theme.colorScheme.primary
                           : AppColorsLight.logoColor,
@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                                         const SizedBox(height: AppSizes.md),
                                         _isLoading
                                             ? const ShimmerLoading(
-                                                height: 48,
+                                                height: 42,
                                                 width: 172,
                                               )
                                             : SizedBox(
@@ -402,7 +402,7 @@ class _HomePageState extends State<HomePage> {
                                 width: 172,
                                 child: _isAbsent
                                     ? const ShimmerLoading(
-                                        height: 48, width: 172)
+                                        height: 42, width: 172)
                                     : ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.red,
