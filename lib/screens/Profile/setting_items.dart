@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
 
 class SettingItem extends StatelessWidget {
   final IconData icon;

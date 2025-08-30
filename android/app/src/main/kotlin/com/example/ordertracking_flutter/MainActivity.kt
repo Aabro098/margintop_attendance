@@ -1,4 +1,4 @@
-package com.margintop_attendance.app
+package com.margintopsolutions.app
 
 import io.flutter.embedding.android.FlutterActivity
 

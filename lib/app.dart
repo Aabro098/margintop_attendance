@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
-import 'package:margintop_attendance/screens/Auth/login.dart';
-import 'package:margintop_attendance/utils/helpers/app_globals.dart';
-import 'package:margintop_attendance/utils/providers/theme.provider.dart';
-import 'package:margintop_attendance/utils/theme/theme.dart';
+import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
+import 'package:margintop_solutions/screens/Auth/login.dart';
+import 'package:margintop_solutions/utils/helpers/app_globals.dart';
+import 'package:margintop_solutions/utils/providers/theme.provider.dart';
+import 'package:margintop_solutions/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,7 +60,7 @@ class _AppState extends State<App> {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          title: 'Margintop Solutions Attendance',
+          title: 'Margintop Solutions',
           home: _isLoading
               ? Scaffold(
                   body: Center(
@@ -69,7 +69,11 @@ class _AppState extends State<App> {
                     ),
                   ),
                 )
-              : (_isAuthenticated ? const BottomNavBar() : const LoginScreen()),
+              : (_isAuthenticated
+                  ? const BottomNavBar(
+                      title: 'Home',
+                    )
+                  : const LoginScreen()),
         );
       },
     );

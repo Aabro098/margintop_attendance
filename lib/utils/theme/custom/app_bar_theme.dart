@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/constants/colors_light.dart';
-import 'package:margintop_attendance/utils/constants/colors_dark.dart';
-import 'package:margintop_attendance/utils/theme/custom/text_theme.dart';
+import 'package:margintop_solutions/utils/constants/colors_light.dart';
+import 'package:margintop_solutions/utils/constants/colors_dark.dart';
+import 'package:margintop_solutions/utils/theme/custom/text_theme.dart';
 
 class AppAppBarTheme {
   static AppBarTheme lightTheme = AppBarTheme(
-    backgroundColor: AppColorsLight.primary,
+    backgroundColor: AppColorsLight.secondary,
     foregroundColor: Colors.white,
     titleTextStyle:
         AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),
@@ -16,7 +16,7 @@ class AppAppBarTheme {
   );
 
   static AppBarTheme darkTheme = AppBarTheme(
-    backgroundColor: AppColorsDark.primary,
+    backgroundColor: AppColorsDark.secondary,
     foregroundColor: Colors.white,
     titleTextStyle:
         AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),

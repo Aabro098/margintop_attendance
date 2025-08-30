@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sample Blog</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #111827;
+      background: #f9f9f9;
+    }
+    .wrap {
+      max-width: 600px;
+      margin: 16px auto;
+      padding: 8px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #60a5fa;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 4px 0;
+    }
+    .meta {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 12px;
+    }
+    h2 {
+      margin: 12px 0 6px;
+      font-size: 1.2rem;
+    }
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    pre {
+      overflow: auto;
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px solid #e5e7eb;
+    }
+    ul {
+      padding-left: 16px;
+      margin: 4px 0;
+    }
+    footer {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="https://picsum.photos/seed/blog/200/200" alt="avatar" />
+      <div>
+        <div class="meta">By <strong>Dev Writer</strong> · Aug 29, 2025 · 6 min read</div>
+        <h1>Building a Clean Login Screen in Flutter</h1>
+      </div>
+    </header>
+
+    <div class="card">
+      <p>
+        Flutter makes it easy to craft beautiful UIs. In this post, we build a login screen,
+        add validation, and wire it to a backend. You’ll also see how to
+        render HTML like this page inside your app.
+      </p>
+
+      <h2>Why Flutter?</h2>
+      <ul>
+        <li>Single codebase: iOS, Android, Web, Desktop</li>
+        <li>Rich widget ecosystem</li>
+        <li>Great developer experience</li>
+      </ul>
+
+      <h2>Sample Login Button</h2>
+      <pre><code>ElevatedButton(
+  onPressed: _handleLogin,
+  child: const Text('Login'),
+);</code></pre>
+
+      <p>
+        For more, check the <a href="https://docs.flutter.dev">official docs</a>.
+      </p>
+    </div>
+
+    <footer>© 2025 Sample Blog · All rights reserved.</footer>
+  </div>
+</body>
+</html>

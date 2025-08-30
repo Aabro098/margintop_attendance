@@ -5,20 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:margintop_solutions/common/reusables/shimmer.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
-import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
-class CheckoutDetails extends StatefulWidget {
-  const CheckoutDetails({super.key});
+class AddBlog extends StatefulWidget {
+  const AddBlog({super.key});
 
   @override
-  State<CheckoutDetails> createState() => _CheckoutDetailsState();
+  State<AddBlog> createState() => _AddBlogState();
 }
 
-class _CheckoutDetailsState extends State<CheckoutDetails> {
+class _AddBlogState extends State<AddBlog> {
   final QuillController _controller = QuillController.basic();
   final FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
@@ -38,7 +37,7 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
     return html;
   }
 
-  Future<void> _checkOut() async {
+  Future<void> _postBlog() async {
     final details = _getString();
     if (details.isEmpty) {
       showErrorSnackbar("Your work details cannot be empty.", context: context);
@@ -50,23 +49,23 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
       });
     }
     try {
-      final response = await AttendanceServices().checkOut(
-        context: context,
-        workSummary: details,
-      );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showSuccessSnackbar(
-            "Check out successfull. Hope you had a wonderful day workmate.",
-            context: context,
-          );
-          Navigator.pop(context);
-        } else {
-          showErrorSnackbar(response['message'], context: context);
-        }
-      } else {
-        showErrorSnackbar(AppStrings.error, context: context);
-      }
+      // final response = await AttendanceServices().checkOut(
+      //   context: context,
+      //   workSummary: details,
+      // );
+      // if (response != null) {
+      //   if (response['message'] == "Success" && response['status'] == 1) {
+      //     showSuccessSnackbar(
+      //       "Check out successfull. Hope you had a wonderful day workmate.",
+      //       context: context,
+      //     );
+      //     Navigator.pop(context);
+      //   } else {
+      //     showErrorSnackbar(response['message'], context: context);
+      //   }
+      // } else {
+      //   showErrorSnackbar(AppStrings.error, context: context);
+      // }
     } catch (e) {
       showErrorSnackbar(AppStrings.error, context: context);
     } finally {
@@ -90,7 +89,7 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AutoSizeText("Check Out"),
+        title: const AutoSizeText("Add Blog"),
         leading: const AppbarBackButton(),
       ),
       body: Padding(
@@ -101,22 +100,22 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
               QuillSimpleToolbar(
                 controller: _controller,
                 config: const QuillSimpleToolbarConfig(
-                  showAlignmentButtons: false,
+                  showAlignmentButtons: true,
                   showBackgroundColorButton: false,
                   showCodeBlock: false,
                   showColorButton: false,
                   showDirection: false,
-                  showDividers: false,
-                  showFontFamily: false,
+                  showDividers: true,
+                  showFontFamily: true,
                   showInlineCode: false,
                   showIndent: false,
-                  showLink: false,
+                  showLink: true,
                   showSearchButton: false,
-                  showStrikeThrough: false,
+                  showStrikeThrough: true,
                   showListCheck: false,
-                  showQuote: false,
-                  showSubscript: false,
-                  showSuperscript: false,
+                  showQuote: true,
+                  showSubscript: true,
+                  showSuperscript: true,
                   showClearFormat: false,
                 ),
               ),
@@ -133,7 +132,7 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
                 child: QuillEditor(
                   controller: _controller,
                   config: const QuillEditorConfig(
-                    placeholder: "Tell us about your day...",
+                    placeholder: "Add your blog...",
                   ),
                   focusNode: _focusNode,
                   scrollController: _scrollController,
@@ -147,19 +146,11 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
                 child: _isLoading
                     ? const ShimmerLoading(height: 48, width: 172)
                     : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppSizes.sm,
-                            ),
-                          ),
-                        ),
                         onPressed: () {
-                          _checkOut();
+                          _postBlog();
                         },
                         child: const Text(
-                          "Check Out",
+                          "Post Blog",
                         ),
                       ),
               ),

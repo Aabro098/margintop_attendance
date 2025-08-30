@@ -2,9 +2,9 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/common/widgets/dropdown.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
+import 'package:margintop_solutions/common/widgets/dropdown.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
 
 class AttendanceReport extends StatefulWidget {
   const AttendanceReport({super.key});
@@ -14,10 +14,9 @@ class AttendanceReport extends StatefulWidget {
 
   static Widget _buildAttendanceCard(String title, String count, Color color) {
     return Container(
-      width: 90,
-      padding: const EdgeInsets.all(AppSizes.md),
+      padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(AppSizes.sm),
       ),
       child: Column(
@@ -28,14 +27,14 @@ class AttendanceReport extends StatefulWidget {
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.bold,
-              fontSize: 14,
+              fontSize: 13,
             ),
           ),
           const SizedBox(height: AppSizes.sm),
           AutoSizeText(
             count,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: color,
             ),
@@ -55,7 +54,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.white12 : Colors.white,
+        color: isDarkMode ? Colors.white10 : Colors.white30,
         borderRadius: BorderRadius.circular(16),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 12, offset: Offset(0, 4))
@@ -67,9 +66,9 @@ class _AttendanceReportState extends State<AttendanceReport> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AutoSizeText(
-                "Attendance for this Month",
+                "Check Attendance",
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               CustomMonthDropdown(
@@ -106,22 +105,34 @@ class _AttendanceReportState extends State<AttendanceReport> {
           ),
           const SizedBox(height: AppSizes.formHeight),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AttendanceReport._buildAttendanceCard(
-                "Present",
-                "13",
-                Colors.green,
+              Expanded(
+                child: AttendanceReport._buildAttendanceCard(
+                  "Present",
+                  "13",
+                  Colors.green,
+                ),
               ),
-              AttendanceReport._buildAttendanceCard(
-                "Absent",
-                "02",
-                Colors.red,
+              const SizedBox(
+                width: AppSizes.sm,
               ),
-              AttendanceReport._buildAttendanceCard(
-                "Work Hours",
-                "04",
-                Colors.orange,
+              Expanded(
+                child: AttendanceReport._buildAttendanceCard(
+                  "Absent",
+                  "02",
+                  Colors.red,
+                ),
+              ),
+              const SizedBox(
+                width: AppSizes.sm,
+              ),
+              Expanded(
+                child: AttendanceReport._buildAttendanceCard(
+                  "Work Hour",
+                  "04",
+                  Colors.orange,
+                ),
               ),
             ],
           ),

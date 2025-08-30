@@ -2,7 +2,7 @@
 
 // import 'package:flutter/foundation.dart';
 // import 'package:flutter/material.dart';
-// import 'package:margintop_attendance/utils/local_storage/localization_storage.dart';
+// import 'package:margintop_solutions/utils/local_storage/localization_storage.dart';
 
 // /// Provider for managing and persisting app localization.
 // /// Handles loading, switching, and notifying listeners of locale changes.

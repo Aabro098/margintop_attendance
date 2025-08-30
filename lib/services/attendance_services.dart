@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/helpers/dio_client.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
-import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
+import 'package:margintop_solutions/utils/helpers/dio_client.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
 
 class AttendanceServices {
@@ -24,8 +24,7 @@ class AttendanceServices {
 
       if (data['message'] == "Success" && data["status"] == 1) {
         final String checkIn = formatToTime(data['data']['check_in']);
-        // Update the provider
-        provider.setCheckIn(checkIn);
+        provider.updateStatus(checkIn: checkIn);
       }
 
       return data;
@@ -53,8 +52,7 @@ class AttendanceServices {
 
       if (data['message'] == "Success" && data["status"] == 1) {
         final String checkOut = formatToTime(data['data']['check_out']);
-        // Update the provider
-        provider.setCheckOut(checkOut);
+        provider.updateStatus(checkOut: checkOut);
       }
 
       return data;
@@ -80,9 +78,22 @@ class AttendanceServices {
       final Map<String, dynamic> data = response.data;
 
       if (data['message'] == "Success" && data["status"] == 1) {
-        // Update the provider
-        provider.absent = true;
+        provider.updateStatus(isAbsent: true);
       }
+
+      return data;
+    } on DioException catch (e) {
+      final apiResponse = DioClient.getErrorResponse(e);
+      return apiResponse;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getStatus() async {
+    try {
+      final dio = await DioClient().initClient();
+
+      final response = await dio.get('/user/attendance/status');
+      final Map<String, dynamic> data = response.data;
 
       return data;
     } on DioException catch (e) {

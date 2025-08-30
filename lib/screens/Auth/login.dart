@@ -2,16 +2,16 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/common/reusables/bottom_navbar.dart';
-import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
-import 'package:margintop_attendance/common/widgets/text_field.dart';
-import 'package:margintop_attendance/screens/Auth/change_request.dart';
-import 'package:margintop_attendance/services/user_services.dart';
-import 'package:margintop_attendance/utils/constants/app_strings.dart';
-import 'package:margintop_attendance/utils/constants/image_strings.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
+import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/widgets/text_field.dart';
+import 'package:margintop_solutions/screens/Auth/change_request.dart';
+import 'package:margintop_solutions/services/user_services.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/image_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 
 //* The login screen uses the text field data which is a text form field in the common widgets
 class LoginScreen extends StatefulWidget {
@@ -53,7 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const BottomNavBar(),
+              builder: (context) => const BottomNavBar(
+                title: 'Home',
+              ),
             ),
             (route) => false,
           );
@@ -94,8 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Form(
               key: _loginFormKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
                     child: Image.asset(
@@ -162,7 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: AppSizes.md,
                   ),
                   _isLoading
-                      ? const LoadingIndicator()
+                      ? const ShimmerLoading(
+                          height: 48,
+                          width: double.infinity,
+                        )
                       : ElevatedButton(
                           onPressed: () {
                             _isLoading ? null : _handleLogin();

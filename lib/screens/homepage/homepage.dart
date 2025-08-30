@@ -3,19 +3,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_attendance/common/reusables/loading_indicator.dart';
-import 'package:margintop_attendance/common/reusables/text_dialog.dart';
-import 'package:margintop_attendance/common/widgets/attendance_report.dart';
-import 'package:margintop_attendance/common/widgets/clock_widget.dart';
-import 'package:margintop_attendance/common/widgets/heading_title.dart';
-import 'package:margintop_attendance/common/widgets/time_info.dart';
-import 'package:margintop_attendance/screens/Homepage/checkout_details.dart';
-import 'package:margintop_attendance/services/attendance_services.dart';
-import 'package:margintop_attendance/utils/constants/app_strings.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/device/device_utility.dart';
-import 'package:margintop_attendance/utils/helpers/helper_functions.dart';
-import 'package:margintop_attendance/utils/providers/attendance_provider.dart';
+import 'package:lottie/lottie.dart';
+import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/text_dialog.dart';
+import 'package:margintop_solutions/common/widgets/attendance_report.dart';
+import 'package:margintop_solutions/common/widgets/clock_widget.dart';
+import 'package:margintop_solutions/common/widgets/heading_title.dart';
+import 'package:margintop_solutions/common/widgets/time_info.dart';
+import 'package:margintop_solutions/screens/Homepage/checkout_details.dart';
+import 'package:margintop_solutions/services/attendance_services.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/colors_light.dart';
+import 'package:margintop_solutions/utils/constants/image_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/device/device_utility.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
+import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,8 +33,15 @@ class _HomePageState extends State<HomePage> {
   String selected = "Home";
   bool _isLoading = false;
   bool _isAbsent = false;
-  final TextEditingController _workController = TextEditingController();
+  bool _networkError = false;
   final TextEditingController _reasonController = TextEditingController();
+
+  @override
+  void initState() {
+    final provider = context.read<AttendanceProvider>();
+    super.initState();
+    provider.isFirst ? _getStatus() : null;
+  }
 
   Future<void> _checkIn() async {
     if (mounted) {
@@ -75,47 +86,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _checkOut() async {
-    if (_workController.text.trim().isEmpty) {
-      showErrorSnackbar("Your work details cannot be empty.", context: context);
-      return;
-    }
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    try {
-      final response = await AttendanceServices().checkOut(
-        context: context,
-        workSummary: _workController.text.trim(),
-      );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showSuccessSnackbar(
-            "Check out successfull. Hope you had a wonderful day workmate.",
-            context: context,
-          );
-          _workController.clear();
-        } else {
-          showErrorSnackbar(response['message'], context: context);
-        }
-      } else {
-        showErrorSnackbar(AppStrings.error, context: context);
-      }
-    } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   Future<void> _absent() async {
-    if (_workController.text.trim().isEmpty) {
+    if (_reasonController.text.trim().isEmpty) {
       showErrorSnackbar(
         "Your absent reason cannot be empty.",
         context: context,
@@ -156,9 +128,65 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _getStatus() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    try {
+      final provider = context.read<AttendanceProvider>();
+      final response = await AttendanceServices().getStatus();
+      if (response != null) {
+        if (response['message'] == "Success" && response["status"] == 1) {
+          if (mounted) {
+            setState(() {
+              _networkError = false;
+            });
+          }
+          String? checkIn = response['data']['check_in_time'];
+          String? checkOut = response['data']['check_out_time'];
+          if (response['data']['status'] == "absent") {
+            provider.updateStatus(isAbsent: true);
+          }
+          if (checkIn != null) {
+            provider.updateStatus(checkIn: formatToTime(checkIn));
+          }
+
+          if (checkOut != null) {
+            provider.updateStatus(checkOut: formatToTime(checkOut));
+          }
+
+          provider.first = false;
+        } else {
+          showErrorSnackbar(response['message'], context: context);
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            _networkError = true;
+          });
+        }
+        showErrorSnackbar(AppStrings.error, context: context);
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _networkError = true;
+        });
+      }
+      showErrorSnackbar(AppStrings.error, context: context);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
-    _workController.dispose();
     _reasonController.dispose();
     super.dispose();
   }
@@ -181,199 +209,244 @@ class _HomePageState extends State<HomePage> {
               left: AppSizes.padding,
               right: AppSizes.padding,
             ),
-            child: AutoSizeText(
-              "Welcome, Arbin Shrestha",
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+            child: Consumer<UserProvider>(
+              builder: (context, provider, child) {
+                return Center(
+                  child: AutoSizeText(
+                    "Welcome, ${provider.name} !",
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDarkMode
+                          ? theme.colorScheme.primary
+                          : AppColorsLight.logoColor,
+                    ),
+                  ),
+                );
+              },
             ),
+          ),
+          const SizedBox(
+            height: AppSizes.md,
           ),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSizes.padding),
-              child: Column(
-                children: [
-                  Consumer<AttendanceProvider>(
-                    builder: (context, provider, child) {
-                      return Container(
-                        padding: const EdgeInsets.all(AppSizes.padding),
-                        decoration: BoxDecoration(
-                          color: isDarkMode ? Colors.white10 : Colors.white,
-                          borderRadius: BorderRadius.circular(AppSizes.lg),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: AppSizes.lg,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                _buildToggleButton(
-                                  text: "Home",
-                                  icon: Iconsax.home_1,
-                                  selected: selected == "Home",
-                                  onTap: _isLoading
-                                      ? null
-                                      : () {
-                                          setState(() => selected = "Home");
-                                        },
-                                  theme: theme,
-                                  isCheckIn: provider.checkIn,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: AppSizes.padding),
+                child: Column(
+                  children: [
+                    Consumer<AttendanceProvider>(
+                      builder: (context, provider, child) {
+                        return Container(
+                          padding: const EdgeInsets.all(AppSizes.padding),
+                          decoration: BoxDecoration(
+                            color: isDarkMode ? Colors.white10 : Colors.white30,
+                            borderRadius: BorderRadius.circular(AppSizes.lg),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: AppSizes.lg,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: _networkError
+                              ? Center(
+                                  child: IconButton(
+                                    onPressed: () async {
+                                      await _getStatus();
+                                    },
+                                    icon: const Icon(Iconsax.refresh),
+                                  ),
+                                )
+                              : provider.isAbsent
+                                  ? Lottie.asset(
+                                      AppLogos.sadRobot,
+                                      repeat: true,
+                                      height: 160,
+                                      width: double.infinity,
+                                    )
+                                  : Column(
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            _buildToggleButton(
+                                              text: "Home",
+                                              icon: Iconsax.home_1,
+                                              selected: selected == "Home",
+                                              onTap: _isLoading
+                                                  ? null
+                                                  : () {
+                                                      if (mounted) {
+                                                        setState(() =>
+                                                            selected = "Home");
+                                                      }
+                                                    },
+                                              theme: theme,
+                                              isCheckIn: provider.checkIn,
+                                            ),
+                                            const SizedBox(width: 12),
+                                            _buildToggleButton(
+                                              text: "Office",
+                                              icon: Iconsax.building,
+                                              selected: selected == "Office",
+                                              onTap: _isLoading
+                                                  ? null
+                                                  : () {
+                                                      if (mounted) {
+                                                        setState(() =>
+                                                            selected =
+                                                                "Office");
+                                                      }
+                                                    },
+                                              theme: theme,
+                                              isCheckIn: provider.checkIn,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: AppSizes.md),
+                                        const RealTimeClock(),
+                                        const SizedBox(height: AppSizes.md),
+                                        _isLoading
+                                            ? const ShimmerLoading(
+                                                height: 42,
+                                                width: 172,
+                                              )
+                                            : SizedBox(
+                                                width: 172,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: provider
+                                                                .checkIn !=
+                                                            null
+                                                        ? provider.checkOut !=
+                                                                null
+                                                            ? Colors.green
+                                                            : Colors.red
+                                                        : theme.colorScheme
+                                                            .primary,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        AppSizes.md,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onPressed: () async {
+                                                    if (provider.checkIn ==
+                                                        null) {
+                                                      _checkIn();
+                                                    } else if (provider
+                                                                .checkIn !=
+                                                            null &&
+                                                        provider.checkOut ==
+                                                            null) {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const CheckoutDetails(),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      null;
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    provider.checkIn != null
+                                                        ? provider.checkOut !=
+                                                                null
+                                                            ? "Done"
+                                                            : "Check Out"
+                                                        : "Check In",
+                                                  ),
+                                                ),
+                                              ),
+                                        const SizedBox(height: AppSizes.md),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TimeInfo(
+                                              time: provider.checkIn ?? "--",
+                                              label: "Check In",
+                                            ),
+                                            TimeInfo(
+                                              time: provider.checkOut ?? "--",
+                                              label: "Check Out",
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: AppSizes.md),
+
+                    // Attendance
+                    const AttendanceReport(),
+
+                    const SizedBox(height: AppSizes.lg),
+
+                    // Request Button
+                    Consumer<AttendanceProvider>(
+                      builder: (context, provider, child) {
+                        return provider.checkIn != null || provider.isAbsent
+                            ? AutoSizeText(
+                                "Hope to see you soon at work dear workmate !",
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                const SizedBox(width: 8),
-                                _buildToggleButton(
-                                  text: "Office",
-                                  icon: Iconsax.building,
-                                  selected: selected == "Office",
-                                  onTap: _isLoading
-                                      ? null
-                                      : () {
-                                          setState(() => selected = "Office");
-                                        },
-                                  theme: theme,
-                                  isCheckIn: provider.checkIn,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: AppSizes.formHeight),
-                            const RealTimeClock(),
-                            const SizedBox(height: AppSizes.formHeight),
-                            _isLoading
-                                ? const LoadingIndicator()
-                                : SizedBox(
-                                    width: 172,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            provider.checkIn != null
-                                                ? provider.checkOut != null
-                                                    ? Colors.green
-                                                    : Colors.red
-                                                : theme.colorScheme.primary,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            AppSizes.lg,
+                                textAlign: TextAlign.center,
+                              )
+                            : SizedBox(
+                                width: 172,
+                                child: _isAbsent
+                                    ? const ShimmerLoading(
+                                        height: 42, width: 172)
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      onPressed: () async {
-                                        if (provider.checkIn == null) {
-                                          _checkIn();
-                                        } else if (provider.checkIn != null &&
-                                            provider.checkOut == null) {
+                                        onPressed: () async {
                                           final dialog = StylishInputDialog(
                                             context: context,
                                             title:
-                                                'Write in short about your day, dear workmate.',
+                                                'Please provide the reason for the leave.',
                                             hintText: 'Write something...',
-                                            controller: _workController,
+                                            controller: _reasonController,
                                             onSubmit: () {
-                                              _checkOut();
+                                              _absent();
                                             },
                                           );
-
                                           await dialog.show();
-                                        } else {
-                                          null;
-                                        }
-                                      },
-                                      child: Text(
-                                        provider.checkIn != null
-                                            ? provider.checkOut != null
-                                                ? "Done"
-                                                : "Check Out"
-                                            : "Check In",
-                                      ),
-                                    ),
-                                  ),
-                            const SizedBox(height: AppSizes.formHeight),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                TimeInfo(
-                                  time: provider.checkIn ?? "--",
-                                  label: "Check In",
-                                ),
-                                TimeInfo(
-                                  time: provider.checkOut ?? "--",
-                                  label: "Check Out",
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-
-                  const SizedBox(height: AppSizes.formHeight),
-
-                  // Attendance
-                  const AttendanceReport(),
-
-                  const SizedBox(height: AppSizes.formHeight),
-
-                  // Request Button
-                  Consumer<AttendanceProvider>(
-                    builder: (context, provider, child) {
-                      return provider.checkIn != null
-                          ? const SizedBox.shrink()
-                          : SizedBox(
-                              width: 172,
-                              child: _isAbsent
-                                  ? const Center(child: LoadingIndicator())
-                                  : OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            30,
+                                        },
+                                        child: Text(
+                                          "Absent",
+                                          style: theme.textTheme.titleLarge
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
                                           ),
                                         ),
-                                        side: const BorderSide(
-                                          color: Colors.red,
-                                        ),
                                       ),
-                                      onPressed: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CheckoutDetails(),
-                                          ),
-                                        );
-                                        // final dialog = StylishInputDialog(
-                                        //   context: context,
-                                        //   title:
-                                        //       'Please provide the reason for the leave.',
-                                        //   hintText: 'Write something...',
-                                        //   controller: _workController,
-                                        //   onSubmit: () {
-                                        //     _absent();
-                                        //   },
-                                        // );
-                                        // await dialog.show();
-                                      },
-                                      child: Text(
-                                        "Absent",
-                                        style: theme.textTheme.titleLarge
-                                            ?.copyWith(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                            );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 64,
-                  ),
-                ],
+                              );
+                      },
+                    ),
+                    const SizedBox(height: 72),
+                  ],
+                ),
               ),
             ),
           ),
@@ -393,10 +466,10 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: isCheckIn != null ? null : onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: selected ? theme.colorScheme.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: theme.colorScheme.primary),
         ),
         child: Row(
@@ -410,7 +483,7 @@ class _HomePageState extends State<HomePage> {
             AutoSizeText(
               text,
               style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 color: selected ? Colors.white : theme.colorScheme.primary,
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
 
 class HeadingTitle extends StatefulWidget {
   const HeadingTitle({
@@ -19,37 +19,40 @@ class _HeadingTitleState extends State<HeadingTitle> {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSizes.padding),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
+        color: theme.colorScheme.secondary,
         borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
+          bottomLeft: Radius.circular(36),
+          bottomRight: Radius.circular(36),
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(
-            height: 52,
+            height: AppSizes.lg,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: AutoSizeText(
-                  "MarginTop Solutions",
-                  maxLines: null, // Allow unlimited lines
-                  softWrap: true, // Enable text wrapping
-                  overflow: TextOverflow.visible, // Show all text
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+          AutoSizeText(
+            "MarginTop Solutions",
+            maxLines: null, // Allow unlimited lines
+            softWrap: true, // Enable text wrapping
+            overflow: TextOverflow.visible, // Show all text
+            style: theme.textTheme.headlineLarge?.copyWith(
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
           ),
+          const SizedBox(
+            height: AppSizes.sm,
+          ),
+          AutoSizeText(
+            "Diamond Marg, Lalitpur 44600",
+            maxLines: null, // Allow unlimited lines
+            softWrap: true, // Enable text wrapping
+            overflow: TextOverflow.visible, // Show all text
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );

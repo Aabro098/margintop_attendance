@@ -1,4 +1,4 @@
-name: margintop_attendance
+name: margintop_solutions
 description: "An attendance app for the MarginTop Solutions team."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -47,14 +47,16 @@ dependencies:
   timezone: ^0.10.0
   permission_handler: ^12.0.1
   auto_size_text: ^3.0.0
-  iconsax: ^0.0.8
-  flutter_svg: ^2.2.0
   file_picker: ^10.3.1
   curved_navigation_bar: ^1.0.6
   flutter_advanced_drawer: ^1.5.0
   table_calendar: ^3.2.0
-  smooth_page_indicator: ^1.2.1
   flutter_quill: ^11.4.2
+  vsc_quill_delta_to_html: ^1.0.5
+  shimmer: ^3.0.0
+  lottie: ^3.3.1
+  flutter_html: ^3.0.0
+  iconsax: ^0.0.8
 
 
 dev_dependencies:
@@ -78,6 +80,8 @@ flutter:
     - lib/localization/
     - assets/fonts/
     - assets/logos/
+    - assets/animations/
+    - assets/blog_sample.html
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

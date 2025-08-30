@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:margintop_attendance/utils/constants/sizes.dart';
-import 'package:margintop_attendance/utils/helpers/app_globals.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 
 void showErrorSnackbar(
   String message, {
@@ -49,7 +49,7 @@ void showSuccessSnackbar(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Iconsax.tick_circle1, color: Colors.white),
+            const Icon(Iconsax.tick_circle, color: Colors.white),
             const SizedBox(width: 8),
             Expanded(
               child: AutoSizeText(

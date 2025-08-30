@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:margintop_attendance/utils/constants/colors_light.dart';
-import 'package:margintop_attendance/utils/constants/colors_dark.dart';
+import 'package:margintop_solutions/utils/constants/colors_light.dart';
+import 'package:margintop_solutions/utils/constants/colors_dark.dart';
 
 class AppColorSchemes {
   AppColorSchemes._();
