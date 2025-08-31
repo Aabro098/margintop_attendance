@@ -9,7 +9,7 @@ class AppOutlinedButtonTheme {
   static OutlinedButtonThemeData lightTheme = OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
       foregroundColor: AppColorsLight.primary,
-      textStyle: AppTypography.lightTextTheme.titleLarge,
+      textStyle: AppTypography.lightTextTheme.titleMedium,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       minimumSize: const Size(double.infinity, 42),
       shape: RoundedRectangleBorder(
@@ -24,7 +24,7 @@ class AppOutlinedButtonTheme {
   /// Static variable for Outlined Button (Dark)
   static OutlinedButtonThemeData darkTheme = OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      textStyle: AppTypography.lightTextTheme.titleLarge,
+      textStyle: AppTypography.lightTextTheme.titleMedium,
       foregroundColor: AppColorsDark.primary,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       minimumSize: const Size(double.infinity, 42),

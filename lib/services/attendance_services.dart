@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/models/month_summary.dart';
 import 'package:margintop_solutions/models/status_model.dart';
 import 'package:margintop_solutions/utils/helpers/dio_client.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
@@ -97,6 +98,22 @@ class AttendanceServices {
       final Map<String, dynamic> data = response.data;
 
       return AttendanceResponse.fromJson(data);
+    } on DioException catch (e) {
+      final apiResponse = DioClient.getErrorResponse(e);
+      return apiResponse;
+    }
+  }
+
+  Future<AttendanceSummaryResponse> getSummary(int month) async {
+    try {
+      final dio = await DioClient().initClient();
+
+      final response =
+          await dio.get('/user/attendance/stats?year=2025&month=$month');
+      // print("The response is $response");
+      final Map<String, dynamic> data = response.data;
+
+      return AttendanceSummaryResponse.fromJson(data);
     } on DioException catch (e) {
       final apiResponse = DioClient.getErrorResponse(e);
       return apiResponse;

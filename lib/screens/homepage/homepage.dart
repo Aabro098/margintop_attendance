@@ -145,6 +145,7 @@ class _HomePageState extends State<HomePage> {
         String? checkIn = response.data.checkInTime;
         String? checkOut = response.data.checkInTime;
         String? status = response.data.status;
+
         if (status == "absent") {
           provider.updateStatus(isAbsent: true);
         } else if (status == "remote") {
@@ -389,52 +390,55 @@ class _HomePageState extends State<HomePage> {
                     // Request Button
                     Consumer<AttendanceProvider>(
                       builder: (context, provider, child) {
-                        return provider.checkIn != null || provider.isAbsent
+                        return provider.isAbsent
                             ? AutoSizeText(
                                 "Hope to see you soon at work dear workmate !",
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w400,
                                 ),
                                 textAlign: TextAlign.center,
                               )
-                            : SizedBox(
-                                width: 172,
-                                child: _isAbsent
-                                    ? const ShimmerLoading(
-                                        height: 42, width: 172)
-                                    : ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.red,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              16,
+                            : provider.checkIn != null
+                                ? const SizedBox.shrink()
+                                : SizedBox(
+                                    width: 172,
+                                    child: _isAbsent
+                                        ? const ShimmerLoading(
+                                            height: 42, width: 172)
+                                        : ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.red,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  16,
+                                                ),
+                                              ),
+                                            ),
+                                            onPressed: () async {
+                                              final dialog = StylishInputDialog(
+                                                context: context,
+                                                title:
+                                                    'Please provide the reason for the leave.',
+                                                hintText: 'Write something...',
+                                                controller: _reasonController,
+                                                onSubmit: () {
+                                                  _absent();
+                                                },
+                                              );
+                                              await dialog.show();
+                                            },
+                                            child: Text(
+                                              "Absent",
+                                              style: theme.textTheme.titleLarge
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        onPressed: () async {
-                                          final dialog = StylishInputDialog(
-                                            context: context,
-                                            title:
-                                                'Please provide the reason for the leave.',
-                                            hintText: 'Write something...',
-                                            controller: _reasonController,
-                                            onSubmit: () {
-                                              _absent();
-                                            },
-                                          );
-                                          await dialog.show();
-                                        },
-                                        child: Text(
-                                          "Absent",
-                                          style: theme.textTheme.titleLarge
-                                              ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                              );
+                                  );
                       },
                     ),
                     const SizedBox(height: 72),

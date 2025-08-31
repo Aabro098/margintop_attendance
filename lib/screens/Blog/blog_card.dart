@@ -52,7 +52,7 @@ class _BlogCardState extends State<BlogCard> {
     return Container(
       padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withAlpha(72),
+        color: theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(AppSizes.md),
       ),
       child: Column(
