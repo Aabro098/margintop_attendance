@@ -136,38 +136,33 @@ class _HomePageState extends State<HomePage> {
     }
     try {
       final provider = context.read<AttendanceProvider>();
+      final userProvider = context.read<UserProvider>();
       final response = await AttendanceServices().getStatus();
-      if (response != null) {
-        if (response['message'] == "Success" && response["status"] == 1) {
-          if (mounted) {
-            setState(() {
-              _networkError = false;
-            });
-          }
-          String? checkIn = response['data']['check_in_time'];
-          String? checkOut = response['data']['check_out_time'];
-          if (response['data']['status'] == "absent") {
-            provider.updateStatus(isAbsent: true);
-          }
-          if (checkIn != null) {
-            provider.updateStatus(checkIn: formatToTime(checkIn));
-          }
 
-          if (checkOut != null) {
-            provider.updateStatus(checkOut: formatToTime(checkOut));
-          }
+      if (response.message == "Success" && response.status == 1) {
+        userProvider.setUserFromModel(response.data.user);
 
-          provider.first = false;
-        } else {
-          showErrorSnackbar(response['message'], context: context);
+        String? checkIn = response.data.checkInTime;
+        String? checkOut = response.data.checkInTime;
+        String? status = response.data.status;
+        if (status == "absent") {
+          provider.updateStatus(isAbsent: true);
+        } else if (status == "remote") {
+          selected = "Home";
+        } else if (status == "present") {
+          selected = "Office";
         }
+        if (checkIn != null) {
+          provider.updateStatus(checkIn: formatToTime(checkIn));
+        }
+
+        if (checkOut != null) {
+          provider.updateStatus(checkOut: formatToTime(checkOut));
+        }
+
+        provider.first = false;
       } else {
-        if (mounted) {
-          setState(() {
-            _networkError = true;
-          });
-        }
-        showErrorSnackbar(AppStrings.error, context: context);
+        showErrorSnackbar(response.message, context: context);
       }
     } catch (e) {
       if (mounted) {
@@ -202,8 +197,6 @@ class _HomePageState extends State<HomePage> {
         children: [
           const HeadingTitle(),
           const SizedBox(height: AppSizes.md),
-
-          // Welcome text
           Padding(
             padding: const EdgeInsets.only(
               left: AppSizes.padding,

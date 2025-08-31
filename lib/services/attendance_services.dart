@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/models/status_model.dart';
 import 'package:margintop_solutions/utils/helpers/dio_client.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
@@ -88,14 +89,14 @@ class AttendanceServices {
     }
   }
 
-  Future<Map<String, dynamic>?> getStatus() async {
+  Future<AttendanceResponse> getStatus() async {
     try {
       final dio = await DioClient().initClient();
 
       final response = await dio.get('/user/attendance/status');
       final Map<String, dynamic> data = response.data;
 
-      return data;
+      return AttendanceResponse.fromJson(data);
     } on DioException catch (e) {
       final apiResponse = DioClient.getErrorResponse(e);
       return apiResponse;
