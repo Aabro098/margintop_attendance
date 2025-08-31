@@ -11,10 +11,7 @@ import 'package:margintop_solutions/screens/Blog/main_blog.dart';
 import 'package:margintop_solutions/screens/Blog/your_blog.dart';
 import 'package:margintop_solutions/screens/Homepage/calendar.dart';
 import 'package:margintop_solutions/screens/Homepage/homepage.dart';
-import 'package:margintop_solutions/services/user_services.dart';
-import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/index_provider.dart';
-import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -55,30 +52,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = context.read<UserProvider>();
       final indexProvider = context.read<IndexProvider>();
       indexProvider.setIndex(0);
-      if (provider.name == "...") {
-        getUserDetails();
-      }
     });
-  }
-
-  Future<void> getUserDetails() async {
-    final provider = context.read<UserProvider>();
-    try {
-      final response = await UserServices().userDetails();
-      if (response != null) {
-        if (response['message'] == "Success" && response["status"] == 1) {
-          provider.setUserDetails(
-              name: response['data']['name'], email: response['data']['email']);
-        } else {
-          showErrorSnackbar(response['message'], context: context);
-        }
-      } else {}
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 
   @override

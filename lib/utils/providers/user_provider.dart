@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:margintop_solutions/models/user_model.dart';
 
 class UserProvider extends ChangeNotifier {
   String _name = "...";
@@ -9,9 +10,10 @@ class UserProvider extends ChangeNotifier {
   String get email => _email;
   bool get isLoading => _isLoading;
 
-  void setUserDetails({required String name, required String email}) {
-    _name = name;
-    _email = email;
+  /// ✅ New method: set details from User model
+  void setUserFromModel(User user) {
+    _name = user.name;
+    _email = user.email;
     notifyListeners();
   }
 
