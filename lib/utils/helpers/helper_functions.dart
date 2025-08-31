@@ -100,7 +100,9 @@ void showInfoSnackbar(
 
 String formatToTime(String time) {
   DateTime dateTime;
-
+  if (time == '') {
+    return '';
+  }
   if (time.contains("T")) {
     // ✅ Case 1: Full ISO datetime string
     dateTime = DateTime.parse(time).toLocal();

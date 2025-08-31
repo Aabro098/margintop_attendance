@@ -28,20 +28,20 @@ class UserServices {
     }
   }
 
-  Future<Map<String, dynamic>?> userDetails() async {
-    try {
-      final dio = await DioClient().initClient();
+  // Future<Map<String, dynamic>?> userDetails() async {
+  //   try {
+  //     final dio = await DioClient().initClient();
 
-      final response = await dio.get('/user/me');
+  //     final response = await dio.get('/user/me');
 
-      final Map<String, dynamic> data = response.data;
+  //     final Map<String, dynamic> data = response.data;
 
-      return data;
-    } on DioException catch (e) {
-      DioClient.checkDioError(e);
-      return null;
-    }
-  }
+  //     return data;
+  //   } on DioException catch (e) {
+  //     DioClient.checkDioError(e);
+  //     return null;
+  //   }
+  // }
 
   Future<Map<String, dynamic>?> logout() async {
     try {

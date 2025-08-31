@@ -53,6 +53,7 @@ class AttendanceReport extends StatefulWidget {
 class _AttendanceReportState extends State<AttendanceReport> {
   bool _isLoading = false;
   int month = DateTime.now().month - 1;
+  int year = DateTime.now().year;
 
   int? present;
   int? absent;
@@ -71,11 +72,13 @@ class _AttendanceReportState extends State<AttendanceReport> {
       });
     }
     try {
-      final response = await AttendanceServices().getSummary(month);
+      final response =
+          await AttendanceServices().getSummaryMonth(year: year, month: month);
       if (response.status == 1 && response.message == "Success") {
         if (mounted) {
           setState(() {
-            present = response.data.summary.presentDays;
+            present = response.data.summary.presentDays +
+                response.data.summary.remoteDays;
             absent = response.data.summary.absentDays;
             totalHours = response.data.summary.totalHours;
           });
@@ -113,8 +116,8 @@ class _AttendanceReportState extends State<AttendanceReport> {
             children: [
               AutoSizeText(
                 "Attendance for this month",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               // CustomMonthDropdown(

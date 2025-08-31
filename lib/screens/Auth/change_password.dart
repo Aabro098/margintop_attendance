@@ -6,12 +6,12 @@ import 'package:margintop_solutions/common/reusables/shimmer.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/services/user_services.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({
-    super.key,
-  });
+  const ChangePassword({super.key});
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
@@ -42,15 +42,18 @@ class _ChangePasswordState extends State<ChangePassword> {
         );
         if (response != null) {
           if (response['status'] == 1 && response['message'] == "Success") {
-            // showSuccessSnackbar('change_password_successful', context: context);
+            showSuccessSnackbar(
+              'Password Changed Successfully.',
+              context: context,
+            );
           } else {
-            // showErrorSnackbar('could_not_change_password', context: context);
+            showErrorSnackbar('Could not change password.', context: context);
           }
         } else {
-          // showErrorSnackbar('error_occured', context: context);
+          showErrorSnackbar("Could not change password.", context: context);
         }
       } catch (e) {
-        debugPrint(e.toString());
+        showErrorSnackbar(AppStrings.error, context: context);
       } finally {
         if (mounted) {
           setState(() {
@@ -90,9 +93,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   "You can change your password here dear workmates !",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(
-                  height: AppSizes.lg,
-                ),
+                const SizedBox(height: AppSizes.lg),
                 TextFieldData(
                   hintText: 'Current Password',
                   controller: _currentPasswordController,
@@ -130,14 +131,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                   isPassword: true,
                 ),
-                const SizedBox(
-                  height: AppSizes.xl,
-                ),
+                const SizedBox(height: AppSizes.xl),
                 _isLoading
-                    ? const ShimmerLoading(
-                        height: 48,
-                        width: double.infinity,
-                      )
+                    ? const ShimmerLoading(height: 48, width: double.infinity)
                     : ElevatedButton(
                         onPressed: () {
                           _isLoading ? null : _handleChangePassword();

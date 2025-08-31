@@ -17,25 +17,6 @@ class _AppCalendarState extends State<AppCalendar> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  // Dummy data for illustration
-  Map<String, Map<String, String>> attendanceData = {
-    "2025-08-01": {
-      "checkIn": "10:00 AM",
-      "checkOut": "06:30 PM",
-      "workingHours": "08:30"
-    },
-    "2025-04-02": {
-      "checkIn": "10:30 AM",
-      "checkOut": "06:30 PM",
-      "workingHours": "08:00"
-    },
-    "2025-04-03": {
-      "checkIn": "10:30 AM",
-      "checkOut": "06:00 PM",
-      "workingHours": "07:30"
-    },
-  };
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -72,7 +53,6 @@ class _AppCalendarState extends State<AppCalendar> {
                     MaterialPageRoute(
                       builder: (context) => AttendanceDetails(
                         date: selectedDay,
-                        attendanceData: attendanceData,
                       ),
                     ),
                   );
