@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/models/day_summary.dart';
+import 'package:margintop_solutions/models/month_summary.dart';
 import 'package:margintop_solutions/models/status_model.dart';
 import 'package:margintop_solutions/utils/helpers/dio_client.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
@@ -97,6 +99,57 @@ class AttendanceServices {
       final Map<String, dynamic> data = response.data;
 
       return AttendanceResponse.fromJson(data);
+    } on DioException catch (e) {
+      final apiResponse = DioClient.getErrorResponse(e);
+      return apiResponse;
+    }
+  }
+
+  Future<AttendanceSummaryResponse> getSummaryMonth({
+    required int year,
+    required int month,
+    int? day,
+  }) async {
+    try {
+      final dio = await DioClient().initClient();
+
+      final query = {
+        "year": year,
+        "month": month,
+      };
+
+      final response =
+          await dio.get('/user/attendance/stats', queryParameters: query);
+
+      final Map<String, dynamic> data = response.data;
+
+      return AttendanceSummaryResponse.fromJson(data);
+    } on DioException catch (e) {
+      final apiResponse = DioClient.getErrorResponse(e);
+      return apiResponse;
+    }
+  }
+
+  Future<AttendanceListResponse> getSummaryDay({
+    required int year,
+    required int month,
+    required int day,
+  }) async {
+    try {
+      final dio = await DioClient().initClient();
+
+      final query = {
+        "year": year,
+        "month": month,
+        "day": day,
+      };
+
+      final response =
+          await dio.get('/user/attendance/stats', queryParameters: query);
+
+      final Map<String, dynamic> data = response.data;
+
+      return AttendanceListResponse.fromJson(data);
     } on DioException catch (e) {
       final apiResponse = DioClient.getErrorResponse(e);
       return apiResponse;

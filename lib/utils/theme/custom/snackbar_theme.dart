@@ -8,7 +8,7 @@ class AppSnackbarTheme {
     ),
     behavior: SnackBarBehavior.floating,
     contentTextStyle: const TextStyle(
-      fontSize: 17,
+      fontSize: 14,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),

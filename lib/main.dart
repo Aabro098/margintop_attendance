@@ -6,7 +6,6 @@ import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:margintop_solutions/utils/providers/drawer_provider.dart';
 import 'package:margintop_solutions/utils/providers/index_provider.dart';
 import 'package:margintop_solutions/utils/providers/theme.provider.dart';
-import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -21,7 +20,6 @@ void main() async {
         ChangeNotifierProvider(create: (_) => IndexProvider()),
         ChangeNotifierProvider(create: (_) => DrawerProvider()),
         ChangeNotifierProvider(create: (_) => AttendanceProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const App(),
     ),

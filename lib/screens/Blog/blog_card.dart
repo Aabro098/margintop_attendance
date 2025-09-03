@@ -52,7 +52,7 @@ class _BlogCardState extends State<BlogCard> {
     return Container(
       padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withAlpha(72),
+        color: Colors.blue.shade50,
         borderRadius: BorderRadius.circular(AppSizes.md),
       ),
       child: Column(
@@ -87,8 +87,10 @@ class _BlogCardState extends State<BlogCard> {
                 children: [
                   AutoSizeText(
                     "Arbin Shrestha",
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
                   widget.title == "pending"
                       ? AutoSizeText(

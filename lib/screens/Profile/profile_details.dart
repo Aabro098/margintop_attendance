@@ -17,14 +17,14 @@ class ProfileDetails extends StatefulWidget {
       children: [
         AutoSizeText(
           label,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w500,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w400,
           ),
         ),
         AutoSizeText(
           value,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w500,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w400,
           ),
         ),
       ],
@@ -54,7 +54,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
           ProfileDetails._rowDetails(
             theme,
             label: 'DOB',
-            value: '2002-10-26',
+            value: 'To be updated',
           ),
           const SizedBox(
             height: AppSizes.sm,
@@ -62,7 +62,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
           ProfileDetails._rowDetails(
             theme,
             label: 'Phone',
-            value: '9848096245',
+            value: 'To be updated',
           ),
         ],
       ),

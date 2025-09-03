@@ -98,12 +98,29 @@ void showInfoSnackbar(
   );
 }
 
-// This returns the time in the format like 7:48 AM for the time 2025-08-19T15:38:31.000000Z
-String formatToTime(String isoTime) {
-  // Parse the UTC string
-  final dateTime = DateTime.parse(isoTime).toLocal(); // convert to local time
+String formatToTime(String time) {
+  DateTime dateTime;
+  if (time == '') {
+    return '';
+  }
+  if (time.contains("T")) {
+    // ✅ Case 1: Full ISO datetime string
+    dateTime = DateTime.parse(time).toLocal();
+  } else {
+    // ✅ Case 2: Plain time (HH:mm:ss), assume today’s date
+    final now = DateTime.now();
+    final parts = time.split(":");
+    dateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      int.parse(parts[0]),
+      int.parse(parts[1]),
+      int.parse(parts[2]),
+    );
+  }
 
-  // Format to desired style (7:48 AM)
-  final formatter = DateFormat.jm(); // jm = hour:minute AM/PM
+  // Format to desired style (e.g. 7:48 AM, 10:45 AM)
+  final formatter = DateFormat.jm();
   return formatter.format(dateTime);
 }

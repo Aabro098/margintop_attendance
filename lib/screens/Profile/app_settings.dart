@@ -25,8 +25,8 @@ import 'package:margintop_solutions/utils/local_storage/localization_storage.dar
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:margintop_solutions/utils/providers/drawer_provider.dart';
 import 'package:margintop_solutions/utils/providers/theme.provider.dart';
-import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //* This file is part of the Nayan Saathi User App for managing the app settings like the language and the theme data
 class AppSettings extends StatefulWidget {
@@ -42,6 +42,17 @@ class _AppSettingsState extends State<AppSettings> {
   bool _isLoading = false;
   late Locale selectedLocale;
 
+  String? name;
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeName();
+    });
+  }
+
   final _advancedDrawerController = AdvancedDrawerController();
 
   ImageProvider getProfileImage() {
@@ -51,6 +62,18 @@ class _AppSettingsState extends State<AppSettings> {
       //   return NetworkImage(provider.profileImage);
     } else {
       return const AssetImage(AppLogos.nullProfile);
+    }
+  }
+
+  Future<void> _initializeName() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storedName = prefs.getString('name') ?? '...';
+    final storedEmail = prefs.getString('email') ?? '...';
+    if (mounted) {
+      setState(() {
+        name = storedName;
+        email = storedEmail;
+      });
     }
   }
 
@@ -64,7 +87,6 @@ class _AppSettingsState extends State<AppSettings> {
     try {
       final provider = context.read<AttendanceProvider>();
       final drawerProvider = context.read<DrawerProvider>();
-      final userProvider = context.read<UserProvider>();
       final response = await UserServices().logout();
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
@@ -72,7 +94,7 @@ class _AppSettingsState extends State<AppSettings> {
           provider.updateStatus(checkIn: null, checkOut: null, isAbsent: false);
           provider.first = true;
           drawerProvider.setSelectedItem('Attendance');
-          userProvider.clearUserData();
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -109,7 +131,6 @@ class _AppSettingsState extends State<AppSettings> {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     final isDarkMode = DeviceUtility.isDarkMode(context);
-    final provider = context.read<UserProvider>();
     return AppDrawerWrapper(
       drawer: const CustomDrawer(),
       controller: _advancedDrawerController,
@@ -196,7 +217,7 @@ class _AppSettingsState extends State<AppSettings> {
                       height: AppSizes.md,
                     ),
                     AutoSizeText(
-                      provider.name,
+                      name ?? "...",
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: theme.colorScheme.primary,
                         fontSize: 24,
@@ -210,7 +231,7 @@ class _AppSettingsState extends State<AppSettings> {
                     ),
 
                     AutoSizeText(
-                      provider.email,
+                      email ?? "...",
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontSize: 16,
                           ),
