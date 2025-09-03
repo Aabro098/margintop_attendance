@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 import 'package:margintop_solutions/common/reusables/shimmer.dart';
-import 'package:margintop_solutions/common/reusables/text_dialog.dart';
+import 'package:margintop_solutions/common/widgets/absent.dart';
 import 'package:margintop_solutions/common/widgets/attendance_report.dart';
 import 'package:margintop_solutions/common/widgets/clock_widget.dart';
 import 'package:margintop_solutions/common/widgets/heading_title.dart';
@@ -32,10 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? selected;
   bool _isLoading = false;
-  bool _isAbsent = false;
   bool _networkError = false;
-  final TextEditingController _reasonController = TextEditingController();
-
   String? name;
 
   @override
@@ -103,48 +100,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _absent() async {
-    if (_reasonController.text.trim().isEmpty) {
-      showErrorSnackbar(
-        "Your absent reason cannot be empty.",
-        context: context,
-      );
-      return;
-    }
-    if (mounted) {
-      setState(() {
-        _isAbsent = true;
-      });
-    }
-    try {
-      final response = await AttendanceServices().absent(
-        context: context,
-        reason: _reasonController.text.trim(),
-      );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showErrorSnackbar(
-            "We will miss you dear workmate. Hope to see you soon",
-            context: context,
-          );
-          _reasonController.clear();
-        } else {
-          showErrorSnackbar(response['message'], context: context);
-        }
-      } else {
-        showErrorSnackbar(AppStrings.error, context: context);
-      }
-    } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isAbsent = false;
-        });
-      }
-    }
-  }
-
   Future<void> _getStatus() async {
     if (mounted) {
       setState(() {
@@ -164,7 +119,6 @@ class _HomePageState extends State<HomePage> {
           String? checkOut =
               attendance.checkOutTime; // fixed: was using checkIn before
           String? status = attendance.status;
-
           if (status == "absent") {
             provider.updateStatus(isAbsent: true);
           } else if (status == "remote") {
@@ -205,12 +159,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void dispose() {
-    _reasonController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = DeviceUtility.isDarkMode(context);
@@ -241,12 +189,18 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: AppSizes.md,
           ),
-          Expanded(
+          RefreshIndicator(
+            color: theme.colorScheme.primary,
+            onRefresh: () {
+              return _getStatus();
+            },
             child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: AppSizes.padding),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Consumer<AttendanceProvider>(
                       builder: (context, provider, child) {
@@ -406,60 +360,9 @@ class _HomePageState extends State<HomePage> {
 
                     const SizedBox(height: AppSizes.lg),
 
-                    // Request Button
-                    Consumer<AttendanceProvider>(
-                      builder: (context, provider, child) {
-                        return provider.isAbsent
-                            ? AutoSizeText(
-                                "Hope to see you soon at work dear workmate !",
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                textAlign: TextAlign.center,
-                              )
-                            : provider.checkIn != null
-                                ? const SizedBox.shrink()
-                                : SizedBox(
-                                    width: 172,
-                                    child: _isAbsent
-                                        ? const ShimmerLoading(
-                                            height: 42, width: 172)
-                                        : ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.red,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  16,
-                                                ),
-                                              ),
-                                            ),
-                                            onPressed: () async {
-                                              final dialog = StylishInputDialog(
-                                                context: context,
-                                                title:
-                                                    'Please provide the reason for the leave.',
-                                                hintText: 'Write something...',
-                                                controller: _reasonController,
-                                                onSubmit: () {
-                                                  _absent();
-                                                },
-                                              );
-                                              await dialog.show();
-                                            },
-                                            child: Text(
-                                              "Absent",
-                                              style: theme.textTheme.titleLarge
-                                                  ?.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                  );
-                      },
-                    ),
+                    // Absent Button
+                    const AbsentButton(),
+
                     const SizedBox(height: 72),
                   ],
                 ),
@@ -495,7 +398,7 @@ class _HomePageState extends State<HomePage> {
               color: selected ? Colors.white : theme.colorScheme.primary,
               size: AppSizes.iconSm,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: AppSizes.md),
             AutoSizeText(
               text,
               style: theme.textTheme.titleMedium?.copyWith(

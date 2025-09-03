@@ -8,8 +8,6 @@ import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
-import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
-import 'package:provider/provider.dart';
 
 class AttendanceReport extends StatefulWidget {
   const AttendanceReport({super.key});
@@ -61,8 +59,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
   @override
   void initState() {
     super.initState();
-    final provider = context.read<AttendanceProvider>();
-    provider.isFirst ? _fetchSummary(month) : null;
+    _fetchSummary(month);
   }
 
   Future<void> _fetchSummary(int month) async {
