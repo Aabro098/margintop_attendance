@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 class AttendanceProvider with ChangeNotifier {
   String? _checkIn;
   String? _checkOut;
+  String? _location;
   bool _isAbsent = false;
   bool _isFirst = true;
 
@@ -10,15 +11,18 @@ class AttendanceProvider with ChangeNotifier {
   String? get checkOut => _checkOut;
   bool get isAbsent => _isAbsent;
   bool get isFirst => _isFirst;
+  String? get location => _location;
 
   Future<void> updateStatus({
     String? checkIn,
     String? checkOut,
     bool? isAbsent,
+    String? location,
   }) async {
     if (checkIn != null) _checkIn = checkIn;
     if (checkOut != null) _checkOut = checkOut;
     if (isAbsent != null) _isAbsent = isAbsent;
+    if (location != null) _location = location;
 
     notifyListeners();
   }

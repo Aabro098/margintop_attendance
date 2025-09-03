@@ -27,7 +27,9 @@ class AttendanceServices {
 
       if (data['message'] == "Success" && data["status"] == 1) {
         final String checkIn = formatToTime(data['data']['check_in_time']);
-        await provider.updateStatus(checkIn: checkIn);
+        await provider.updateStatus(
+            checkIn: checkIn,
+            location: status == "present" ? "Office" : "Home");
       }
 
       return data;

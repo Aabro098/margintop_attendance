@@ -34,10 +34,12 @@ class _AppState extends State<App> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('auth_token');
 
-    setState(() {
-      _isAuthenticated = (token != null && token.isNotEmpty);
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isAuthenticated = (token != null && token.isNotEmpty);
+        _isLoading = false;
+      });
+    }
   }
 
   @override

@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String selected = "Home";
+  String? selected;
   bool _isLoading = false;
   bool _isAbsent = false;
   bool _networkError = false;
@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeName();
       final provider = context.read<AttendanceProvider>();
+      selected = provider.location ?? "Home";
       provider.isFirst ? _getStatus() : null;
     });
   }
@@ -67,13 +68,14 @@ class _HomePageState extends State<HomePage> {
     try {
       String status;
       if (selected == "Home") {
-        status = "present";
-      } else if (selected == "Office") {
         status = "remote";
+      } else if (selected == "Office") {
+        status = "present";
       } else {
         showErrorSnackbar("Select valid option.", context: context);
         return;
       }
+
       final response = await AttendanceServices().checkIn(
         context: context,
         status: status,
@@ -167,8 +169,10 @@ class _HomePageState extends State<HomePage> {
             provider.updateStatus(isAbsent: true);
           } else if (status == "remote") {
             selected = "Home";
+            await provider.updateStatus(location: "Home");
           } else if (status == "present") {
             selected = "Office";
+            await provider.updateStatus(location: "Office");
           }
 
           if (checkIn != null) {
