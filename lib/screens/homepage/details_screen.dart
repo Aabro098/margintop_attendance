@@ -139,7 +139,6 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
                           : "<p>No record found.</p>",
                       style: {
                         "p": Style(
-                          color: Colors.red,
                           fontWeight: FontWeight.bold,
                           textAlign: TextAlign.center,
                         ),

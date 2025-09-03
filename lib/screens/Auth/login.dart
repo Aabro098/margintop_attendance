@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
           final name = response['data']['user']['name'];
           final email = response['data']['user']['email'];
 
-          UserPrefs().saveUser(name, email, token);
+          await UserPrefs().saveUser(name, email, token);
 
           Navigator.pushAndRemoveUntil(
             context,

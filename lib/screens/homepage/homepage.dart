@@ -154,23 +154,30 @@ class _HomePageState extends State<HomePage> {
       final response = await AttendanceServices().getStatus();
 
       if (response.message == "Success" && response.status == 1) {
-        String? checkIn = response.data.checkInTime;
-        String? checkOut = response.data.checkInTime;
-        String? status = response.data.status;
+        // If there’s at least one record, pick the first one
+        if (response.data.isNotEmpty) {
+          final attendance = response.data.first;
 
-        if (status == "absent") {
-          provider.updateStatus(isAbsent: true);
-        } else if (status == "remote") {
-          selected = "Home";
-        } else if (status == "present") {
-          selected = "Office";
-        }
-        if (checkIn != null) {
-          provider.updateStatus(checkIn: formatToTime(checkIn));
-        }
+          String? checkIn = attendance.checkInTime;
+          String? checkOut =
+              attendance.checkOutTime; // fixed: was using checkIn before
+          String? status = attendance.status;
 
-        if (checkOut != null) {
-          provider.updateStatus(checkOut: formatToTime(checkOut));
+          if (status == "absent") {
+            provider.updateStatus(isAbsent: true);
+          } else if (status == "remote") {
+            selected = "Home";
+          } else if (status == "present") {
+            selected = "Office";
+          }
+
+          if (checkIn != null) {
+            provider.updateStatus(checkIn: formatToTime(checkIn));
+          }
+
+          if (checkOut != null) {
+            provider.updateStatus(checkOut: formatToTime(checkOut));
+          }
         }
 
         provider.first = false;
@@ -217,7 +224,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Center(
               child: AutoSizeText(
-                "Welcome, ${name} !",
+                "Welcome, $name !",
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: isDarkMode

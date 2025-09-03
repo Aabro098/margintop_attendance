@@ -26,8 +26,8 @@ class AttendanceServices {
       final Map<String, dynamic> data = response.data;
 
       if (data['message'] == "Success" && data["status"] == 1) {
-        final String checkIn = formatToTime(data['data']['check_in']);
-        provider.updateStatus(checkIn: checkIn);
+        final String checkIn = formatToTime(data['data']['check_in_time']);
+        await provider.updateStatus(checkIn: checkIn);
       }
 
       return data;
@@ -54,7 +54,7 @@ class AttendanceServices {
       final Map<String, dynamic> data = response.data;
 
       if (data['message'] == "Success" && data["status"] == 1) {
-        final String checkOut = formatToTime(data['data']['check_out']);
+        final String checkOut = formatToTime(data['data']['check_out_time']);
         provider.updateStatus(checkOut: checkOut);
       }
 

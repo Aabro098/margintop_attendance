@@ -1,7 +1,7 @@
 import 'package:margintop_solutions/models/user_model.dart';
 
 class AttendanceResponse {
-  final AttendanceData data;
+  final List<AttendanceData> data;
   final int count;
   final String message;
   final int status;
@@ -15,31 +15,37 @@ class AttendanceResponse {
 
   factory AttendanceResponse.fromJson(Map<String, dynamic> json) {
     return AttendanceResponse(
-      data: AttendanceData.fromJson(json['data']),
-      count: json['count'],
-      message: json['message'],
-      status: json['status'],
+      data: (json['data'] is List)
+          ? (json['data'] as List)
+              .map((e) => AttendanceData.fromJson(e))
+              .toList()
+          : (json['data'] == null
+              ? []
+              : [AttendanceData.fromJson(json['data'])]),
+      count: json['count'] ?? 0,
+      message: json['message'] ?? '',
+      status: json['status'] ?? 0,
     );
   }
 }
 
 class AttendanceData {
-  final int id;
+  final int? id;
   final String? attendanceDate;
   final String? checkInTime;
   final String? checkOutTime;
   final String? status;
   final String? workSummary;
-  final User user;
+  final User? user;
 
   AttendanceData({
-    required this.id,
+    this.id,
     this.attendanceDate,
     this.checkInTime,
     this.checkOutTime,
     this.status,
     this.workSummary,
-    required this.user,
+    this.user,
   });
 
   factory AttendanceData.fromJson(Map<String, dynamic> json) {
@@ -50,7 +56,7 @@ class AttendanceData {
       checkOutTime: json['check_out_time'],
       status: json['status'],
       workSummary: json['work_summary'],
-      user: User.fromJson(json['user']),
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
   }
 }
