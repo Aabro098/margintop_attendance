@@ -12,6 +12,7 @@ import 'package:margintop_solutions/utils/constants/image_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
 
 //* The login screen uses the text field data which is a text form field in the common widgets
 class LoginScreen extends StatefulWidget {
@@ -50,6 +51,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
           showSuccessSnackbar(response['message'], context: context);
+          final token = response['data']['token'];
+          final name = response['data']['user']['name'];
+          final email = response['data']['user']['email'];
+
+          UserPrefs().saveUser(name, email, token);
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(

@@ -19,8 +19,8 @@ import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
-import 'package:margintop_solutions/utils/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,11 +36,26 @@ class _HomePageState extends State<HomePage> {
   bool _networkError = false;
   final TextEditingController _reasonController = TextEditingController();
 
+  String? name;
+
   @override
   void initState() {
-    final provider = context.read<AttendanceProvider>();
     super.initState();
-    provider.isFirst ? _getStatus() : null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeName();
+      final provider = context.read<AttendanceProvider>();
+      provider.isFirst ? _getStatus() : null;
+    });
+  }
+
+  Future<void> _initializeName() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storedName = prefs.getString('name') ?? '...';
+    if (mounted) {
+      setState(() {
+        name = storedName;
+      });
+    }
   }
 
   Future<void> _checkIn() async {
@@ -136,12 +151,9 @@ class _HomePageState extends State<HomePage> {
     }
     try {
       final provider = context.read<AttendanceProvider>();
-      final userProvider = context.read<UserProvider>();
       final response = await AttendanceServices().getStatus();
 
       if (response.message == "Success" && response.status == 1) {
-        userProvider.setUserFromModel(response.data.user);
-
         String? checkIn = response.data.checkInTime;
         String? checkOut = response.data.checkInTime;
         String? status = response.data.status;
@@ -203,20 +215,16 @@ class _HomePageState extends State<HomePage> {
               left: AppSizes.padding,
               right: AppSizes.padding,
             ),
-            child: Consumer<UserProvider>(
-              builder: (context, provider, child) {
-                return Center(
-                  child: AutoSizeText(
-                    "Welcome, ${provider.name} !",
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: isDarkMode
-                          ? theme.colorScheme.primary
-                          : AppColorsLight.logoColor,
-                    ),
-                  ),
-                );
-              },
+            child: Center(
+              child: AutoSizeText(
+                "Welcome, ${name} !",
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: isDarkMode
+                      ? theme.colorScheme.primary
+                      : AppColorsLight.logoColor,
+                ),
+              ),
             ),
           ),
           const SizedBox(

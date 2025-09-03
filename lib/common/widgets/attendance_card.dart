@@ -79,12 +79,12 @@ class _AttendanceCardState extends State<AttendanceCard> {
               value: formatToTime(widget.checkOut),
               color: Colors.red,
             ),
-            details(
-              theme,
-              label: "Work Hour",
-              value: widget.workHour,
-              color: Colors.orange,
-            ),
+            // details(
+            //   theme,
+            //   label: "Work Hour",
+            //   value: widget.workHour,
+            //   color: Colors.orange,
+            // ),
           ],
         ),
       ],
