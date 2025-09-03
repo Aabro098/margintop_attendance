@@ -52,7 +52,7 @@ class AttendanceReport extends StatefulWidget {
 
 class _AttendanceReportState extends State<AttendanceReport> {
   bool _isLoading = false;
-  int month = DateTime.now().month - 1;
+  int month = DateTime.now().month;
   int year = DateTime.now().year;
 
   int? present;
@@ -74,6 +74,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
     try {
       final response =
           await AttendanceServices().getSummaryMonth(year: year, month: month);
+
       if (response.status == 1 && response.message == "Success") {
         if (mounted) {
           setState(() {

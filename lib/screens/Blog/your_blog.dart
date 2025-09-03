@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/screens/Blog/add_blog.dart';
-import 'package:margintop_solutions/screens/Blog/blog_card.dart';
+import 'package:margintop_solutions/screens/Blog/blog_details.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/providers/index_provider.dart';
@@ -53,11 +53,9 @@ class _YourBlogState extends State<YourBlog> {
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(
-                        bottom: index == 1 ? 62 : AppSizes.md,
+                        bottom: index == 1 ? 62 : AppSizes.sm,
                       ),
-                      child: const BlogCard(
-                        title: 'pending',
-                      ),
+                      child: BlogTile(theme: theme),
                     );
                   },
                 ),
@@ -83,6 +81,70 @@ class _YourBlogState extends State<YourBlog> {
             ),
             icon: const Icon(
               Iconsax.add,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BlogTile extends StatelessWidget {
+  const BlogTile({
+    super.key,
+    required this.theme,
+  });
+
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return const BlogDetails();
+          },
+        ));
+      },
+      child: ListTile(
+        dense: true,
+        tileColor: Colors.blue.shade50,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.padding,
+          vertical: AppSizes.xs,
+        ),
+        minVerticalPadding: AppSizes.xs,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.md),
+        ),
+        title: AutoSizeText(
+          "Title",
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        subtitle: AutoSizeText(
+          "This is the short description of the blog. This is written on the basis of the content of the blog. It is the provied outcome.",
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w400,
+            color: Colors.black87,
+          ),
+        ),
+        trailing: Container(
+          padding: const EdgeInsets.all(AppSizes.sm),
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(AppSizes.md),
+          ),
+          child: AutoSizeText(
+            "Pending",
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w500,
               color: Colors.white,
             ),
           ),
