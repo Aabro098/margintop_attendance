@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _initializeName() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final storedName = prefs.getString('name') ?? '...';
+    final storedName = prefs.getString('name');
     if (mounted) {
       setState(() {
         name = storedName;

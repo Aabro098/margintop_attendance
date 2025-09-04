@@ -27,7 +27,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final bool isDarkMode = DeviceUtility.isDarkMode(context);
 
     return Padding(
-      padding: const EdgeInsets.only(right: AppSizes.sm),
+      padding: const EdgeInsets.only(right: AppSizes.md),
       child: Container(
         decoration: BoxDecoration(
           color: theme.colorScheme.secondary,
@@ -125,28 +125,3 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 }
-
-
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: AppSizes.padding),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       IconButton(
-            //         icon: const FaIcon(FontAwesomeIcons.facebook),
-            //         color: Colors.blue.shade800,
-            //         onPressed: () {},
-            //       ),
-            //       IconButton(
-            //         icon: const FaIcon(FontAwesomeIcons.instagram),
-            //         color: Colors.pinkAccent,
-            //         onPressed: () {},
-            //       ),
-            //       IconButton(
-            //         icon: const FaIcon(FontAwesomeIcons.linkedin),
-            //         color: Colors.blueAccent.shade700,
-            //         onPressed: () {},
-            //       ),
-            //     ],
-            //   ),
-            // )

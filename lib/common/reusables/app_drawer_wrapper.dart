@@ -42,7 +42,7 @@ class _AppDrawerWrapperState extends State<AppDrawerWrapper> {
         ),
       ),
       childDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(36.0),
       ),
       drawer: widget.drawer,
       child: widget.child,
