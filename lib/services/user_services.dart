@@ -49,7 +49,7 @@ class UserServices {
         'new_password': confirmPassword,
       });
 
-      final response = await dio.put('/user/update-password', data: formData);
+      final response = await dio.post('/user/update-password', data: formData);
 
       final Map<String, dynamic> data = response.data;
 

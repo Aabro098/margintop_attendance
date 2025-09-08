@@ -46,6 +46,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               'Password Changed Successfully.',
               context: context,
             );
+            Navigator.pop(context);
           } else {
             showErrorSnackbar('Could not change password.', context: context);
           }
