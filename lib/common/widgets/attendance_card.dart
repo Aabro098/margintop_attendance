@@ -25,6 +25,24 @@ class AttendanceCard extends StatefulWidget {
 }
 
 class _AttendanceCardState extends State<AttendanceCard> {
+  String status = '';
+  String checkStatus() {
+    if (mounted) {
+      setState(() {
+        if (widget.status.toLowerCase() == "present") {
+          status = "Present";
+        } else if (widget.status.toLowerCase() == "absent") {
+          status = "Absent";
+        } else if (widget.status.toLowerCase() == "remote") {
+          status = "Remote";
+        } else {
+          status = "N/A";
+        }
+      });
+    }
+    return status;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -53,7 +71,7 @@ class _AttendanceCardState extends State<AttendanceCard> {
                 vertical: AppSizes.sm,
               ),
               child: AutoSizeText(
-                widget.status,
+                checkStatus(),
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: Colors.white,
                 ),
@@ -79,12 +97,6 @@ class _AttendanceCardState extends State<AttendanceCard> {
               value: formatToTime(widget.checkOut),
               color: Colors.red,
             ),
-            // details(
-            //   theme,
-            //   label: "Work Hour",
-            //   value: widget.workHour,
-            //   color: Colors.orange,
-            // ),
           ],
         ),
       ],

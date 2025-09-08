@@ -8,8 +8,6 @@ import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
-import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
-import 'package:provider/provider.dart';
 
 class AttendanceReport extends StatefulWidget {
   const AttendanceReport({super.key});
@@ -52,7 +50,7 @@ class AttendanceReport extends StatefulWidget {
 
 class _AttendanceReportState extends State<AttendanceReport> {
   bool _isLoading = false;
-  int month = DateTime.now().month - 1;
+  int month = DateTime.now().month;
   int year = DateTime.now().year;
 
   int? present;
@@ -61,8 +59,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
   @override
   void initState() {
     super.initState();
-    final provider = context.read<AttendanceProvider>();
-    provider.isFirst ? _fetchSummary(month) : null;
+    _fetchSummary(month);
   }
 
   Future<void> _fetchSummary(int month) async {
@@ -74,6 +71,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
     try {
       final response =
           await AttendanceServices().getSummaryMonth(year: year, month: month);
+
       if (response.status == 1 && response.message == "Success") {
         if (mounted) {
           setState(() {
