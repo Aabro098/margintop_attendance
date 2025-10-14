@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Blog/add_blog.dart';
 import 'package:margintop_solutions/screens/Blog/blog_details.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
@@ -18,8 +19,6 @@ class YourBlog extends StatefulWidget {
 class _YourBlogState extends State<YourBlog> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return PopScope(
       canPop: false, // block system back entirely
       onPopInvokedWithResult: (didPop, result) {
@@ -38,7 +37,7 @@ class _YourBlogState extends State<YourBlog> {
                 child: AutoSizeText(
                   "Your Blogs",
                   overflow: TextOverflow.visible,
-                  style: theme.textTheme.headlineMedium?.copyWith(
+                  style: context.textTheme.headlineMedium?.copyWith(
                     color: AppColorsLight.logoColor,
                   ),
                 ),
@@ -55,7 +54,7 @@ class _YourBlogState extends State<YourBlog> {
                       padding: EdgeInsets.only(
                         bottom: index == 1 ? 62 : AppSizes.sm,
                       ),
-                      child: BlogTile(theme: theme),
+                      child: const BlogTile(),
                     );
                   },
                 ),
@@ -73,10 +72,10 @@ class _YourBlogState extends State<YourBlog> {
                 },
               ));
             },
-            backgroundColor: theme.colorScheme.secondary,
+            backgroundColor: context.colorScheme.secondary,
             label: AutoSizeText(
               "Add Blog",
-              style: theme.textTheme.titleMedium
+              style: context.textTheme.titleMedium
                   ?.copyWith(fontWeight: FontWeight.w500, color: Colors.white),
             ),
             icon: const Icon(
@@ -93,10 +92,7 @@ class _YourBlogState extends State<YourBlog> {
 class BlogTile extends StatelessWidget {
   const BlogTile({
     super.key,
-    required this.theme,
   });
-
-  final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +117,7 @@ class BlogTile extends StatelessWidget {
         ),
         title: AutoSizeText(
           "Title",
-          style: theme.textTheme.titleLarge?.copyWith(
+          style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w600,
             color: Colors.black87,
           ),
@@ -130,7 +126,7 @@ class BlogTile extends StatelessWidget {
           "This is the short description of the blog. This is written on the basis of the content of the blog. It is the provied outcome.",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.titleSmall?.copyWith(
+          style: context.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w400,
             color: Colors.black87,
           ),
@@ -143,7 +139,7 @@ class BlogTile extends StatelessWidget {
           ),
           child: AutoSizeText(
             "Pending",
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: context.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w500,
               color: Colors.white,
             ),

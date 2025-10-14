@@ -99,34 +99,29 @@ void showInfoSnackbar(
 }
 
 String formatToTime(String time) {
+  if (time.isEmpty) return '';
+
   DateTime dateTime;
 
-  if (time.isEmpty || time == '') {
-    return '';
-  }
-
   if (time.contains("T")) {
-    // ✅ Case 1: Full ISO datetime string
-    dateTime = DateTime.parse(time).toUtc();
+    // Case 1: Full ISO datetime string (e.g., "2025-10-14T14:30:00Z")
+    dateTime = DateTime.parse(time);
   } else {
-    // ✅ Case 2: Plain time (HH:mm:ss), assume today’s date
-    final now = DateTime.now().toUtc();
+    // Case 2: Plain time (HH:mm:ss)
+    final now = DateTime.now();
     final parts = time.split(":");
-    dateTime = DateTime.utc(
+    dateTime = DateTime(
       now.year,
       now.month,
       now.day,
       int.parse(parts[0]),
       int.parse(parts[1]),
-      int.parse(parts[2]),
+      parts.length > 2 ? int.parse(parts[2]) : 0,
     );
   }
 
-  // ✅ Add +5:45 offset (Nepal Time)
-  const nepalOffset = Duration(hours: 5, minutes: 45);
-  final nepalTime = dateTime.add(nepalOffset);
-
   // ✅ Format to AM/PM (e.g. 7:48 AM, 10:45 PM)
-  final formatter = DateFormat.jm();
-  return formatter.format(nepalTime);
+  final formatter =
+      DateFormat.jm(); // Uses device locale, no timezone conversion
+  return formatter.format(dateTime);
 }

@@ -3,9 +3,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:margintop_solutions/common/reusables/loading_animation.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/common/widgets/attendance_card.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
@@ -95,7 +96,6 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Attendance Details"),
@@ -105,7 +105,7 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
         padding: const EdgeInsets.all(AppSizes.padding),
         child: _isLoading
             ? const Center(
-                child: LoadingAnimation(height: 120, width: double.infinity),
+                child: LoadingIndicator(),
               )
             : SingleChildScrollView(
                 child: Column(
@@ -123,7 +123,7 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
                     _isAbsent
                         ? AutoSizeText(
                             "Absent",
-                            style: theme.textTheme.titleMedium?.copyWith(
+                            style: context.textTheme.titleMedium?.copyWith(
                               color: Colors.red,
                               fontWeight: FontWeight.w600,
                             ),

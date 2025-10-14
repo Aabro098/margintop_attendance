@@ -1,35 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({
     super.key,
   });
-
-  static Widget _rowDetails(
-    ThemeData theme, {
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        AutoSizeText(
-          label,
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        AutoSizeText(
-          value,
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   State<ProfileDetails> createState() => _ProfileDetailsState();
@@ -38,8 +15,6 @@ class ProfileDetails extends StatefulWidget {
 class _ProfileDetailsState extends State<ProfileDetails> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       padding: const EdgeInsets.all(AppSizes.padding),
       decoration: BoxDecoration(
@@ -51,21 +26,42 @@ class _ProfileDetailsState extends State<ProfileDetails> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ProfileDetails._rowDetails(
-            theme,
+          rowDetails(
             label: 'DOB',
             value: 'To be updated',
           ),
           const SizedBox(
             height: AppSizes.sm,
           ),
-          ProfileDetails._rowDetails(
-            theme,
+          rowDetails(
             label: 'Phone',
             value: 'To be updated',
           ),
         ],
       ),
+    );
+  }
+
+  Widget rowDetails({
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        AutoSizeText(
+          label,
+          style: context.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        AutoSizeText(
+          value,
+          style: context.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -2,7 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_solutions/common/reusables/loading_animation.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
@@ -152,7 +152,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
           ),
           const SizedBox(height: AppSizes.formHeight),
           _isLoading
-              ? const LoadingAnimation(height: 100, width: double.infinity)
+              ? const LoadingIndicator()
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

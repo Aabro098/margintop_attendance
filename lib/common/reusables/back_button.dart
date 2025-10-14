@@ -1,14 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 
 class AppBackButton extends StatefulWidget {
   const AppBackButton({
     super.key,
-    required this.theme,
   });
-
-  final ThemeData theme;
 
   @override
   State<AppBackButton> createState() => _AppBackButtonState();
@@ -39,7 +37,7 @@ class _AppBackButtonState extends State<AppBackButton> {
             ),
             AutoSizeText(
               'Back',
-              style: widget.theme.textTheme.titleMedium?.copyWith(
+              style: context.textTheme.titleMedium?.copyWith(
                 color: Colors.white,
               ),
             )

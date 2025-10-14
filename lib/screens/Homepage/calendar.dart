@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Homepage/details_screen.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/providers/index_provider.dart';
@@ -19,7 +20,6 @@ class _AppCalendarState extends State<AppCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -37,8 +37,8 @@ class _AppCalendarState extends State<AppCalendar> {
                 AutoSizeText(
                   "Calendar",
                   overflow: TextOverflow.visible,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    color: theme.colorScheme.primary,
+                  style: context.textTheme.headlineMedium?.copyWith(
+                    color: context.colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: AppSizes.sm),

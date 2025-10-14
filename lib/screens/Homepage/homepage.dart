@@ -4,19 +4,19 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
-import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/absent.dart';
 import 'package:margintop_solutions/common/widgets/attendance_report.dart';
 import 'package:margintop_solutions/common/widgets/clock_widget.dart';
 import 'package:margintop_solutions/common/widgets/heading_title.dart';
 import 'package:margintop_solutions/common/widgets/time_info.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Homepage/checkout_details.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/image_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
-import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
@@ -160,8 +160,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,10 +175,10 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: AutoSizeText(
                 "Welcome, $name !",
-                style: theme.textTheme.titleLarge?.copyWith(
+                style: context.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isDarkMode
-                      ? theme.colorScheme.primary
+                  color: context.isDarkMode
+                      ? context.colorScheme.primary
                       : AppColorsLight.logoColor,
                 ),
               ),
@@ -190,7 +188,7 @@ class _HomePageState extends State<HomePage> {
             height: AppSizes.md,
           ),
           RefreshIndicator(
-            color: theme.colorScheme.primary,
+            color: context.colorScheme.primary,
             onRefresh: () {
               return _getStatus();
             },
@@ -207,15 +205,10 @@ class _HomePageState extends State<HomePage> {
                         return Container(
                           padding: const EdgeInsets.all(AppSizes.padding),
                           decoration: BoxDecoration(
-                            color: isDarkMode ? Colors.white10 : Colors.white30,
+                            color: context.isDarkMode
+                                ? Colors.white10
+                                : Colors.white30,
                             borderRadius: BorderRadius.circular(AppSizes.lg),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: AppSizes.lg,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
                           ),
                           child: _networkError
                               ? Center(
@@ -250,7 +243,6 @@ class _HomePageState extends State<HomePage> {
                                                             selected = "Home");
                                                       }
                                                     },
-                                              theme: theme,
                                               isCheckIn: provider.checkIn,
                                             ),
                                             const SizedBox(width: 12),
@@ -267,7 +259,6 @@ class _HomePageState extends State<HomePage> {
                                                                 "Office");
                                                       }
                                                     },
-                                              theme: theme,
                                               isCheckIn: provider.checkIn,
                                             ),
                                           ],
@@ -276,10 +267,7 @@ class _HomePageState extends State<HomePage> {
                                         const RealTimeClock(),
                                         const SizedBox(height: AppSizes.md),
                                         _isLoading
-                                            ? const ShimmerLoading(
-                                                height: 42,
-                                                width: 172,
-                                              )
+                                            ? const LoadingIndicator()
                                             : SizedBox(
                                                 width: 172,
                                                 child: ElevatedButton(
@@ -292,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                                                                 null
                                                             ? Colors.green
                                                             : Colors.red
-                                                        : theme.colorScheme
+                                                        : context.colorScheme
                                                             .primary,
                                                     shape:
                                                         RoundedRectangleBorder(
@@ -378,7 +366,6 @@ class _HomePageState extends State<HomePage> {
     required String text,
     required IconData icon,
     required bool selected,
-    required ThemeData theme,
     required VoidCallback? onTap,
     required String? isCheckIn,
   }) {
@@ -387,23 +374,23 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? theme.colorScheme.primary : Colors.transparent,
+          color: selected ? context.colorScheme.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: theme.colorScheme.primary),
+          border: Border.all(color: context.colorScheme.primary),
         ),
         child: Row(
           children: [
             Icon(
               icon,
-              color: selected ? Colors.white : theme.colorScheme.primary,
+              color: selected ? Colors.white : context.colorScheme.primary,
               size: AppSizes.iconSm,
             ),
             const SizedBox(width: AppSizes.md),
             AutoSizeText(
               text,
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: context.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: selected ? Colors.white : theme.colorScheme.primary,
+                color: selected ? Colors.white : context.colorScheme.primary,
               ),
             ),
           ],

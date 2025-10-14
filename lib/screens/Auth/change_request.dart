@@ -3,8 +3,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/back_button.dart';
-import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/user_services.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 
@@ -68,8 +69,6 @@ class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
 
   @override
   Widget build(BuildContext context) {
-    // final bool isDarkMode = DeviceUtility.isDarkMode(context);
-    final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -81,15 +80,13 @@ class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppBackButton(
-                  theme: theme,
-                ),
+                const AppBackButton(),
                 const SizedBox(
                   height: 102,
                 ),
                 AutoSizeText(
                   "Forgot you password? Don't worry workmate you can request for a change here.",
-                  style: theme.textTheme.titleLarge,
+                  style: context.textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -112,10 +109,7 @@ class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
                   height: 32,
                 ),
                 _isLoading
-                    ? const ShimmerLoading(
-                        height: 48,
-                        width: double.infinity,
-                      )
+                    ? const LoadingIndicator()
                     : ElevatedButton(
                         onPressed: () {
                           _isLoading ? null : _handleRequest();
