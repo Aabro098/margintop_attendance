@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
 import 'package:margintop_solutions/common/widgets/animation_slide.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Blog/blog_card.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
@@ -18,8 +19,6 @@ class MainBlog extends StatefulWidget {
 class _MainBlogState extends State<MainBlog> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return PopScope(
       canPop: false, // block system back entirely
       onPopInvokedWithResult: (didPop, result) {
@@ -46,7 +45,7 @@ class _MainBlogState extends State<MainBlog> {
                 child: AutoSizeText(
                   "Blog",
                   overflow: TextOverflow.visible,
-                  style: theme.textTheme.headlineMedium?.copyWith(
+                  style: context.textTheme.headlineMedium?.copyWith(
                     color: AppColorsLight.logoColor,
                   ),
                 ),

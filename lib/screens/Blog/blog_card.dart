@@ -1,7 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:margintop_solutions/common/reusables/loading_animation.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -40,13 +41,9 @@ class _BlogCardState extends State<BlogCard> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     if (_html == null) {
       return const Center(
-        child: LoadingAnimation(
-          height: 120,
-          width: double.infinity,
-        ),
+        child: LoadingIndicator(),
       );
     }
     return Container(
@@ -67,7 +64,7 @@ class _BlogCardState extends State<BlogCard> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: theme.colorScheme.secondary,
+                    color: context.colorScheme.secondary,
                     width: 2,
                   ),
                 ),
@@ -87,7 +84,7 @@ class _BlogCardState extends State<BlogCard> {
                 children: [
                   AutoSizeText(
                     "Arbin Shrestha",
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    style: context.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
@@ -95,7 +92,7 @@ class _BlogCardState extends State<BlogCard> {
                   widget.title == "pending"
                       ? AutoSizeText(
                           "Pending",
-                          style: theme.textTheme.titleSmall?.copyWith(
+                          style: context.textTheme.titleSmall?.copyWith(
                               fontWeight: FontWeight.bold, color: Colors.green),
                         )
                       : const SizedBox.shrink(),

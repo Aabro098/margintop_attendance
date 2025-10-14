@@ -3,7 +3,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
@@ -145,7 +145,7 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
               SizedBox(
                 width: 172,
                 child: _isLoading
-                    ? const ShimmerLoading(height: 48, width: 172)
+                    ? const LoadingIndicator()
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,

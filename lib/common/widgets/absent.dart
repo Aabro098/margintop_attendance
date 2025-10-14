@@ -2,7 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/reusables/text_dialog.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
@@ -84,7 +84,7 @@ class _AbsentButtonState extends State<AbsentButton> {
                     child: SizedBox(
                       width: 172,
                       child: _isAbsent
-                          ? const ShimmerLoading(height: 42, width: 172)
+                          ? const LoadingIndicator()
                           : ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red,

@@ -8,7 +8,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/app_drawer_wrapper.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
-import 'package:margintop_solutions/common/reusables/loading_animation.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/reusables/menu_icon.dart';
 import 'package:margintop_solutions/common/widgets/animation_slide.dart';
 import 'package:margintop_solutions/common/widgets/custom_drawer.dart';
@@ -302,10 +302,7 @@ class _AppSettingsState extends State<AppSettings> {
                         showArrow: true,
                       ),
                       _isLoading
-                          ? const LoadingAnimation(
-                              height: 100,
-                              width: double.infinity,
-                            )
+                          ? const LoadingIndicator()
                           : SettingItem(
                               icon: Iconsax.logout,
                               label: "Logout",

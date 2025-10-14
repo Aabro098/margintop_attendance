@@ -3,14 +3,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
-import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Auth/change_request.dart';
 import 'package:margintop_solutions/services/user_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/image_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
-import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
 
@@ -91,8 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final bool isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -108,16 +106,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      isDarkMode ? AppLogos.markDark : AppLogos.markWhite,
+                      context.isDarkMode
+                          ? AppLogos.markDark
+                          : AppLogos.markWhite,
                       height: MediaQuery.of(context).size.height * 0.2,
                       width: MediaQuery.of(context).size.width * 0.8,
                     ),
                   ),
                   AutoSizeText(
                     'This is MarginTop Solutions User App.',
-                    style: theme.textTheme.titleLarge?.copyWith(
+                    style: context.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: theme.colorScheme.primary,
+                      color: context.colorScheme.primary,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -171,10 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: AppSizes.md,
                   ),
                   _isLoading
-                      ? const ShimmerLoading(
-                          height: 48,
-                          width: double.infinity,
-                        )
+                      ? const LoadingIndicator()
                       : ElevatedButton(
                           onPressed: () {
                             _isLoading ? null : _handleLogin();

@@ -2,7 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_solutions/common/reusables/shimmer.dart';
+import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/services/user_services.dart';
@@ -75,7 +75,6 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    // final bool isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Change Password"),
@@ -134,7 +133,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 const SizedBox(height: AppSizes.xl),
                 _isLoading
-                    ? const ShimmerLoading(height: 48, width: double.infinity)
+                    ? const LoadingIndicator()
                     : ElevatedButton(
                         onPressed: () {
                           _isLoading ? null : _handleChangePassword();
