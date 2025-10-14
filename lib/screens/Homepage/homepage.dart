@@ -167,23 +167,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           const HeadingTitle(),
           const SizedBox(height: AppSizes.md),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: AppSizes.padding,
-              right: AppSizes.padding,
-            ),
-            child: Center(
-              child: AutoSizeText(
-                "Welcome, $name !",
-                style: context.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: context.isDarkMode
-                      ? context.colorScheme.primary
-                      : AppColorsLight.logoColor,
-                ),
-              ),
-            ),
-          ),
+          _nameTitle(context),
           const SizedBox(
             height: AppSizes.md,
           ),
@@ -268,58 +252,7 @@ class _HomePageState extends State<HomePage> {
                                         const SizedBox(height: AppSizes.md),
                                         _isLoading
                                             ? const LoadingIndicator()
-                                            : SizedBox(
-                                                width: 172,
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: provider
-                                                                .checkIn !=
-                                                            null
-                                                        ? provider.checkOut !=
-                                                                null
-                                                            ? Colors.green
-                                                            : Colors.red
-                                                        : context.colorScheme
-                                                            .primary,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        AppSizes.md,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  onPressed: () async {
-                                                    if (provider.checkIn ==
-                                                        null) {
-                                                      _checkIn();
-                                                    } else if (provider
-                                                                .checkIn !=
-                                                            null &&
-                                                        provider.checkOut ==
-                                                            null) {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const CheckoutDetails(),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      null;
-                                                    }
-                                                  },
-                                                  child: Text(
-                                                    provider.checkIn != null
-                                                        ? provider.checkOut !=
-                                                                null
-                                                            ? "Done"
-                                                            : "Check Out"
-                                                        : "Check In",
-                                                  ),
-                                                ),
-                                              ),
+                                            : _attendanceButton(provider),
                                         const SizedBox(height: AppSizes.md),
                                         Row(
                                           mainAxisAlignment:
@@ -358,6 +291,67 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  SizedBox _attendanceButton(AttendanceProvider provider) {
+    return SizedBox(
+      width: 172,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: provider.checkIn != null
+              ? provider.checkOut != null
+                  ? Colors.green
+                  : Colors.red
+              : context.colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+              AppSizes.md,
+            ),
+          ),
+        ),
+        onPressed: () async {
+          if (provider.checkIn == null) {
+            _checkIn();
+          } else if (provider.checkIn != null && provider.checkOut == null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CheckoutDetails(),
+              ),
+            );
+          } else {
+            null;
+          }
+        },
+        child: Text(
+          provider.checkIn != null
+              ? provider.checkOut != null
+                  ? "Done"
+                  : "Check Out"
+              : "Check In",
+        ),
+      ),
+    );
+  }
+
+  Widget _nameTitle(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: AppSizes.padding,
+        right: AppSizes.padding,
+      ),
+      child: Center(
+        child: AutoSizeText(
+          "Welcome, $name !",
+          style: context.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.isDarkMode
+                ? context.colorScheme.primary
+                : AppColorsLight.logoColor,
+          ),
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ class AppElevatedButtonTheme {
   /// Static variable for Elevated Button (Light)
   static ElevatedButtonThemeData lightTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      splashFactory: NoSplash.splashFactory,
       backgroundColor: AppColorsLight.secondary,
       foregroundColor: Colors.white, // Text/Icon color
       minimumSize: const Size(double.infinity, 42),
@@ -19,6 +20,7 @@ class AppElevatedButtonTheme {
   );
   static ElevatedButtonThemeData darkTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      splashFactory: NoSplash.splashFactory,
       backgroundColor: AppColorsDark.secondary,
       foregroundColor: Colors.white, // Dark surface for contrast
       minimumSize: const Size(double.infinity, 42),

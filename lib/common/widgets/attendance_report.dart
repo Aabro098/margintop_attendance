@@ -2,12 +2,12 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
-import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AttendanceReport extends StatefulWidget {
   const AttendanceReport({super.key});
@@ -95,96 +95,56 @@ class _AttendanceReportState extends State<AttendanceReport> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = DeviceUtility.isDarkMode(context);
-    final theme = Theme.of(context);
-
     return Container(
       padding: const EdgeInsets.all(AppSizes.md),
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.white10 : Colors.white30,
+        color: context.isDarkMode ? Colors.white10 : Colors.white30,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 12, offset: Offset(0, 4))
-        ],
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AutoSizeText(
-                "Attendance for this month",
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              // CustomMonthDropdown(
-              //   months: const [
-              //     "JAN",
-              //     "FEB",
-              //     "MAR",
-              //     "APR",
-              //     "MAY",
-              //     "JUN",
-              //     "JUL",
-              //     "AUG",
-              //     "SEP",
-              //     "OCT",
-              //     "NOV",
-              //     "DEC"
-              //   ],
-              //   initialMonth: const [
-              //     "JAN",
-              //     "FEB",
-              //     "MAR",
-              //     "APR",
-              //     "MAY",
-              //     "JUN",
-              //     "JUL",
-              //     "AUG",
-              //     "SEP",
-              //     "OCT",
-              //     "NOV",
-              //     "DEC"
-              //   ][DateTime.now().month - 1], // current month
-              // ),
-            ],
+          AutoSizeText(
+            "Attendance for this month",
+            style: context.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: AppSizes.formHeight),
-          _isLoading
-              ? const LoadingIndicator()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: AttendanceReport._buildAttendanceCard(
-                        "Present",
-                        present != null ? present.toString() : "0",
-                        Colors.green,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: AppSizes.sm,
-                    ),
-                    Expanded(
-                      child: AttendanceReport._buildAttendanceCard(
-                        "Absent",
-                        absent != null ? absent.toString() : "0",
-                        Colors.red,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: AppSizes.sm,
-                    ),
-                    Expanded(
-                      child: AttendanceReport._buildAttendanceCard(
-                        "Work Hour",
-                        totalHours != null ? totalHours.toString() : "0",
-                        Colors.orange,
-                      ),
-                    ),
-                  ],
+          Skeletonizer(
+            enabled: _isLoading,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: AttendanceReport._buildAttendanceCard(
+                    "Present",
+                    present != null ? present.toString() : "0",
+                    Colors.green,
+                  ),
                 ),
+                const SizedBox(
+                  width: AppSizes.sm,
+                ),
+                Expanded(
+                  child: AttendanceReport._buildAttendanceCard(
+                    "Absent",
+                    absent != null ? absent.toString() : "0",
+                    Colors.red,
+                  ),
+                ),
+                const SizedBox(
+                  width: AppSizes.sm,
+                ),
+                Expanded(
+                  child: AttendanceReport._buildAttendanceCard(
+                    "Work Hour",
+                    totalHours != null ? totalHours.toString() : "0",
+                    Colors.orange,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
