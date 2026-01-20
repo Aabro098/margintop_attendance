@@ -26,7 +26,7 @@ class _AppDrawerWrapperState extends State<AppDrawerWrapper> {
 
     return AdvancedDrawer(
       controller: widget.controller,
-      openRatio: 0.7,
+      openRatio: 0.4,
       openScale: 0.8,
       animationCurve: Curves.easeInOut,
       backdrop: Container(

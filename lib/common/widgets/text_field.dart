@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 
 class TextFieldData extends StatefulWidget {
   const TextFieldData({
@@ -7,19 +9,17 @@ class TextFieldData extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.controller,
     this.validator,
-    this.enabled = true,
     this.isPassword = false,
     this.maxLines = 1,
-    this.focusNode,
+    this.prefixIcon,
   });
   final String hintText;
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-  final bool enabled;
   final bool isPassword;
   final int? maxLines;
-  final FocusNode? focusNode;
+  final IconData? prefixIcon;
   @override
   State<TextFieldData> createState() => _TextFieldDataState();
 }
@@ -30,7 +30,7 @@ class _TextFieldDataState extends State<TextFieldData> {
   @override
   void initState() {
     super.initState();
-    _obscureText = widget.isPassword; // Initialize based on isPassword
+    _obscureText = widget.isPassword;
   }
 
   @override
@@ -39,24 +39,32 @@ class _TextFieldDataState extends State<TextFieldData> {
       controller: widget.controller,
       validator: widget.validator,
       keyboardType: widget.keyboardType,
-      enabled: widget.enabled,
+      autovalidateMode: AutovalidateMode.onUnfocus,
       maxLines: widget.isPassword ? 1 : widget.maxLines,
       autofocus: false,
-      focusNode: widget.focusNode,
+      textInputAction: TextInputAction.done,
       obscureText: widget.isPassword ? _obscureText : false,
-      style: Theme.of(context).textTheme.titleMedium,
+      style: context.textTheme.titleMedium,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: Theme.of(context).textTheme.titleMedium,
+        prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+        hintStyle: context.textTheme.titleMedium,
         suffixIcon: widget.isPassword
             ? IconButton(
+                style: IconButton.styleFrom(
+                  splashFactory: NoSplash.splashFactory,
+                  padding: EdgeInsets.zero,
+                  iconSize: 20,
+                ),
                 icon: Icon(
-                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                  _obscureText ? Iconsax.eye_slash : Iconsax.eye,
                 ),
                 onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  }
                 },
               )
             : null,

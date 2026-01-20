@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/absent.dart';
 import 'package:margintop_solutions/common/widgets/attendance_report.dart';
 import 'package:margintop_solutions/common/widgets/clock_widget.dart';
@@ -69,7 +68,9 @@ class _HomePageState extends State<HomePage> {
       } else if (selected == "Office") {
         status = "present";
       } else {
-        showErrorSnackbar("Select valid option.", context: context);
+        showErrorSnackbar(
+          "Select valid option.",
+        );
         return;
       }
 
@@ -81,16 +82,21 @@ class _HomePageState extends State<HomePage> {
         if (response['message'] == "Success" && response['status'] == 1) {
           showSuccessSnackbar(
             "Check in successfull. Hope you have a wonderful day workmate.",
-            context: context,
           );
         } else {
-          showErrorSnackbar(response['message'], context: context);
+          showErrorSnackbar(
+            response['message'],
+          );
         }
       } else {
-        showErrorSnackbar(AppStrings.error, context: context);
+        showErrorSnackbar(
+          AppStrings.error,
+        );
       }
     } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(
+        AppStrings.error,
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -110,45 +116,49 @@ class _HomePageState extends State<HomePage> {
       final provider = context.read<AttendanceProvider>();
       final response = await AttendanceServices().getStatus();
 
-      if (response.message == "Success" && response.status == 1) {
-        // If there’s at least one record, pick the first one
-        if (response.data.isNotEmpty) {
-          final attendance = response.data.first;
+      // if (response.message == "Success" && response.status == 1) {
+      //   // If there’s at least one record, pick the first one
+      //   if (response.data.isNotEmpty) {
+      //     final attendance = response.data.first;
 
-          String? checkIn = attendance.checkInTime;
-          String? checkOut =
-              attendance.checkOutTime; // fixed: was using checkIn before
-          String? status = attendance.status;
-          if (status == "absent") {
-            provider.updateStatus(isAbsent: true);
-          } else if (status == "remote") {
-            selected = "Home";
-            await provider.updateStatus(location: "Home");
-          } else if (status == "present") {
-            selected = "Office";
-            await provider.updateStatus(location: "Office");
-          }
+      //     String? checkIn = attendance.checkInTime;
+      //     String? checkOut =
+      //         attendance.checkOutTime; // fixed: was using checkIn before
+      //     String? status = attendance.status;
+      //     if (status == "absent") {
+      //       provider.updateStatus(isAbsent: true);
+      //     } else if (status == "remote") {
+      //       selected = "Home";
+      //       await provider.updateStatus(location: "Home");
+      //     } else if (status == "present") {
+      //       selected = "Office";
+      //       await provider.updateStatus(location: "Office");
+      //     }
 
-          if (checkIn != null) {
-            provider.updateStatus(checkIn: formatToTime(checkIn));
-          }
+      //     if (checkIn != null) {
+      //       provider.updateStatus(checkIn: formatToTime(checkIn));
+      //     }
 
-          if (checkOut != null) {
-            provider.updateStatus(checkOut: formatToTime(checkOut));
-          }
-        }
+      //     if (checkOut != null) {
+      //       provider.updateStatus(checkOut: formatToTime(checkOut));
+      //     }
+      //   }
 
-        provider.first = false;
-      } else {
-        showErrorSnackbar(response.message, context: context);
-      }
+      // provider.first = false;
+      // } else {
+      //   showErrorSnackbar(
+      //     response.message,
+      //   );
+      // }
     } catch (e) {
       if (mounted) {
         setState(() {
           _networkError = true;
         });
       }
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(
+        AppStrings.error,
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -250,9 +260,7 @@ class _HomePageState extends State<HomePage> {
                                         const SizedBox(height: AppSizes.md),
                                         const RealTimeClock(),
                                         const SizedBox(height: AppSizes.md),
-                                        _isLoading
-                                            ? const LoadingIndicator()
-                                            : _attendanceButton(provider),
+                                        _attendanceButton(provider),
                                         const SizedBox(height: AppSizes.md),
                                         Row(
                                           mainAxisAlignment:

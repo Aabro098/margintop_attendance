@@ -17,4 +17,14 @@ class UserPrefs {
       'email': prefs.getString('email'),
     };
   }
+
+  static Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('auth_token') ?? '';
+  }
+
+  Future<void> clearUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 }

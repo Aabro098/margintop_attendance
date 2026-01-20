@@ -2,7 +2,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:margintop_solutions/common/widgets/animation_slide.dart';
 import 'package:margintop_solutions/common/widgets/drawer_items.dart';
 import 'package:margintop_solutions/screens/Profile/app_settings.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
@@ -75,8 +74,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 drawerProvider.setSelectedItem('Attendance');
                 Navigator.pushReplacement(
                   context,
-                  SlidePageRoute(
-                    page: const BottomNavBar(
+                  MaterialPageRoute(
+                    builder: (context) => const BottomNavBar(
                       title: 'Home',
                     ),
                   ),
@@ -112,8 +111,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 drawerProvider.setSelectedItem('Profile');
                 Navigator.pushReplacement(
                   context,
-                  SlidePageRoute(
-                    page: const AppSettings(),
+                  MaterialPageRoute(
+                    builder: (context) => const AppSettings(),
                   ),
                 );
               },

@@ -2,13 +2,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/app_globals.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void showErrorSnackbar(
-  String message, {
-  required BuildContext context,
-}) {
+  String message,
+) {
   scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
   scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
@@ -23,7 +24,9 @@ void showErrorSnackbar(
             Expanded(
               child: AutoSizeText(
                 message,
-                style: Theme.of(context).snackBarTheme.contentTextStyle,
+                style: Theme.of(scaffoldMessengerKey.currentContext!)
+                    .snackBarTheme
+                    .contentTextStyle,
                 maxLines: null,
                 overflow: TextOverflow.visible,
               ),
@@ -37,9 +40,8 @@ void showErrorSnackbar(
 }
 
 void showSuccessSnackbar(
-  String message, {
-  required BuildContext context,
-}) {
+  String message,
+) {
   scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
   scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
@@ -54,7 +56,8 @@ void showSuccessSnackbar(
             Expanded(
               child: AutoSizeText(
                 message,
-                style: Theme.of(context).snackBarTheme.contentTextStyle,
+                style:
+                    scaffoldMessengerKey.currentContext?.textTheme.titleMedium,
                 maxLines: null,
                 overflow: TextOverflow.visible,
               ),
@@ -68,9 +71,8 @@ void showSuccessSnackbar(
 }
 
 void showInfoSnackbar(
-  String message, {
-  required BuildContext context,
-}) {
+  String message,
+) {
   scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
   scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
@@ -85,7 +87,8 @@ void showInfoSnackbar(
             Expanded(
               child: AutoSizeText(
                 message,
-                style: Theme.of(context).snackBarTheme.contentTextStyle,
+                style:
+                    scaffoldMessengerKey.currentContext?.textTheme.titleMedium,
                 maxLines: null,
                 overflow: TextOverflow.visible,
               ),
@@ -124,4 +127,12 @@ String formatToTime(String time) {
   final formatter =
       DateFormat.jm(); // Uses device locale, no timezone conversion
   return formatter.format(dateTime);
+}
+
+Future<void> launchUrlString(String urlString) async {
+  final Uri url = Uri.parse(urlString);
+
+  if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+    throw Exception('Could not launch $urlString');
+  }
 }

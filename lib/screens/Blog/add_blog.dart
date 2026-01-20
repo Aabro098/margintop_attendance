@@ -3,7 +3,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
@@ -40,7 +39,7 @@ class _AddBlogState extends State<AddBlog> {
   Future<void> _postBlog() async {
     final details = _getString();
     if (details.isEmpty) {
-      showErrorSnackbar("Your work details cannot be empty.", context: context);
+      showErrorSnackbar("Your work details cannot be empty.");
       return;
     }
     if (mounted) {
@@ -67,7 +66,7 @@ class _AddBlogState extends State<AddBlog> {
       //   showErrorSnackbar(AppStrings.error, context: context);
       // }
     } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(AppStrings.error);
     } finally {
       if (mounted) {
         setState(() {
@@ -143,16 +142,14 @@ class _AddBlogState extends State<AddBlog> {
               ),
               SizedBox(
                 width: 172,
-                child: _isLoading
-                    ? const LoadingIndicator()
-                    : ElevatedButton(
-                        onPressed: () {
-                          _postBlog();
-                        },
-                        child: const Text(
-                          "Post Blog",
-                        ),
-                      ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _postBlog();
+                  },
+                  child: const Text(
+                    "Post Blog",
+                  ),
+                ),
               ),
             ],
           ),

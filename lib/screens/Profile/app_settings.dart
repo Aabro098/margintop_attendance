@@ -8,9 +8,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/app_drawer_wrapper.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/reusables/menu_icon.dart';
-import 'package:margintop_solutions/common/widgets/animation_slide.dart';
 import 'package:margintop_solutions/common/widgets/custom_drawer.dart';
 import 'package:margintop_solutions/screens/Auth/change_password.dart';
 import 'package:margintop_solutions/screens/Auth/login.dart';
@@ -93,7 +91,9 @@ class _AppSettingsState extends State<AppSettings> {
       await clearSharedPreferences();
       await provider.clearStatus();
       drawerProvider.setSelectedItem('Attendance');
-      showSuccessSnackbar("Logout Successfull !!!", context: context);
+      showSuccessSnackbar(
+        "Logout Successfull !!!",
+      );
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -103,7 +103,9 @@ class _AppSettingsState extends State<AppSettings> {
       );
     } catch (e) {
       debugPrint(e.toString());
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(
+        AppStrings.error,
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -130,8 +132,8 @@ class _AppSettingsState extends State<AppSettings> {
         if (!didPop) {
           Navigator.pushReplacement(
             context,
-            SlidePageRoute(
-              page: const BottomNavBar(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(
                 title: 'Home',
               ),
             ),
@@ -301,16 +303,14 @@ class _AppSettingsState extends State<AppSettings> {
                         },
                         showArrow: true,
                       ),
-                      _isLoading
-                          ? const LoadingIndicator()
-                          : SettingItem(
-                              icon: Iconsax.logout,
-                              label: "Logout",
-                              onTap: () {
-                                _isLoading ? null : _logout();
-                              },
-                              showArrow: true,
-                            ),
+                      SettingItem(
+                        icon: Iconsax.logout,
+                        label: "Logout",
+                        onTap: () {
+                          _isLoading ? null : _logout();
+                        },
+                        showArrow: true,
+                      ),
                     ],
                   ),
                 ),

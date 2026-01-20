@@ -2,7 +2,6 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/reusables/text_dialog.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
@@ -24,10 +23,7 @@ class _AbsentButtonState extends State<AbsentButton> {
   bool _isAbsent = false;
   Future<void> _absent() async {
     if (_reasonController.text.trim().isEmpty) {
-      showErrorSnackbar(
-        "Your absent reason cannot be empty.",
-        context: context,
-      );
+      showErrorSnackbar("Your absent reason cannot be empty.");
       return;
     }
     if (mounted) {
@@ -43,18 +39,18 @@ class _AbsentButtonState extends State<AbsentButton> {
       if (response != null) {
         if (response['message'] == "Success" && response['status'] == 1) {
           showErrorSnackbar(
-            "We will miss you dear workmate. Hope to see you soon",
-            context: context,
-          );
+              "We will miss you dear workmate. Hope to see you soon");
           _reasonController.clear();
         } else {
-          showErrorSnackbar(response['message'], context: context);
+          showErrorSnackbar(response['message']);
         }
       } else {
-        showErrorSnackbar(AppStrings.error, context: context);
+        showErrorSnackbar(
+          AppStrings.error,
+        );
       }
     } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(AppStrings.error);
     } finally {
       if (mounted) {
         setState(() {
@@ -83,38 +79,35 @@ class _AbsentButtonState extends State<AbsentButton> {
                 : Center(
                     child: SizedBox(
                       width: 172,
-                      child: _isAbsent
-                          ? const LoadingIndicator()
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    16,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () async {
-                                final dialog = StylishInputDialog(
-                                  context: context,
-                                  title:
-                                      'Please provide the reason for the leave.',
-                                  hintText: 'Write something...',
-                                  controller: _reasonController,
-                                  onSubmit: () {
-                                    _absent();
-                                  },
-                                );
-                                await dialog.show();
-                              },
-                              child: Text(
-                                "Absent",
-                                style: theme.textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              16,
                             ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          final dialog = StylishInputDialog(
+                            context: context,
+                            title: 'Please provide the reason for the leave.',
+                            hintText: 'Write something...',
+                            controller: _reasonController,
+                            onSubmit: () {
+                              _absent();
+                            },
+                          );
+                          await dialog.show();
+                        },
+                        child: Text(
+                          "Absent",
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   );
       },

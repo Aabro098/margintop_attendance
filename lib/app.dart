@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Auth/login.dart';
 import 'package:margintop_solutions/utils/helpers/app_globals.dart';
+import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
 import 'package:margintop_solutions/utils/providers/theme.provider.dart';
 import 'package:margintop_solutions/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -31,12 +32,11 @@ class _AppState extends State<App> {
   }
 
   Future<void> _checkAuthentication() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('auth_token');
+    final token = await UserPrefs.getToken();
 
     if (mounted) {
       setState(() {
-        _isAuthenticated = (token != null && token.isNotEmpty);
+        _isAuthenticated = token.isNotEmpty;
         _isLoading = false;
       });
     }
@@ -67,7 +67,8 @@ class _AppState extends State<App> {
               ? Scaffold(
                   body: Center(
                     child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: context.colorScheme.primary,
+                      strokeWidth: 2,
                     ),
                   ),
                 )

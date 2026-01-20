@@ -1,13 +1,18 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:margintop_solutions/common/reusables/back_button.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:margintop_solutions/common/reusables/custom_button.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
-import 'package:margintop_solutions/services/user_services.dart';
+import 'package:margintop_solutions/services/dio_services.dart';
+import 'package:margintop_solutions/utils/Validators/validators.dart';
+import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/image_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class PasswordChangeRequest extends StatefulWidget {
   const PasswordChangeRequest({
@@ -21,49 +26,31 @@ class PasswordChangeRequest extends StatefulWidget {
 class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
   final GlobalKey<FormState> _requestFormKey = GlobalKey<FormState>();
 
-  bool _isLoading = false;
+  final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController _emailController = TextEditingController();
-
-  Future<void> _handleRequest() async {
+  Future<void> handleRequest() async {
     if (!_requestFormKey.currentState!.validate()) {
       return;
     }
     try {
-      FocusScope.of(context).unfocus();
-
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
-        final response = await UserServices().requestChange(
-          email: _emailController.text.trim(),
-        );
-        if (response != null) {
-          if (response['status'] == 1 && response['message'] == "Success") {
-            // showSuccessSnackbar('request_change_successful', context: context);
-            _emailController.clear();
-          } else {
-            // showErrorSnackbar(response['message'], context: context);
-          }
-        } else {
-          // showErrorSnackbar('error_occured', context: context);
-        }
-      }
+      await context.read<AuthProvider>().requestChangePassword(
+            email: emailController.text.trim(),
+          );
+      showSuccessSnackbar(
+          'Password change request sent! Please wait for further instructions.');
+    } on DioException catch (e) {
+      final errorMessage = DioClient.parseDioError(e);
+      showErrorSnackbar(errorMessage);
+      return;
     } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      showErrorSnackbar(AppStrings.error);
+      return;
     }
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -73,53 +60,41 @@ class _PasswordChangeRequestState extends State<PasswordChangeRequest> {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _requestFormKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const AppBackButton(),
-                const SizedBox(
-                  height: 102,
-                ),
-                AutoSizeText(
-                  "Forgot you password? Don't worry workmate you can request for a change here.",
+        child: Form(
+          key: _requestFormKey,
+          child: Column(
+            children: [
+              Image.asset(
+                context.isDarkMode ? AppLogos.markDark : AppLogos.markWhite,
+                height: MediaQuery.of(context).size.height * 0.2,
+                width: MediaQuery.of(context).size.width * 0.8,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
+                child: AutoSizeText(
+                  "Forgot your password?\nDon't worry workmate you can request for a change.",
                   style: context.textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: AppSizes.xl,
-                ),
-                Semantics(
-                  textField: true,
-                  child: TextFieldData(
-                    hintText: "Enter Email",
-                    controller: _emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Email is required";
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                _isLoading
-                    ? const LoadingIndicator()
-                    : ElevatedButton(
-                        onPressed: () {
-                          _isLoading ? null : _handleRequest();
-                        },
-                        child: const Text(
-                          "Request Change",
-                        ),
-                      ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: AppSizes.xl,
+              ),
+              TextFieldData(
+                hintText: "Enter Email",
+                controller: emailController,
+                validator: Validators.email,
+                prefixIcon: Iconsax.sms,
+              ),
+              const SizedBox(height: AppSizes.xl),
+              Consumer<AuthProvider>(builder: (context, authProvider, child) {
+                return CustomElevatedButton(
+                  isLoading: authProvider.isLoading,
+                  onPressed: () async => await handleRequest(),
+                  label: "Request Change",
+                );
+              }),
+            ],
           ),
         ),
       )),

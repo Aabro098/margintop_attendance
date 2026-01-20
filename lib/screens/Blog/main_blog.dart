@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
-import 'package:margintop_solutions/common/widgets/animation_slide.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Blog/blog_card.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
@@ -25,8 +24,8 @@ class _MainBlogState extends State<MainBlog> {
         if (!didPop) {
           Navigator.pushReplacement(
             context,
-            SlidePageRoute(
-              page: const BottomNavBar(
+            MaterialPageRoute(
+              builder: (context) => const BottomNavBar(
                 title: 'Home',
               ),
             ),

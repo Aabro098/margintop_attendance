@@ -57,6 +57,7 @@ dependencies:
   flutter_html: ^3.0.0
   iconsax: ^0.0.8
   skeletonizer: ^2.1.0+1
+  url_launcher: ^6.3.2
 
 
 dev_dependencies:

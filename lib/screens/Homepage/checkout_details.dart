@@ -3,7 +3,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
@@ -41,7 +40,9 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
   Future<void> _checkOut() async {
     final details = _getString();
     if (details.isEmpty) {
-      showErrorSnackbar("Your work details cannot be empty.", context: context);
+      showErrorSnackbar(
+        "Your work details cannot be empty.",
+      );
       return;
     }
     if (mounted) {
@@ -58,17 +59,22 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
         if (response['message'] == "Success" && response['status'] == 1) {
           showSuccessSnackbar(
             "Check out successfull. Hope you had a wonderful day workmate.",
-            context: context,
           );
           Navigator.pop(context);
         } else {
-          showErrorSnackbar(response['message'], context: context);
+          showErrorSnackbar(
+            response['message'],
+          );
         }
       } else {
-        showErrorSnackbar(AppStrings.error, context: context);
+        showErrorSnackbar(
+          AppStrings.error,
+        );
       }
     } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(
+        AppStrings.error,
+      );
     } finally {
       if (mounted) {
         setState(() {
@@ -144,24 +150,22 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
               ),
               SizedBox(
                 width: 172,
-                child: _isLoading
-                    ? const LoadingIndicator()
-                    : ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppSizes.sm,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          _checkOut();
-                        },
-                        child: const Text(
-                          "Check Out",
-                        ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppSizes.sm,
                       ),
+                    ),
+                  ),
+                  onPressed: () {
+                    _checkOut();
+                  },
+                  child: const Text(
+                    "Check Out",
+                  ),
+                ),
               ),
             ],
           ),

@@ -69,21 +69,21 @@ class _AttendanceReportState extends State<AttendanceReport> {
       });
     }
     try {
-      final response =
-          await AttendanceServices().getSummaryMonth(year: year, month: month);
+      // final response =
+      //     await AttendanceServices().getSummaryMonth(year: year, month: month);
 
-      if (response.status == 1 && response.message == "Success") {
-        if (mounted) {
-          setState(() {
-            present = response.data.summary.presentDays +
-                response.data.summary.remoteDays;
-            absent = response.data.summary.absentDays;
-            totalHours = response.data.summary.totalHours;
-          });
-        }
-      }
+      // if (response.status == 1 && response.message == "Success") {
+      //   if (mounted) {
+      //     setState(() {
+      //       present = response.data.summary.presentDays +
+      //           response.data.summary.remoteDays;
+      //       absent = response.data.summary.absentDays;
+      //       totalHours = response.data.summary.totalHours;
+      //     });
+      //   }
+      // }
     } catch (e) {
-      showErrorSnackbar(AppStrings.error, context: context);
+      showErrorSnackbar(AppStrings.error);
     } finally {
       if (mounted) {
         setState(() {

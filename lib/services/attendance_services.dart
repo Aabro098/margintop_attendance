@@ -3,19 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:margintop_solutions/models/day_summary.dart';
 import 'package:margintop_solutions/models/month_summary.dart';
 import 'package:margintop_solutions/models/status_model.dart';
-import 'package:margintop_solutions/utils/helpers/dio_client.dart';
+import 'package:margintop_solutions/services/dio_services.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
 
 class AttendanceServices {
+  static final AttendanceServices _instance = AttendanceServices._internal();
+
+  factory AttendanceServices() {
+    return _instance;
+  }
+
+  AttendanceServices._internal();
+
   Future<Map<String, dynamic>?> checkIn({
     required BuildContext context,
     required String status,
   }) async {
     try {
       final provider = context.read<AttendanceProvider>();
-      final dio = await DioClient().initClient();
+      final dio = await DioClient.initClient();
       final formData = FormData.fromMap({
         'status': status,
       });
@@ -34,8 +42,8 @@ class AttendanceServices {
 
       return data;
     } on DioException catch (e) {
-      final apiResponse = DioClient.getErrorResponse(e);
-      return apiResponse;
+      final apiResponse = DioClient.parseDioError(e);
+      // return apiResponse;
     }
   }
 
@@ -45,7 +53,7 @@ class AttendanceServices {
   }) async {
     try {
       final provider = context.read<AttendanceProvider>();
-      final dio = await DioClient().initClient();
+      final dio = await DioClient.initClient();
       final formData = FormData.fromMap({
         'work_summary': workSummary,
       });
@@ -62,8 +70,8 @@ class AttendanceServices {
 
       return data;
     } on DioException catch (e) {
-      final apiResponse = DioClient.getErrorResponse(e);
-      return apiResponse;
+      // final apiResponse = DioClient.getErrorResponse(e);
+      // return apiResponse;
     }
   }
 
@@ -73,7 +81,7 @@ class AttendanceServices {
   }) async {
     try {
       final provider = context.read<AttendanceProvider>();
-      final dio = await DioClient().initClient();
+      final dio = await DioClient.initClient();
       final formData = FormData.fromMap({
         'work_summary': reason,
       });
@@ -88,32 +96,32 @@ class AttendanceServices {
 
       return data;
     } on DioException catch (e) {
-      final apiResponse = DioClient.getErrorResponse(e);
-      return apiResponse;
+      // final apiResponse = DioClient.getErrorResponse(e);
+      // return apiResponse;
     }
   }
 
-  Future<AttendanceResponse> getStatus() async {
+  Future<AttendanceResponse?> getStatus() async {
     try {
-      final dio = await DioClient().initClient();
+      final dio = await DioClient.initClient();
 
       final response = await dio.get('/user/attendance/status');
       final Map<String, dynamic> data = response.data;
 
       return AttendanceResponse.fromJson(data);
     } on DioException catch (e) {
-      final apiResponse = DioClient.getErrorResponse(e);
-      return apiResponse;
+      // final apiResponse = DioClient.getErrorResponse(e);
+      // return apiResponse;
     }
   }
 
-  Future<AttendanceSummaryResponse> getSummaryMonth({
+  Future<AttendanceSummaryResponse?> getSummaryMonth({
     required int year,
     required int month,
     int? day,
   }) async {
     try {
-      final dio = await DioClient().initClient();
+      final dio = await DioClient.initClient();
 
       final query = {
         "year": year,
@@ -127,18 +135,18 @@ class AttendanceServices {
 
       return AttendanceSummaryResponse.fromJson(data);
     } on DioException catch (e) {
-      final apiResponse = DioClient.getErrorResponse(e);
-      return apiResponse;
+      // final apiResponse = DioClient.getErrorResponse(e);
+      // return apiResponse;
     }
   }
 
-  Future<AttendanceListResponse> getSummaryDay({
+  Future<AttendanceListResponse?> getSummaryDay({
     required int year,
     required int month,
     required int day,
   }) async {
     try {
-      final dio = await DioClient().initClient();
+      final dio = await DioClient.initClient();
 
       final query = {
         "year": year,
@@ -153,8 +161,8 @@ class AttendanceServices {
 
       return AttendanceListResponse.fromJson(data);
     } on DioException catch (e) {
-      final apiResponse = DioClient.getErrorResponse(e);
-      return apiResponse;
+      // final apiResponse = DioClient.getErrorResponse(e);
+      // return apiResponse;
     }
   }
 }

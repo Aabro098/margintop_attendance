@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:margintop_solutions/common/reusables/loading_indicator.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -41,11 +40,6 @@ class _BlogCardState extends State<BlogCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (_html == null) {
-      return const Center(
-        child: LoadingIndicator(),
-      );
-    }
     return Container(
       padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(

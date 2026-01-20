@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 
@@ -25,7 +26,6 @@ class StylishInputDialog {
       context: context,
       barrierDismissible: true,
       builder: (context) {
-        final theme = Theme.of(context);
         final isDarkMode = DeviceUtility.isDarkMode(context);
         return Dialog(
           shape: RoundedRectangleBorder(
@@ -42,7 +42,7 @@ class StylishInputDialog {
               children: [
                 AutoSizeText(
                   title,
-                  style: theme.textTheme.titleLarge?.copyWith(
+                  style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),

@@ -9,8 +9,11 @@ class AppInputDecoration {
   /// Static variable for Input Decoration (Light)
   static InputDecorationTheme lightTheme = InputDecorationTheme(
     hintStyle: AppTypography.lightTextTheme.titleMedium,
+    errorMaxLines: 3,
+    errorStyle:
+        AppTypography.lightTextTheme.titleSmall?.copyWith(color: Colors.red),
     contentPadding: const EdgeInsets.symmetric(
-      vertical: AppSizes.sm,
+      vertical: AppSizes.md,
       horizontal: AppSizes.md,
     ),
     border: OutlineInputBorder(
@@ -52,8 +55,11 @@ class AppInputDecoration {
 
   static InputDecorationTheme darkTheme = InputDecorationTheme(
     hintStyle: AppTypography.darkTextTheme.titleMedium,
+    errorMaxLines: 3,
+    errorStyle:
+        AppTypography.darkTextTheme.titleSmall?.copyWith(color: Colors.red),
     contentPadding: const EdgeInsets.symmetric(
-      vertical: AppSizes.sm,
+      vertical: AppSizes.md,
       horizontal: AppSizes.md,
     ),
     border: OutlineInputBorder(
