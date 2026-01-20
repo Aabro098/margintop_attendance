@@ -173,8 +173,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -195,106 +196,100 @@ class _HomePageState extends State<HomePage> {
                 enableSwitchAnimation: true,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppSizes.padding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Consumer<AttendanceProvider>(
-                          builder: (context, provider, child) {
-                            return Container(
-                              padding: const EdgeInsets.all(AppSizes.padding),
-                              decoration: BoxDecoration(
-                                color: context.colorScheme.primaryContainer,
-                                borderRadius:
-                                    BorderRadius.circular(AppSizes.lg),
-                              ),
-                              child: provider.isAbsent
-                                  ? Lottie.asset(
-                                      AppLogos.sadRobot,
-                                      repeat: true,
-                                      height: 160,
-                                      width: double.infinity,
-                                    )
-                                  : Column(
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            _buildToggleButton(
-                                              text: "Home",
-                                              icon: Iconsax.home_1,
-                                              selected: selected == "Home",
-                                              onTap: _isLoading
-                                                  ? null
-                                                  : () {
-                                                      if (mounted) {
-                                                        setState(() =>
-                                                            selected = "Home");
-                                                      }
-                                                    },
-                                              isCheckIn: provider.checkIn,
-                                            ),
-                                            const SizedBox(width: 12),
-                                            _buildToggleButton(
-                                              text: "Office",
-                                              icon: Iconsax.building,
-                                              selected: selected == "Office",
-                                              onTap: _isLoading
-                                                  ? null
-                                                  : () {
-                                                      if (mounted) {
-                                                        setState(() =>
-                                                            selected =
-                                                                "Office");
-                                                      }
-                                                    },
-                                              isCheckIn: provider.checkIn,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: AppSizes.lg),
-                                        const RealTimeClock(),
-                                        const SizedBox(height: AppSizes.lg),
-                                        _attendanceButton(provider),
-                                        const SizedBox(height: AppSizes.xl),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TimeInfo(
-                                              time: provider.checkIn ??
-                                                  '11:00 AM',
-                                              icon: Iconsax.timer_start,
-                                            ),
-                                            TimeInfo(
-                                              time: provider.checkOut ??
-                                                  '5:00 AM',
-                                              icon: Iconsax.timer_pause,
-                                            ),
-                                            TimeInfo(
-                                              time: provider.checkOut ??
-                                                  '6:00 Hrs',
-                                              icon: Iconsax.clock,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                            );
-                          },
-                        ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Consumer<AttendanceProvider>(
+                        builder: (context, provider, child) {
+                          return Container(
+                            padding: const EdgeInsets.all(AppSizes.padding),
+                            decoration: BoxDecoration(
+                              color: context.colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(AppSizes.lg),
+                            ),
+                            child: provider.isAbsent
+                                ? Lottie.asset(
+                                    AppLogos.sadRobot,
+                                    repeat: true,
+                                    height: 160,
+                                    width: double.infinity,
+                                  )
+                                : Column(
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          _buildToggleButton(
+                                            text: "Home",
+                                            icon: Iconsax.home_1,
+                                            selected: selected == "Home",
+                                            onTap: _isLoading
+                                                ? null
+                                                : () {
+                                                    if (mounted) {
+                                                      setState(() =>
+                                                          selected = "Home");
+                                                    }
+                                                  },
+                                            isCheckIn: provider.checkIn,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          _buildToggleButton(
+                                            text: "Office",
+                                            icon: Iconsax.building,
+                                            selected: selected == "Office",
+                                            onTap: _isLoading
+                                                ? null
+                                                : () {
+                                                    if (mounted) {
+                                                      setState(() =>
+                                                          selected = "Office");
+                                                    }
+                                                  },
+                                            isCheckIn: provider.checkIn,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: AppSizes.lg),
+                                      const RealTimeClock(),
+                                      const SizedBox(height: AppSizes.lg),
+                                      _attendanceButton(provider),
+                                      const SizedBox(height: AppSizes.xl),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TimeInfo(
+                                            time:
+                                                provider.checkIn ?? '11:00 AM',
+                                            icon: Iconsax.timer_start,
+                                          ),
+                                          TimeInfo(
+                                            time:
+                                                provider.checkOut ?? '5:00 AM',
+                                            icon: Iconsax.timer_pause,
+                                          ),
+                                          TimeInfo(
+                                            time:
+                                                provider.checkOut ?? '6:00 Hrs',
+                                            icon: Iconsax.clock,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                          );
+                        },
+                      ),
 
-                        const SizedBox(height: AppSizes.md),
+                      const SizedBox(height: AppSizes.md),
 
-                        // Attendance
-                        const AttendanceReport(),
+                      // Attendance
+                      const AttendanceReport(),
 
-                        // Absent Button
-                        const AbsentButton(),
-                      ],
-                    ),
+                      // Absent Button
+                      const AbsentButton(),
+                    ],
                   ),
                 ),
               ),

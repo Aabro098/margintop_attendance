@@ -17,7 +17,7 @@ class _HeadingTitleState extends State<HeadingTitle> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSizes.padding),
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.padding),
       // decoration: BoxDecoration(
       //   color: context.colorScheme.primaryContainer,
       //   borderRadius: const BorderRadius.only(
@@ -27,9 +27,6 @@ class _HeadingTitleState extends State<HeadingTitle> {
       // ),
       child: Column(
         children: [
-          const SizedBox(
-            height: AppSizes.xl,
-          ),
           AutoSizeText(
             "MarginTop\nSolutions",
             maxLines: null, // Allow unlimited lines

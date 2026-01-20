@@ -27,13 +27,12 @@ class _AppCalendarState extends State<AppCalendar> {
           context.read<IndexProvider>().setIndex(0);
         }
       },
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSizes.padding),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSizes.padding),
+          child: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: AppSizes.xl),
                 AutoSizeText(
                   "Calendar",
                   overflow: TextOverflow.visible,
