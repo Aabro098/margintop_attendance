@@ -26,8 +26,8 @@ class _AppDrawerWrapperState extends State<AppDrawerWrapper> {
 
     return AdvancedDrawer(
       controller: widget.controller,
-      openRatio: 0.4,
-      openScale: 0.8,
+      openRatio: 0.7,
+      openScale: 0.7,
       animationCurve: Curves.easeInOut,
       backdrop: Container(
         decoration: BoxDecoration(
@@ -42,7 +42,7 @@ class _AppDrawerWrapperState extends State<AppDrawerWrapper> {
         ),
       ),
       childDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(36.0),
+        borderRadius: BorderRadius.circular(52.0),
       ),
       drawer: widget.drawer,
       child: widget.child,

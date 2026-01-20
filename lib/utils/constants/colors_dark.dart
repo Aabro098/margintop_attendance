@@ -20,7 +20,7 @@ class AppColorsDark {
   static const Color background = Color(0xFF121212); // almost black
   static const Color surface = Color(0xFF1E2C2B); // slightly lighter dark teal
   static const Color container =
-      Color(0xAA263238); // semi-transparent dark container
+      Color(0xFF1E1E1E); // semi-transparent dark container
 
   //! === Tile / Hover / Selector ===
   static const Color tile = Color(0x2912969A); // soft teal hover

@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
+import 'package:margintop_solutions/common/reusables/custom_button.dart';
 import 'package:margintop_solutions/common/widgets/absent.dart';
 import 'package:margintop_solutions/common/widgets/attendance_report.dart';
 import 'package:margintop_solutions/common/widgets/clock_widget.dart';
@@ -16,10 +17,12 @@ import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/colors_light.dart';
 import 'package:margintop_solutions/utils/constants/image_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -171,49 +174,43 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const HeadingTitle(),
-          const SizedBox(height: AppSizes.md),
-          _nameTitle(context),
-          const SizedBox(
-            height: AppSizes.md,
-          ),
-          RefreshIndicator(
-            color: context.colorScheme.primary,
-            onRefresh: () {
-              return _getStatus();
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Consumer<AttendanceProvider>(
-                      builder: (context, provider, child) {
-                        return Container(
-                          padding: const EdgeInsets.all(AppSizes.padding),
-                          decoration: BoxDecoration(
-                            color: context.isDarkMode
-                                ? Colors.white10
-                                : Colors.white30,
-                            borderRadius: BorderRadius.circular(AppSizes.lg),
-                          ),
-                          child: _networkError
-                              ? Center(
-                                  child: IconButton(
-                                    onPressed: () async {
-                                      await _getStatus();
-                                    },
-                                    icon: const Icon(Iconsax.refresh),
-                                  ),
-                                )
-                              : provider.isAbsent
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const HeadingTitle(),
+            Skeletonizer(
+              enabled: _isLoading,
+              enableSwitchAnimation: true,
+              child: _nameTitle(),
+            ),
+            RefreshIndicator(
+              color: context.colorScheme.primary,
+              onRefresh: () {
+                return _getStatus();
+              },
+              child: Skeletonizer(
+                enabled: _isLoading,
+                enableSwitchAnimation: true,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.padding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Consumer<AttendanceProvider>(
+                          builder: (context, provider, child) {
+                            return Container(
+                              padding: const EdgeInsets.all(AppSizes.padding),
+                              decoration: BoxDecoration(
+                                color: context.colorScheme.primaryContainer,
+                                borderRadius:
+                                    BorderRadius.circular(AppSizes.lg),
+                              ),
+                              child: provider.isAbsent
                                   ? Lottie.asset(
                                       AppLogos.sadRobot,
                                       repeat: true,
@@ -257,74 +254,70 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: AppSizes.md),
+                                        const SizedBox(height: AppSizes.lg),
                                         const RealTimeClock(),
-                                        const SizedBox(height: AppSizes.md),
+                                        const SizedBox(height: AppSizes.lg),
                                         _attendanceButton(provider),
-                                        const SizedBox(height: AppSizes.md),
+                                        const SizedBox(height: AppSizes.xl),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             TimeInfo(
-                                              time: provider.checkIn ?? "--",
-                                              label: "Check In",
+                                              time: provider.checkIn ??
+                                                  '11:00 AM',
+                                              icon: Iconsax.timer_start,
                                             ),
                                             TimeInfo(
-                                              time: provider.checkOut ?? "--",
-                                              label: "Check Out",
+                                              time: provider.checkOut ??
+                                                  '5:00 AM',
+                                              icon: Iconsax.timer_pause,
+                                            ),
+                                            TimeInfo(
+                                              time: provider.checkOut ??
+                                                  '6:00 Hrs',
+                                              icon: Iconsax.clock,
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
-                        );
-                      },
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: AppSizes.md),
+
+                        // Attendance
+                        const AttendanceReport(),
+
+                        // Absent Button
+                        const AbsentButton(),
+                      ],
                     ),
-
-                    const SizedBox(height: AppSizes.md),
-
-                    // Attendance
-                    const AttendanceReport(),
-
-                    const SizedBox(height: AppSizes.lg),
-
-                    // Absent Button
-                    const AbsentButton(),
-
-                    const SizedBox(height: 72),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   SizedBox _attendanceButton(AttendanceProvider provider) {
     return SizedBox(
-      width: 172,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: provider.checkIn != null
-              ? provider.checkOut != null
-                  ? Colors.green
-                  : Colors.red
-              : context.colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              AppSizes.md,
-            ),
-          ),
-        ),
+      width: 236,
+      child: CustomElevatedButton(
+        isLoading: _isLoading,
+        color: provider.checkIn != null
+            ? Colors.green
+            : context.colorScheme.primary,
         onPressed: () async {
           if (provider.checkIn == null) {
-            _checkIn();
+            await _checkIn();
           } else if (provider.checkIn != null && provider.checkOut == null) {
-            Navigator.push(
-              context,
+            navigatorKey.currentState?.push(
               MaterialPageRoute(
                 builder: (context) => const CheckoutDetails(),
               ),
@@ -333,23 +326,18 @@ class _HomePageState extends State<HomePage> {
             null;
           }
         },
-        child: Text(
-          provider.checkIn != null
-              ? provider.checkOut != null
-                  ? "Done"
-                  : "Check Out"
-              : "Check In",
-        ),
+        label: provider.checkIn != null
+            ? provider.checkOut != null
+                ? "Done"
+                : "Check Out"
+            : "Check In",
       ),
     );
   }
 
-  Widget _nameTitle(BuildContext context) {
+  Widget _nameTitle() {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: AppSizes.padding,
-        right: AppSizes.padding,
-      ),
+      padding: const EdgeInsets.all(AppSizes.padding),
       child: Center(
         child: AutoSizeText(
           "Welcome, $name !",

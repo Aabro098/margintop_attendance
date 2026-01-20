@@ -3,8 +3,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/common/reusables/text_dialog.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
@@ -62,55 +64,57 @@ class _AbsentButtonState extends State<AbsentButton> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Consumer<AttendanceProvider>(
-      builder: (context, provider, child) {
-        return provider.isAbsent
-            ? AutoSizeText(
-                "Hope to see you soon at work dear workmate !",
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.green,
-                  fontWeight: FontWeight.w400,
-                ),
-                textAlign: TextAlign.center,
-              )
-            : provider.checkIn != null
-                ? const SizedBox.shrink()
-                : Center(
-                    child: SizedBox(
-                      width: 172,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              16,
+    return Padding(
+      padding: const EdgeInsets.all(AppSizes.padding),
+      child: Consumer<AttendanceProvider>(
+        builder: (context, provider, child) {
+          return provider.isAbsent
+              ? AutoSizeText(
+                  "Hope to see you soon at work dear workmate !",
+                  style: context.textTheme.titleMedium?.copyWith(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
+                )
+              : provider.checkIn != null
+                  ? const SizedBox.shrink()
+                  : Center(
+                      child: SizedBox(
+                        width: 232,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                16,
+                              ),
+                            ),
+                          ),
+                          onPressed: () async {
+                            final dialog = StylishInputDialog(
+                              context: context,
+                              title: 'Please provide the reason for the leave.',
+                              hintText: 'Write something...',
+                              controller: _reasonController,
+                              onSubmit: () {
+                                _absent();
+                              },
+                            );
+                            await dialog.show();
+                          },
+                          child: Text(
+                            "Absent",
+                            style: context.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        onPressed: () async {
-                          final dialog = StylishInputDialog(
-                            context: context,
-                            title: 'Please provide the reason for the leave.',
-                            hintText: 'Write something...',
-                            controller: _reasonController,
-                            onSubmit: () {
-                              _absent();
-                            },
-                          );
-                          await dialog.show();
-                        },
-                        child: Text(
-                          "Absent",
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
                       ),
-                    ),
-                  );
-      },
+                    );
+        },
+      ),
     );
   }
 }

@@ -1,9 +1,6 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
-import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
@@ -14,38 +11,6 @@ class AttendanceReport extends StatefulWidget {
 
   @override
   State<AttendanceReport> createState() => _AttendanceReportState();
-
-  static Widget _buildAttendanceCard(String title, String count, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.sm),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(AppSizes.sm),
-      ),
-      child: Column(
-        children: [
-          AutoSizeText(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.bold,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: AppSizes.sm),
-          AutoSizeText(
-            count,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _AttendanceReportState extends State<AttendanceReport> {
@@ -98,15 +63,15 @@ class _AttendanceReportState extends State<AttendanceReport> {
     return Container(
       padding: const EdgeInsets.all(AppSizes.md),
       decoration: BoxDecoration(
-        color: context.isDarkMode ? Colors.white10 : Colors.white30,
+        color: context.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
           AutoSizeText(
             "Attendance for this month",
-            style: context.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w500,
+            style: context.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: AppSizes.formHeight),
@@ -116,7 +81,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: AttendanceReport._buildAttendanceCard(
+                  child: _buildAttendanceCard(
                     "Present",
                     present != null ? present.toString() : "0",
                     Colors.green,
@@ -126,7 +91,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                   width: AppSizes.sm,
                 ),
                 Expanded(
-                  child: AttendanceReport._buildAttendanceCard(
+                  child: _buildAttendanceCard(
                     "Absent",
                     absent != null ? absent.toString() : "0",
                     Colors.red,
@@ -136,13 +101,46 @@ class _AttendanceReportState extends State<AttendanceReport> {
                   width: AppSizes.sm,
                 ),
                 Expanded(
-                  child: AttendanceReport._buildAttendanceCard(
+                  child: _buildAttendanceCard(
                     "Work Hour",
                     totalHours != null ? totalHours.toString() : "0",
                     Colors.orange,
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAttendanceCard(String title, String count, Color color) {
+    return Container(
+      height: 92,
+      padding: const EdgeInsets.all(AppSizes.sm),
+      decoration: BoxDecoration(
+        color: color.withAlpha(24),
+        borderRadius: BorderRadius.circular(AppSizes.sm),
+      ),
+      child: Column(
+        children: [
+          AutoSizeText(
+            title,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: context.textTheme.titleMedium?.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: AppSizes.sm),
+          AutoSizeText(
+            count,
+            style: context.textTheme.titleLarge?.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],

@@ -1,16 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/small_container.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 
 class TimeInfo extends StatefulWidget {
   final String time;
-  final String label;
+  final IconData icon;
 
   const TimeInfo({
     super.key,
     required this.time,
-    required this.label,
+    required this.icon,
   });
 
   @override
@@ -23,7 +24,7 @@ class _TimeInfoState extends State<TimeInfo> {
     final theme = Theme.of(context);
     return Column(
       children: [
-        widget.time == "--"
+        widget.time.isEmpty
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -37,16 +38,15 @@ class _TimeInfoState extends State<TimeInfo> {
               )
             : AutoSizeText(
                 widget.time,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-        const SizedBox(height: AppSizes.xs),
-        AutoSizeText(
-          widget.label,
-          style: theme.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+        const SizedBox(height: AppSizes.md),
+        Icon(
+          widget.icon,
+          size: 28,
+          color: theme.colorScheme.primary,
         ),
       ],
     );

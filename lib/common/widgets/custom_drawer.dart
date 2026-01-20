@@ -30,12 +30,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: Container(
         decoration: BoxDecoration(
           color: theme.colorScheme.secondary,
-          borderRadius: BorderRadius.circular(AppSizes.xl),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(AppSizes.xl),
+            bottomRight: Radius.circular(AppSizes.xl),
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            // Company Logo at Top
             Padding(
               padding: const EdgeInsets.all(AppSizes.sm),
               child: Column(

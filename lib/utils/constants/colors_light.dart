@@ -20,7 +20,7 @@ class AppColorsLight {
   static const Color background = Color(0xFFFFFFFF); // pure white
   static const Color surface =
       Color.fromARGB(255, 2, 13, 10); // light minty grey
-  static const Color container = Color(0xFFE0F2F1); // very light teal container
+  static const Color container = Color(0xFFEEEEEE); // very light teal container
 
   //! === Tile / Hover / Selector ===
   static const Color tile = Color(0x14007E6E); // subtle teal hover

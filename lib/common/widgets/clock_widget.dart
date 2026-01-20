@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 
 class RealTimeClock extends StatefulWidget {
   const RealTimeClock({super.key});
@@ -69,10 +70,9 @@ class RealTimeClockState extends State<RealTimeClock> {
   Widget build(BuildContext context) {
     return AutoSizeText(
       _currentTime,
-      style: Theme.of(context)
-          .textTheme
-          .headlineSmall
-          ?.copyWith(fontWeight: FontWeight.w600),
+      style: context.textTheme.headlineMedium?.copyWith(
+        fontWeight: FontWeight.bold,
+      ),
       maxLines: 1,
     );
   }

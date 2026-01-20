@@ -9,6 +9,7 @@ class AppColorSchemes {
   static const ColorScheme lightColorScheme = ColorScheme(
     brightness: Brightness.light,
     primary: AppColorsLight.primary,
+    primaryContainer: AppColorsLight.container,
     onPrimary: Colors.white,
     secondary: AppColorsLight.secondary,
     onSecondary: Colors.white,
@@ -22,6 +23,7 @@ class AppColorSchemes {
   static const ColorScheme darkColorScheme = ColorScheme(
     brightness: Brightness.dark,
     primary: AppColorsDark.primary,
+    primaryContainer: AppColorsDark.container,
     onPrimary: Colors.black,
     secondary: AppColorsDark.secondary,
     onSecondary: Colors.white,

@@ -18,13 +18,13 @@ class _HeadingTitleState extends State<HeadingTitle> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(AppSizes.padding),
-      decoration: BoxDecoration(
-        color: context.colorScheme.secondary,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(36),
-          bottomRight: Radius.circular(36),
-        ),
-      ),
+      // decoration: BoxDecoration(
+      //   color: context.colorScheme.primaryContainer,
+      //   borderRadius: const BorderRadius.only(
+      //     bottomLeft: Radius.circular(36),
+      //     bottomRight: Radius.circular(36),
+      //   ),
+      // ),
       child: Column(
         children: [
           const SizedBox(
@@ -36,7 +36,7 @@ class _HeadingTitleState extends State<HeadingTitle> {
             softWrap: true, // Enable text wrapping
             overflow: TextOverflow.visible, // Show all text
             style: context.textTheme.headlineLarge?.copyWith(
-              color: Colors.white,
+              color: context.colorScheme.primary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -48,8 +48,8 @@ class _HeadingTitleState extends State<HeadingTitle> {
             maxLines: null, // Allow unlimited lines
             softWrap: true, // Enable text wrapping
             overflow: TextOverflow.visible, // Show all text
-            style: context.textTheme.titleSmall?.copyWith(
-              color: Colors.white,
+            style: context.textTheme.titleMedium?.copyWith(
+              color: context.colorScheme.primary,
             ),
             textAlign: TextAlign.center,
           )

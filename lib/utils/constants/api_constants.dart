@@ -1,7 +1,7 @@
 class UrlStrings {
   UrlStrings._();
 
-  static const String baseUrl = 'https://api.margintopsolutions.com/api/v1';
+  static const String baseUrl = 'https://api.margintopsolutions.com.np/api/v1';
 
   static const String login = '/user/login';
   static const String logout = '/user/logout';

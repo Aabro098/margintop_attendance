@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+enum WorkLocation { remote, office }
+
 class AttendanceProvider with ChangeNotifier {
   String? _checkIn;
   String? _checkOut;

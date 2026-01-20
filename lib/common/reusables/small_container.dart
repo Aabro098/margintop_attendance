@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/utils/constants/colors_dark.dart';
+import 'package:margintop_solutions/utils/constants/colors_light.dart';
 
 class SmallDots extends StatelessWidget {
   SmallDots({super.key});
@@ -8,8 +10,8 @@ class SmallDots extends StatelessWidget {
     Colors.red,
     Colors.green,
     Colors.orange,
-    Colors.black,
-    Colors.white,
+    AppColorsLight.primary,
+    AppColorsDark.primary,
   ];
 
   @override

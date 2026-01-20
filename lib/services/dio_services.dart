@@ -1,8 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:margintop_solutions/screens/Auth/login.dart';
 import 'package:margintop_solutions/utils/constants/api_constants.dart';
-import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
 
 /// Class for Using the DioClient for managing HTTP networking.

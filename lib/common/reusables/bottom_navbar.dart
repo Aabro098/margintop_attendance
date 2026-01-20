@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/app_drawer_wrapper.dart';
 import 'package:margintop_solutions/common/reusables/menu_icon.dart';
 import 'package:margintop_solutions/common/widgets/custom_drawer.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Blog/main_blog.dart';
 import 'package:margintop_solutions/screens/Blog/your_blog.dart';
 import 'package:margintop_solutions/screens/Homepage/calendar.dart';
@@ -67,7 +68,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     final navProvider = Provider.of<IndexProvider>(context);
     final selectedIndex = navProvider.selectedIndex;
-    final theme = Theme.of(context);
+
     return AppDrawerWrapper(
       drawer: const CustomDrawer(),
       controller: _advancedDrawerController,
@@ -88,7 +89,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               child: CurvedNavigationBar(
                 backgroundColor: Colors.transparent,
                 animationDuration: const Duration(milliseconds: 300),
-                color: theme.colorScheme.secondary,
+                color: context.colorScheme.primary,
                 height: 56,
                 index: selectedIndex,
                 items: widget.title == "Home"
