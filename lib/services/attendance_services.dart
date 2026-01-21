@@ -4,6 +4,7 @@ import 'package:margintop_solutions/models/day_summary.dart';
 import 'package:margintop_solutions/models/month_summary.dart';
 import 'package:margintop_solutions/models/status_model.dart';
 import 'package:margintop_solutions/services/dio_services.dart';
+import 'package:margintop_solutions/utils/constants/api_constants.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class AttendanceServices {
 
   AttendanceServices._internal();
 
-  Future<Map<String, dynamic>?> checkIn({
+  Future<Map<String, dynamic>> checkIn({
     required BuildContext context,
     required String status,
   }) async {
@@ -28,26 +29,23 @@ class AttendanceServices {
         'status': status,
       });
 
-      final response =
-          await dio.post('/user/attendance/check-in', data: formData);
+      final response = await dio.post(UrlStrings.checkIn, data: formData);
 
       final Map<String, dynamic> data = response.data;
 
-      if (data['message'] == "Success" && data["status"] == 1) {
-        final String checkIn = formatToTime(data['data']['check_in_time']);
-        await provider.updateStatus(
-            checkIn: checkIn,
-            location: status == "present" ? "Office" : "Home");
-      }
+      final String checkIn = formatToTime(data['data']['check_in_time']);
+      await provider.updateStatus(
+          checkIn: checkIn, location: status == "present" ? "Office" : "Home");
 
       return data;
-    } on DioException catch (e) {
-      final apiResponse = DioClient.parseDioError(e);
-      // return apiResponse;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<Map<String, dynamic>?> checkOut({
+  Future<Map<String, dynamic>> checkOut({
     required BuildContext context,
     required String workSummary,
   }) async {
@@ -58,24 +56,22 @@ class AttendanceServices {
         'work_summary': workSummary,
       });
 
-      final response =
-          await dio.post('/user/attendance/check-out', data: formData);
+      final response = await dio.post(UrlStrings.checkOut, data: formData);
 
       final Map<String, dynamic> data = response.data;
 
-      if (data['message'] == "Success" && data["status"] == 1) {
-        final String checkOut = formatToTime(data['data']['check_out_time']);
-        provider.updateStatus(checkOut: checkOut);
-      }
+      final String checkOut = formatToTime(data['data']['check_out_time']);
+      provider.updateStatus(checkOut: checkOut);
 
       return data;
-    } on DioException catch (e) {
-      // final apiResponse = DioClient.getErrorResponse(e);
-      // return apiResponse;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<Map<String, dynamic>?> absent({
+  Future<Map<String, dynamic>> absent({
     required BuildContext context,
     required String reason,
   }) async {
@@ -86,36 +82,35 @@ class AttendanceServices {
         'work_summary': reason,
       });
 
-      final response =
-          await dio.post('/user/attendance/absent', data: formData);
+      final response = await dio.post(UrlStrings.absent, data: formData);
       final Map<String, dynamic> data = response.data;
 
-      if (data['message'] == "Success" && data["status"] == 1) {
-        provider.updateStatus(isAbsent: true);
-      }
+      provider.updateStatus(isAbsent: true);
 
       return data;
-    } on DioException catch (e) {
-      // final apiResponse = DioClient.getErrorResponse(e);
-      // return apiResponse;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<AttendanceResponse?> getStatus() async {
+  Future<AttendanceResponse> getStatus() async {
     try {
       final dio = await DioClient.initClient();
 
-      final response = await dio.get('/user/attendance/status');
+      final response = await dio.get(UrlStrings.getStatus);
       final Map<String, dynamic> data = response.data;
 
       return AttendanceResponse.fromJson(data);
-    } on DioException catch (e) {
-      // final apiResponse = DioClient.getErrorResponse(e);
-      // return apiResponse;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<AttendanceSummaryResponse?> getSummaryMonth({
+  Future<AttendanceSummaryResponse> getSummaryMonth({
     required int year,
     required int month,
     int? day,
@@ -128,19 +123,19 @@ class AttendanceServices {
         "month": month,
       };
 
-      final response =
-          await dio.get('/user/attendance/stats', queryParameters: query);
+      final response = await dio.get(UrlStrings.stats, queryParameters: query);
 
       final Map<String, dynamic> data = response.data;
 
       return AttendanceSummaryResponse.fromJson(data);
-    } on DioException catch (e) {
-      // final apiResponse = DioClient.getErrorResponse(e);
-      // return apiResponse;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<AttendanceListResponse?> getSummaryDay({
+  Future<AttendanceListResponse> getSummaryDay({
     required int year,
     required int month,
     required int day,
@@ -154,15 +149,15 @@ class AttendanceServices {
         "day": day,
       };
 
-      final response =
-          await dio.get('/user/attendance/stats', queryParameters: query);
+      final response = await dio.get(UrlStrings.stats, queryParameters: query);
 
       final Map<String, dynamic> data = response.data;
 
       return AttendanceListResponse.fromJson(data);
-    } on DioException catch (e) {
-      // final apiResponse = DioClient.getErrorResponse(e);
-      // return apiResponse;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
     }
   }
 }
