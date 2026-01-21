@@ -24,11 +24,14 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    final themeProvider = context.read<ThemeProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await themeProvider.loadTheme();
-      _checkAuthentication();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeApp();
     });
+  }
+
+  Future<void> _initializeApp() async {
+    await context.read<ThemeProvider>().loadTheme();
+    await _checkAuthentication();
   }
 
   Future<void> _checkAuthentication() async {

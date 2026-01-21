@@ -1,15 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
-import 'package:margintop_solutions/screens/Blog/main_blog.dart';
-import 'package:margintop_solutions/screens/Blog/your_blog.dart';
+import 'package:margintop_solutions/models/nav_item_model.dart';
 import 'package:margintop_solutions/screens/Homepage/calendar.dart';
 import 'package:margintop_solutions/screens/Homepage/homepage.dart';
 import 'package:margintop_solutions/screens/Profile/app_settings.dart';
+import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/providers/index_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -29,96 +26,80 @@ class _BottomNavBarState extends State<BottomNavBar> {
     const AppSettings(), // index 2
   ];
 
-  final List<Widget> blogs = [
-    const MainBlog(), // index 0
-    const YourBlog(), // index 1
+  final List<NavItemModel> navItems = [
+    NavItemModel(
+      icon: Iconsax.home,
+      content: const HomePage(),
+    ),
+    NavItemModel(
+      icon: Iconsax.calendar,
+      content: const AppCalendar(),
+    ),
+    NavItemModel(
+      icon: Iconsax.user,
+      content: const AppSettings(),
+    ),
   ];
-
-  final _advancedDrawerController = AdvancedDrawerController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final indexProvider = context.read<IndexProvider>();
-      indexProvider.setIndex(0);
-    });
-  }
-
-  @override
-  void dispose() {
-    _advancedDrawerController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final navProvider = Provider.of<IndexProvider>(context);
+    final navProvider = context.watch<IndexProvider>();
     final selectedIndex = navProvider.selectedIndex;
 
     return Scaffold(
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            widget.title == "Home"
-                ? screens[selectedIndex]
-                : blogs[selectedIndex],
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: CurvedNavigationBar(
-                backgroundColor: Colors.transparent,
-                animationDuration: const Duration(milliseconds: 300),
-                color: context.colorScheme.primary,
-                height: 56,
-                index: selectedIndex,
-                items: widget.title == "Home"
-                    ? <Widget>[
-                        _buildNavItem(
-                          icon: Iconsax.home,
-                          isSelected: selectedIndex == 0,
-                        ),
-                        _buildNavItem(
-                          icon: Iconsax.calendar,
-                          isSelected: selectedIndex == 1,
-                        ),
-                        _buildNavItem(
-                          icon: Iconsax.user,
-                          isSelected: selectedIndex == 2,
-                        ),
-                      ]
-                    : <Widget>[
-                        _buildNavItem(
-                          icon: Iconsax.activity,
-                          isSelected: selectedIndex == 0,
-                        ),
-                        _buildNavItem(
-                          icon: Iconsax.status,
-                          isSelected: selectedIndex == 1,
-                        ),
-                      ],
-                onTap: (index) {
-                  navProvider.setIndex(index);
+      body: screens[selectedIndex],
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            color: context.colorScheme.primary,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.padding,
+            ),
+            child: RepaintBoundary(
+              child: GNav(
+                gap: 8,
+                padding: const EdgeInsets.all(AppSizes.padding),
+                selectedIndex: selectedIndex,
+                onTabChange: (index) async {
+                  await navProvider.setIndex(index);
                 },
+                tabs: List.generate(navItems.length, (index) {
+                  final item = navItems[index];
+                  final isSelected = selectedIndex == index;
+
+                  return GButton(
+                    icon: item.icon,
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          item.icon,
+                          color: Colors.white,
+                        ),
+                        if (isSelected)
+                          Column(
+                            children: [
+                              const SizedBox(height: AppSizes.xs),
+                              Container(
+                                width: 32,
+                                height: 3,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  );
+                }),
               ),
             ),
-          ],
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNavItem({
-    required IconData icon,
-    required bool isSelected,
-  }) {
-    return Icon(
-      icon,
-      size: isSelected ? 28 : 24,
-      color: Colors.white,
     );
   }
 }

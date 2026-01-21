@@ -5,7 +5,7 @@ class IndexProvider with ChangeNotifier {
 
   int get selectedIndex => _selectedIndex;
 
-  void setIndex(int index) {
+  Future<void> setIndex(int index) async {
     _selectedIndex = index;
     notifyListeners();
   }

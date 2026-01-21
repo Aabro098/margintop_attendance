@@ -3,7 +3,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/common/widgets/attendance_card.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
@@ -98,7 +97,6 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Attendance Details"),
-        leading: const AppbarBackButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),

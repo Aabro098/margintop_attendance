@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/custom_button.dart';
-import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/dio_services.dart';
@@ -61,7 +60,6 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Change Password"),
-        leading: const AppbarBackButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),

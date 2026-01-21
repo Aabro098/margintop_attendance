@@ -3,7 +3,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_solutions/common/widgets/appbar_back_button.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
@@ -97,7 +96,6 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
     return Scaffold(
       appBar: AppBar(
         title: const AutoSizeText("Check Out"),
-        leading: const AppbarBackButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
