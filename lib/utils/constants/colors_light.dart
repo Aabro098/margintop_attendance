@@ -30,7 +30,7 @@ class AppColorsLight {
   static const Color pillText = Color(0xFF26A69A); // mint text
 
   //! === Error ===
-  static const Color error = Color(0xFFB00020); // modern red
+  static const Color error = Color(0xFFD32F2F); // modern red
 
   //! === Text Colors ===
   static const Color textPrimary = Color(0xFF212121); // dark text
@@ -40,4 +40,6 @@ class AppColorsLight {
 
   //! === Logo / Accent ===
   static const Color logoColor = Color(0xFF26A69A); // mint teal for brand
+
+  static const Color buttonColor = Color(0xFF00838F);
 }

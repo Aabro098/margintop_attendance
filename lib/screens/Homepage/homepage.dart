@@ -97,9 +97,9 @@ class _HomePageState extends State<HomePage> {
         );
       }
     } catch (e) {
-      showErrorSnackbar(
-        AppStrings.error,
-      );
+      // showErrorSnackbar(
+      //   AppStrings.error,
+      // );
     } finally {
       if (mounted) {
         setState(() {
@@ -159,9 +159,9 @@ class _HomePageState extends State<HomePage> {
           _networkError = true;
         });
       }
-      showErrorSnackbar(
-        AppStrings.error,
-      );
+      // showErrorSnackbar(
+      //   AppStrings.error,
+      // );
     } finally {
       if (mounted) {
         setState(() {
@@ -176,26 +176,26 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const HeadingTitle(),
-            Skeletonizer(
-              enabled: _isLoading,
-              enableSwitchAnimation: true,
-              child: _nameTitle(),
-            ),
-            RefreshIndicator(
-              color: context.colorScheme.primary,
-              onRefresh: () {
-                return _getStatus();
-              },
-              child: Skeletonizer(
-                enabled: _isLoading,
-                enableSwitchAnimation: true,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+        child: SingleChildScrollView(
+          child: RefreshIndicator(
+            color: context.colorScheme.primary,
+            onRefresh: () {
+              return _getStatus();
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const HeadingTitle(),
+                const SizedBox(height: AppSizes.sm),
+                Skeletonizer(
+                  enabled: _isLoading,
+                  enableSwitchAnimation: true,
+                  child: _nameTitle(),
+                ),
+                Skeletonizer(
+                  enabled: _isLoading,
+                  enableSwitchAnimation: true,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -206,6 +206,10 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               color: context.colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(AppSizes.lg),
+                              border: Border.all(
+                                color:
+                                    context.colorScheme.primary.withAlpha(102),
+                              ),
                             ),
                             child: provider.isAbsent
                                 ? Lottie.asset(
@@ -250,29 +254,30 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(height: AppSizes.lg),
+                                      const SizedBox(height: AppSizes.md),
                                       const RealTimeClock(),
-                                      const SizedBox(height: AppSizes.lg),
+                                      const SizedBox(height: AppSizes.md),
                                       _attendanceButton(provider),
-                                      const SizedBox(height: AppSizes.xl),
+                                      const SizedBox(height: AppSizes.md),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.center,
+                                        spacing: AppSizes.md,
                                         children: [
                                           TimeInfo(
                                             time:
                                                 provider.checkIn ?? '11:00 AM',
-                                            icon: Iconsax.timer_start,
+                                            icon: "🕥",
                                           ),
                                           TimeInfo(
                                             time:
                                                 provider.checkOut ?? '5:00 AM',
-                                            icon: Iconsax.timer_pause,
+                                            icon: "🕒",
                                           ),
                                           TimeInfo(
                                             time:
                                                 provider.checkOut ?? '6:00 Hrs',
-                                            icon: Iconsax.clock,
+                                            icon: "⏳",
                                           ),
                                         ],
                                       ),
@@ -292,9 +297,9 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -332,15 +337,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _nameTitle() {
     return Padding(
-      padding: const EdgeInsets.all(AppSizes.padding),
+      padding: const EdgeInsets.all(AppSizes.sm),
       child: Center(
         child: AutoSizeText(
-          "Welcome, $name !",
-          style: context.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: context.isDarkMode
-                ? context.colorScheme.primary
-                : AppColorsLight.logoColor,
+          "Welcome, Arbin Shrestha ✌️",
+          style: context.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

@@ -65,13 +65,16 @@ class _AttendanceReportState extends State<AttendanceReport> {
       decoration: BoxDecoration(
         color: context.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: context.colorScheme.primary.withAlpha(102),
+        ),
       ),
       child: Column(
         children: [
           AutoSizeText(
             "Attendance for this month",
             style: context.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: AppSizes.formHeight),
@@ -117,11 +120,20 @@ class _AttendanceReportState extends State<AttendanceReport> {
 
   Widget _buildAttendanceCard(String title, String count, Color color) {
     return Container(
-      height: 92,
       padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
         color: color.withAlpha(24),
         borderRadius: BorderRadius.circular(AppSizes.sm),
+        border: Border.all(
+          color: color.withAlpha(152),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.withAlpha(20),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
       child: Column(
         children: [
@@ -132,7 +144,6 @@ class _AttendanceReportState extends State<AttendanceReport> {
             overflow: TextOverflow.ellipsis,
             style: context.textTheme.titleMedium?.copyWith(
               color: color,
-              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: AppSizes.sm),

@@ -30,11 +30,13 @@ class AppColorsDark {
   static const Color pillText = Color(0xFF80CBC4); // mint teal text
 
   //! === Error ===
-  static const Color error = Color(0xFFEF5350); // bright red
+  static const Color error = Color(0xFFB00020); // bright red
 
   //! === Text Colors ===
   static const Color textPrimary = Colors.white70; // main text
   static const Color textSecondary = Colors.white54; // secondary text
   static const Color textTertiary = Colors.white38; // muted text
   static const Color textQuaternary = Colors.white30; // subtle text
+
+  static const Color buttonColor = Color(0xFF00838F);
 }

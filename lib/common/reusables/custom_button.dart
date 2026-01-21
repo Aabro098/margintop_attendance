@@ -20,6 +20,7 @@ class CustomElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
+      style: ElevatedButton.styleFrom(backgroundColor: color),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

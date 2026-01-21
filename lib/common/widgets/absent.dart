@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:margintop_solutions/common/reusables/custom_button.dart';
 import 'package:margintop_solutions/common/reusables/text_dialog.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/attendance_services.dart';
@@ -82,15 +83,9 @@ class _AbsentButtonState extends State<AbsentButton> {
                   : Center(
                       child: SizedBox(
                         width: 232,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                16,
-                              ),
-                            ),
-                          ),
+                        child: CustomElevatedButton(
+                          color: context.colorScheme.error,
+                          isLoading: _isAbsent,
                           onPressed: () async {
                             final dialog = StylishInputDialog(
                               context: context,
@@ -103,13 +98,7 @@ class _AbsentButtonState extends State<AbsentButton> {
                             );
                             await dialog.show();
                           },
-                          child: Text(
-                            "Absent",
-                            style: context.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
+                          label: "Absent",
                         ),
                       ),
                     );

@@ -37,15 +37,12 @@ class _HeadingTitleState extends State<HeadingTitle> {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(
-            height: AppSizes.sm,
-          ),
           AutoSizeText(
             "Diamond Marg, Lalitpur 44600",
             maxLines: null, // Allow unlimited lines
             softWrap: true, // Enable text wrapping
             overflow: TextOverflow.visible, // Show all text
-            style: context.textTheme.titleMedium?.copyWith(
+            style: context.textTheme.titleSmall?.copyWith(
               color: context.colorScheme.primary,
             ),
             textAlign: TextAlign.center,

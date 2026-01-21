@@ -55,12 +55,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.padding,
+              horizontal: AppSizes.sm,
             ),
             child: RepaintBoundary(
               child: GNav(
                 gap: 8,
-                padding: const EdgeInsets.all(AppSizes.padding),
+                padding: const EdgeInsets.all(12),
                 selectedIndex: selectedIndex,
                 onTabChange: (index) async {
                   await navProvider.setIndex(index);
@@ -84,7 +84,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                               const SizedBox(height: AppSizes.xs),
                               Container(
                                 width: 32,
-                                height: 3,
+                                height: 2,
                                 decoration: const BoxDecoration(
                                   color: Colors.white,
                                 ),
