@@ -22,7 +22,9 @@ class _TimeInfoState extends State<TimeInfo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(AppSizes.sm),
+      padding: EdgeInsets.all(
+        widget.time.isNotEmpty ? AppSizes.sm : AppSizes.md,
+      ),
       decoration: BoxDecoration(
         color: context.colorScheme.primary.withAlpha(24),
         borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),

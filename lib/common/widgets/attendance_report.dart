@@ -1,9 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
-import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
-import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AttendanceReport extends StatefulWidget {
@@ -14,79 +14,38 @@ class AttendanceReport extends StatefulWidget {
 }
 
 class _AttendanceReportState extends State<AttendanceReport> {
-  bool _isLoading = false;
-  int month = DateTime.now().month;
-  int year = DateTime.now().year;
-
-  int? present;
-  int? absent;
-  int? totalHours;
-  @override
-  void initState() {
-    super.initState();
-    _fetchSummary(month);
-  }
-
-  Future<void> _fetchSummary(int month) async {
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    try {
-      // final response =
-      //     await AttendanceServices().getSummaryMonth(year: year, month: month);
-
-      // if (response.status == 1 && response.message == "Success") {
-      //   if (mounted) {
-      //     setState(() {
-      //       present = response.data.summary.presentDays +
-      //           response.data.summary.remoteDays;
-      //       absent = response.data.summary.absentDays;
-      //       totalHours = response.data.summary.totalHours;
-      //     });
-      //   }
-      // }
-    } catch (e) {
-      showErrorSnackbar(AppStrings.error);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.md),
-      decoration: BoxDecoration(
-        color: context.colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: context.colorScheme.primary.withAlpha(102),
-        ),
-      ),
-      child: Column(
-        children: [
-          AutoSizeText(
-            "Attendance for this month",
-            style: context.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+    return Consumer<AttendanceProvider>(builder: (
+      context,
+      provider,
+      child,
+    ) {
+      return Container(
+        padding: const EdgeInsets.all(AppSizes.md),
+        decoration: BoxDecoration(
+          color: context.colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: context.colorScheme.primary.withAlpha(102),
           ),
-          const SizedBox(height: AppSizes.formHeight),
-          Skeletonizer(
-            enabled: _isLoading,
-            child: Row(
+        ),
+        child: Column(
+          children: [
+            AutoSizeText(
+              "Attendance for this month",
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: AppSizes.sm),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: _buildAttendanceCard(
                     "Present",
-                    present != null ? present.toString() : "0",
+                    provider.presentDays.toString(),
                     Colors.green,
                   ),
                 ),
@@ -96,7 +55,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                 Expanded(
                   child: _buildAttendanceCard(
                     "Absent",
-                    absent != null ? absent.toString() : "0",
+                    provider.absentDays.toString(),
                     Colors.red,
                   ),
                 ),
@@ -106,16 +65,16 @@ class _AttendanceReportState extends State<AttendanceReport> {
                 Expanded(
                   child: _buildAttendanceCard(
                     "Work Hour",
-                    totalHours != null ? totalHours.toString() : "0",
+                    provider.totalHours.toString(),
                     Colors.orange,
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildAttendanceCard(String title, String count, Color color) {

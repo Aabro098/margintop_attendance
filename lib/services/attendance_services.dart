@@ -19,24 +19,16 @@ class AttendanceServices {
   AttendanceServices._internal();
 
   Future<Map<String, dynamic>> checkIn({
-    required BuildContext context,
     required String status,
   }) async {
     try {
-      final provider = context.read<AttendanceProvider>();
       final dio = await DioClient.initClient();
+
       final formData = FormData.fromMap({
         'status': status,
       });
-
       final response = await dio.post(UrlStrings.checkIn, data: formData);
-
-      final Map<String, dynamic> data = response.data;
-
-      final String checkIn = formatToTime(data['data']['check_in_time']);
-      await provider.updateStatus(
-          checkIn: checkIn, location: status == "present" ? "Office" : "Home");
-
+      final data = response.data;
       return data;
     } on DioException {
       rethrow;

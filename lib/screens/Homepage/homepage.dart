@@ -3,7 +3,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:lottie/lottie.dart';
 import 'package:margintop_solutions/common/reusables/custom_button.dart';
 import 'package:margintop_solutions/common/widgets/absent.dart';
 import 'package:margintop_solutions/common/widgets/attendance_report.dart';
@@ -12,16 +11,12 @@ import 'package:margintop_solutions/common/widgets/heading_title.dart';
 import 'package:margintop_solutions/common/widgets/time_info.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Homepage/checkout_details.dart';
-import 'package:margintop_solutions/services/attendance_services.dart';
-import 'package:margintop_solutions/utils/constants/app_strings.dart';
-import 'package:margintop_solutions/utils/constants/colors_light.dart';
-import 'package:margintop_solutions/utils/constants/image_strings.dart';
+import 'package:margintop_solutions/utils/constants/enums.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/app_globals.dart';
-import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,9 +27,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? selected;
-  bool _isLoading = false;
-  bool _networkError = false;
   String? name;
 
   @override
@@ -42,15 +34,14 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeName();
-      final provider = context.read<AttendanceProvider>();
-      selected = provider.location ?? "Home";
-      provider.isFirst ? _getStatus() : null;
+      context.read<AttendanceProvider>().initializeProvider();
     });
   }
 
   Future<void> _initializeName() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final storedName = prefs.getString('name');
+    final storedName = await UserPrefs()
+        .getDetails()
+        .then((details) => details['name'] as String?);
     if (mounted) {
       setState(() {
         name = storedName;
@@ -58,264 +49,120 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _checkIn() async {
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    try {
-      String status;
-      if (selected == "Home") {
-        status = "remote";
-      } else if (selected == "Office") {
-        status = "present";
-      } else {
-        showErrorSnackbar(
-          "Select valid option.",
-        );
-        return;
-      }
-
-      final response = await AttendanceServices().checkIn(
-        context: context,
-        status: status,
-      );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showSuccessSnackbar(
-            "Check in successfull. Hope you have a wonderful day workmate.",
-          );
-        } else {
-          showErrorSnackbar(
-            response['message'],
-          );
-        }
-      } else {
-        showErrorSnackbar(
-          AppStrings.error,
-        );
-      }
-    } catch (e) {
-      // showErrorSnackbar(
-      //   AppStrings.error,
-      // );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  Future<void> _getStatus() async {
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-    try {
-      final provider = context.read<AttendanceProvider>();
-      final response = await AttendanceServices().getStatus();
-
-      // if (response.message == "Success" && response.status == 1) {
-      //   // If there’s at least one record, pick the first one
-      //   if (response.data.isNotEmpty) {
-      //     final attendance = response.data.first;
-
-      //     String? checkIn = attendance.checkInTime;
-      //     String? checkOut =
-      //         attendance.checkOutTime; // fixed: was using checkIn before
-      //     String? status = attendance.status;
-      //     if (status == "absent") {
-      //       provider.updateStatus(isAbsent: true);
-      //     } else if (status == "remote") {
-      //       selected = "Home";
-      //       await provider.updateStatus(location: "Home");
-      //     } else if (status == "present") {
-      //       selected = "Office";
-      //       await provider.updateStatus(location: "Office");
-      //     }
-
-      //     if (checkIn != null) {
-      //       provider.updateStatus(checkIn: formatToTime(checkIn));
-      //     }
-
-      //     if (checkOut != null) {
-      //       provider.updateStatus(checkOut: formatToTime(checkOut));
-      //     }
-      //   }
-
-      // provider.first = false;
-      // } else {
-      //   showErrorSnackbar(
-      //     response.message,
-      //   );
-      // }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _networkError = true;
-        });
-      }
-      // showErrorSnackbar(
-      //   AppStrings.error,
-      // );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final fetchingStatus = context.watch<AttendanceProvider>().isFetchingStatus;
+    final provider = context.read<AttendanceProvider>();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
-        child: SingleChildScrollView(
-          child: RefreshIndicator(
-            color: context.colorScheme.primary,
-            onRefresh: () {
-              return _getStatus();
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const HeadingTitle(),
-                const SizedBox(height: AppSizes.sm),
-                Skeletonizer(
-                  enabled: _isLoading,
-                  enableSwitchAnimation: true,
-                  child: _nameTitle(),
-                ),
-                Skeletonizer(
-                  enabled: _isLoading,
-                  enableSwitchAnimation: true,
+        child: RefreshIndicator(
+          color: context.colorScheme.primary,
+          onRefresh: () {
+            return context.read<AttendanceProvider>().initializeProvider();
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            spacing: AppSizes.formHeight,
+            children: [
+              const HeadingTitle(),
+              Skeletonizer(
+                enabled: fetchingStatus,
+                enableSwitchAnimation: true,
+                child: _nameTitle(),
+              ),
+              Skeletonizer(
+                enabled: fetchingStatus,
+                enableSwitchAnimation: true,
+                child: Container(
+                  padding: const EdgeInsets.all(AppSizes.padding),
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(AppSizes.lg),
+                    border: Border.all(
+                      color: context.colorScheme.primary.withAlpha(102),
+                    ),
+                  ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: AppSizes.md,
                     children: [
-                      Consumer<AttendanceProvider>(
-                        builder: (context, provider, child) {
-                          return Container(
-                            padding: const EdgeInsets.all(AppSizes.padding),
-                            decoration: BoxDecoration(
-                              color: context.colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(AppSizes.lg),
-                              border: Border.all(
-                                color:
-                                    context.colorScheme.primary.withAlpha(102),
-                              ),
-                            ),
-                            child: provider.isAbsent
-                                ? Lottie.asset(
-                                    AppLogos.sadRobot,
-                                    repeat: true,
-                                    height: 160,
-                                    width: double.infinity,
-                                  )
-                                : Column(
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          _buildToggleButton(
-                                            text: "Home",
-                                            icon: Iconsax.home_1,
-                                            selected: selected == "Home",
-                                            onTap: _isLoading
-                                                ? null
-                                                : () {
-                                                    if (mounted) {
-                                                      setState(() =>
-                                                          selected = "Home");
-                                                    }
-                                                  },
-                                            isCheckIn: provider.checkIn,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          _buildToggleButton(
-                                            text: "Office",
-                                            icon: Iconsax.building,
-                                            selected: selected == "Office",
-                                            onTap: _isLoading
-                                                ? null
-                                                : () {
-                                                    if (mounted) {
-                                                      setState(() =>
-                                                          selected = "Office");
-                                                    }
-                                                  },
-                                            isCheckIn: provider.checkIn,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: AppSizes.md),
-                                      const RealTimeClock(),
-                                      const SizedBox(height: AppSizes.md),
-                                      _attendanceButton(provider),
-                                      const SizedBox(height: AppSizes.md),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        spacing: AppSizes.md,
-                                        children: [
-                                          TimeInfo(
-                                            time:
-                                                provider.checkIn ?? '11:00 AM',
-                                            icon: "🕥",
-                                          ),
-                                          TimeInfo(
-                                            time:
-                                                provider.checkOut ?? '5:00 AM',
-                                            icon: "🕒",
-                                          ),
-                                          TimeInfo(
-                                            time:
-                                                provider.checkOut ?? '6:00 Hrs',
-                                            icon: "⏳",
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                          );
-                        },
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildToggleButton(
+                            text: "Home",
+                            icon: Iconsax.home_1,
+                            location: WorkLocation.home,
+                            onTap: () =>
+                                provider.toggleLocation(WorkLocation.home),
+                          ),
+                          const SizedBox(width: 12),
+                          _buildToggleButton(
+                            text: "Office",
+                            icon: Iconsax.building,
+                            location: WorkLocation.office,
+                            onTap: () =>
+                                provider.toggleLocation(WorkLocation.office),
+                          ),
+                        ],
                       ),
-
-                      const SizedBox(height: AppSizes.md),
-
-                      // Attendance
-                      const AttendanceReport(),
-
-                      // Absent Button
-                      const AbsentButton(),
+                      const RealTimeClock(),
+                      _attendanceButton(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: AppSizes.md,
+                        children: [
+                          TimeInfo(
+                            time: provider.checkIn ?? '',
+                            icon: "🕥",
+                          ),
+                          TimeInfo(
+                            time: provider.checkOut ?? '',
+                            icon: "🕒",
+                          ),
+                          TimeInfo(
+                            time: provider.checkOut ?? '',
+                            icon: "⏳",
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Skeletonizer(
+                enabled: fetchingStatus,
+                enableSwitchAnimation: true,
+                child: const AttendanceReport(),
+              ),
+              Skeletonizer(
+                enabled: fetchingStatus,
+                enableSwitchAnimation: true,
+                child: const AbsentButton(),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  SizedBox _attendanceButton(AttendanceProvider provider) {
+  Widget _attendanceButton() {
+    final provider = context.watch<AttendanceProvider>();
+    final loading = provider.isLoading;
     return SizedBox(
       width: 236,
       child: CustomElevatedButton(
-        isLoading: _isLoading,
+        isLoading: loading,
         color: provider.checkIn != null
             ? Colors.green
             : context.colorScheme.primary,
         onPressed: () async {
-          if (provider.checkIn == null) {
-            await _checkIn();
+          if (provider.checkIn == null && provider.location != null) {
+            await context
+                .read<AttendanceProvider>()
+                .userCheckIn(provider.location!);
           } else if (provider.checkIn != null && provider.checkOut == null) {
             navigatorKey.currentState?.push(
               MaterialPageRoute(
@@ -324,6 +171,7 @@ class _HomePageState extends State<HomePage> {
             );
           } else {
             null;
+            return;
           }
         },
         label: provider.checkIn != null
@@ -352,37 +200,47 @@ class _HomePageState extends State<HomePage> {
   Widget _buildToggleButton({
     required String text,
     required IconData icon,
-    required bool selected,
+    required WorkLocation location,
     required VoidCallback? onTap,
-    required String? isCheckIn,
   }) {
-    return GestureDetector(
-      onTap: isCheckIn != null ? null : onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: selected ? context.colorScheme.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: context.colorScheme.primary),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: selected ? Colors.white : context.colorScheme.primary,
-              size: AppSizes.iconSm,
+    return Consumer<AttendanceProvider>(
+      builder: (
+        context,
+        provider,
+        child,
+      ) {
+        final selected = provider.location == location;
+        return GestureDetector(
+          onTap: provider.checkIn != null ? null : onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color:
+                  selected ? context.colorScheme.primary : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: context.colorScheme.primary),
             ),
-            const SizedBox(width: AppSizes.md),
-            AutoSizeText(
-              text,
-              style: context.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-                color: selected ? Colors.white : context.colorScheme.primary,
-              ),
+            child: Row(
+              children: [
+                Icon(
+                  icon,
+                  color: selected ? Colors.white : context.colorScheme.primary,
+                  size: AppSizes.iconSm,
+                ),
+                const SizedBox(width: AppSizes.md),
+                AutoSizeText(
+                  text,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color:
+                        selected ? Colors.white : context.colorScheme.primary,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -39,18 +39,12 @@ class _AbsentButtonState extends State<AbsentButton> {
         context: context,
         reason: _reasonController.text.trim(),
       );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showErrorSnackbar(
-              "We will miss you dear workmate. Hope to see you soon");
-          _reasonController.clear();
-        } else {
-          showErrorSnackbar(response['message']);
-        }
-      } else {
+      if (response['message'] == "Success" && response['status'] == 1) {
         showErrorSnackbar(
-          AppStrings.error,
-        );
+            "We will miss you dear workmate. Hope to see you soon");
+        _reasonController.clear();
+      } else {
+        showErrorSnackbar(response['message']);
       }
     } catch (e) {
       showErrorSnackbar(AppStrings.error);
@@ -66,7 +60,7 @@ class _AbsentButtonState extends State<AbsentButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppSizes.padding),
+      padding: const EdgeInsets.only(bottom: AppSizes.padding),
       child: Consumer<AttendanceProvider>(
         builder: (context, provider, child) {
           return provider.isAbsent

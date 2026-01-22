@@ -5,12 +5,10 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Auth/change_password.dart';
 import 'package:margintop_solutions/screens/Auth/login.dart';
-import 'package:margintop_solutions/screens/Profile/profile_details.dart';
 import 'package:margintop_solutions/screens/Profile/setting_items.dart';
 import 'package:margintop_solutions/services/user_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
@@ -20,13 +18,12 @@ import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/device/device_utility.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/local_storage/localization_storage.dart';
+import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:margintop_solutions/utils/providers/drawer_provider.dart';
 import 'package:margintop_solutions/utils/providers/theme.provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-//* This file is part of the Nayan Saathi User App for managing the app settings like the language and the theme data
 class AppSettings extends StatefulWidget {
   const AppSettings({
     super.key,
@@ -51,8 +48,6 @@ class _AppSettingsState extends State<AppSettings> {
     });
   }
 
-  final _advancedDrawerController = AdvancedDrawerController();
-
   ImageProvider getProfileImage() {
     if (imageFile != null) {
       return FileImage(imageFile!);
@@ -64,18 +59,16 @@ class _AppSettingsState extends State<AppSettings> {
   }
 
   Future<void> _initializeName() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final storedName = prefs.getString('name') ?? '...';
-    final storedEmail = prefs.getString('email') ?? '...';
+    final details = await UserPrefs().getDetails();
+
     if (mounted) {
       setState(() {
-        name = storedName;
-        email = storedEmail;
+        name = details['name'] as String?;
+        email = details['email'] as String?;
       });
     }
   }
 
-  //* This is to logout the user and remove the auth token from the shared prefs
   Future<void> _logout() async {
     if (mounted) {
       setState(() {
@@ -111,12 +104,6 @@ class _AppSettingsState extends State<AppSettings> {
         });
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _advancedDrawerController.dispose();
-    super.dispose();
   }
 
   @override
