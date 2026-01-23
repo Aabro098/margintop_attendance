@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(AppSizes.sm),
       child: Center(
         child: AutoSizeText(
-          "Welcome, Arbin Shrestha ✌️",
+          "Welcome, $name ✌️",
           style: context.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w600,
           ),
