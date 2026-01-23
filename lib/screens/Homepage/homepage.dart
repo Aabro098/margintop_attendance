@@ -56,11 +56,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
-        child: RefreshIndicator(
-          color: context.colorScheme.primary,
-          onRefresh: () {
-            return context.read<AttendanceProvider>().initializeProvider();
-          },
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -123,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                             color: AppColorsDark.error,
                           ),
                           TimeInfo(
-                            time: provider.checkOut ?? '',
+                            time: provider.formattedWorkDuration,
                             icon: AppLogos.clock,
                           ),
                         ],

@@ -42,9 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
       await navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => const BottomNavBar(
-            title: 'Home',
-          ),
+          builder: (context) => const BottomNavBar(),
         ),
         (route) => false,
       );

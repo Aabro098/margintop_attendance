@@ -25,9 +25,7 @@ class _MainBlogState extends State<MainBlog> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const BottomNavBar(
-                title: 'Home',
-              ),
+              builder: (context) => const BottomNavBar(),
             ),
           );
           context.read<DrawerProvider>().setSelectedItem('Attendance');

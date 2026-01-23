@@ -137,3 +137,26 @@ Future<void> launchUrlString(String urlString) async {
     throw Exception('Could not launch $urlString');
   }
 }
+
+DateTime? parseTimeString(String timeString) {
+  try {
+    if (timeString.contains(":")) {
+      final parts = timeString.split(":");
+      if (parts.length >= 2) {
+        final now = DateTime.now();
+        return DateTime(
+          now.year,
+          now.month,
+          now.day,
+          int.parse(parts[0]),
+          int.parse(parts[1]),
+          parts.length > 2 ? int.parse(parts[2]) : 0,
+        );
+      }
+    }
+    return null;
+  } catch (e) {
+    debugPrint('Error parsing time string: $e');
+    return null;
+  }
+}

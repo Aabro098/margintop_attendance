@@ -2,11 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
 import 'package:margintop_solutions/common/reusables/custom_button.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/services/dio_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
+import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
@@ -49,8 +51,12 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
             ? "Absent marked successfully."
             : "Check out successful. Hope you had a wonderful day.",
       );
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      await navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => const BottomNavBar(),
+        ),
+        (route) => false,
+      );
     } on DioException catch (e) {
       final errorMessage = DioClient.parseDioError(e);
       showErrorSnackbar(errorMessage);

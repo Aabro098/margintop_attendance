@@ -7,6 +7,7 @@ import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
 class AttendanceProvider with ChangeNotifier {
   String? _checkIn;
   String? _checkOut;
+  Duration? _workDuration;
   WorkLocation? _location = WorkLocation.home;
   bool _isAbsent = false;
 
@@ -17,6 +18,7 @@ class AttendanceProvider with ChangeNotifier {
   int get presentDays => _presentDays;
   int get absentDays => _absentDays;
   int get totalHours => _totalHours;
+  Duration? get workDuration => _workDuration;
 
   bool _isFetchingStatus = false;
   bool get isFetchingStatus => _isFetchingStatus;
@@ -109,6 +111,7 @@ class AttendanceProvider with ChangeNotifier {
       );
       final checkOut = formatToTime(response['data']['check_out_time']);
       await updateStatus(checkOut: checkOut);
+      _calculateWorkDuration();
     } on DioException {
       rethrow;
     } catch (e) {
@@ -215,5 +218,28 @@ class AttendanceProvider with ChangeNotifier {
   Future<void> toggleLocation(WorkLocation location) async {
     _location = location;
     notifyListeners();
+  }
+
+  void _calculateWorkDuration() {
+    if (_checkIn != null && _checkOut != null) {
+      try {
+        final checkInTime = parseTimeString(_checkIn!);
+        final checkOutTime = parseTimeString(_checkOut!);
+
+        if (checkInTime != null && checkOutTime != null) {
+          _workDuration = checkOutTime.difference(checkInTime);
+          notifyListeners();
+        }
+      } catch (e) {
+        debugPrint('Error calculating work duration: $e');
+      }
+    }
+  }
+
+  String get formattedWorkDuration {
+    if (_workDuration == null) return '';
+
+    final hours = _workDuration!.inHours;
+    return '$hours hr';
   }
 }

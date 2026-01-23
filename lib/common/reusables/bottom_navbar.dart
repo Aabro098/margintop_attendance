@@ -11,9 +11,7 @@ import 'package:margintop_solutions/utils/providers/index_provider.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key, required this.title});
-
-  final String title;
+  const BottomNavBar({super.key});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();

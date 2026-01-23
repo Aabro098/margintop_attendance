@@ -76,11 +76,9 @@ class _AppState extends State<App> {
                     ),
                   ),
                 )
-              : (_isAuthenticated
-                  ? const BottomNavBar(
-                      title: 'Home',
-                    )
-                  : const LoginScreen()),
+              : _isAuthenticated
+                  ? const BottomNavBar()
+                  : const LoginScreen(),
         );
       },
     );
