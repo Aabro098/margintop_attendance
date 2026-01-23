@@ -54,9 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: context.colorScheme.primary,
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.sm,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
             child: RepaintBoundary(
               child: GNav(
                 gap: 8,
@@ -65,36 +63,36 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onTabChange: (index) async {
                   await navProvider.setIndex(index);
                 },
-                tabs: List.generate(navItems.length, (index) {
-                  final item = navItems[index];
-                  final isSelected = selectedIndex == index;
-
-                  return GButton(
-                    icon: item.icon,
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(
-                          item.icon,
-                          color: Colors.white,
-                        ),
-                        if (isSelected)
-                          Column(
-                            children: [
-                              const SizedBox(height: AppSizes.xs),
-                              Container(
+                tabs: List.generate(
+                  navItems.length,
+                  (index) {
+                    final item = navItems[index];
+                    final isSelected = selectedIndex == index;
+                    return GButton(
+                      icon: item.icon,
+                      leading: Column(
+                        children: [
+                          Icon(
+                            item.icon,
+                            color: Colors.white,
+                          ),
+                          if (isSelected)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: AppSizes.xs),
+                              child: Container(
                                 width: 32,
                                 height: 2,
                                 decoration: const BoxDecoration(
                                   color: Colors.white,
                                 ),
                               ),
-                            ],
-                          ),
-                      ],
-                    ),
-                  );
-                }),
+                            ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),

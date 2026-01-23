@@ -3,6 +3,7 @@ import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/models/social_media_model.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class SocialMedia extends StatelessWidget {
   const SocialMedia({super.key});
@@ -14,7 +15,9 @@ class SocialMedia extends StatelessWidget {
       children: socialMediaList
           .map(
             (socialMedia) => GestureDetector(
-              onTap: () async {},
+              onTap: () async {
+                await launchUrlString(socialMedia.url);
+              },
               child: Container(
                 padding: const EdgeInsets.all(AppSizes.sm),
                 decoration: BoxDecoration(

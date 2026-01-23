@@ -71,7 +71,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AutoSizeText(
-                  "You can change your password here dear workmates !",
+                  "Change your password here!",
                   style: context.textTheme.titleLarge,
                 ),
                 const SizedBox(height: AppSizes.lg),

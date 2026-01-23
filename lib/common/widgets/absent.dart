@@ -23,7 +23,7 @@ class _AbsentButtonState extends State<AbsentButton> {
       padding: const EdgeInsets.only(bottom: AppSizes.padding),
       child: Consumer<AttendanceProvider>(
         builder: (context, provider, child) {
-          return (provider.checkIn == null || provider.isAbsent == false)
+          return (provider.checkIn == null && provider.isAbsent == false)
               ? Center(
                   child: SizedBox(
                     width: 232,

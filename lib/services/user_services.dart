@@ -36,15 +36,29 @@ class UserServices {
     }
   }
 
-  Future<Map<String, dynamic>?> logout() async {
+  Future<Map<String, dynamic>> getUser() async {
+    try {
+      final dio = await DioClient.initClient();
+
+      final response = await dio.get(UrlStrings.user);
+      final data = response.data;
+      return data;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> logout() async {
     try {
       final dio = await DioClient.initClient();
 
       final response = await dio.post(
         UrlStrings.logout,
+        data: FormData.fromMap({}),
       );
-      final Map<String, dynamic> data = response.data;
-
+      final data = response.data;
       return data;
     } on DioException {
       rethrow;

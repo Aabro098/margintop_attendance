@@ -38,7 +38,7 @@ class _HeadingTitleState extends State<HeadingTitle> {
                 style: context.textTheme.headlineLarge?.copyWith(
                   color: context.colorScheme.primary,
                 ),
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
               ),
             ],
           ),

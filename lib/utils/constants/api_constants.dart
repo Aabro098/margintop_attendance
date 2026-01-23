@@ -4,6 +4,7 @@ class UrlStrings {
   static const String baseUrl = 'https://api.margintopsolutions.com.np/api/v1';
 
   static const String login = '/user/login';
+  static const String user = '/user/me';
   static const String logout = '/user/logout';
   static const String changePassword = '/user/update-password';
   static const String requestChange = '/user/forgot-password';

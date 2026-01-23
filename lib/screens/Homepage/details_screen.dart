@@ -73,7 +73,7 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                (checkIn != null && checkIn != '')
+                (checkIn?.isNotEmpty == true)
                     ? AttendanceCard(
                         date: widget.date,
                         checkIn: checkIn ?? '',

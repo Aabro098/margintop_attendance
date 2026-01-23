@@ -41,9 +41,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initializeName() async {
-    final storedName = await UserPrefs()
-        .getDetails()
-        .then((details) => details['name'] as String?);
+    final storedName = await UserPrefs().getName();
     if (mounted) {
       setState(() {
         name = storedName;
