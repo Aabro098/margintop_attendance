@@ -26,7 +26,6 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   Future<void> toggleTheme() async {
-    debugPrint('Toggle Theme called');
     if (_themeMode == ThemeMode.light) {
       await setTheme(ThemeMode.dark);
     } else {

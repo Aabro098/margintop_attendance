@@ -40,7 +40,7 @@ class _AppState extends State<App> {
     if (mounted) {
       setState(() {
         _isAuthenticated = token.isNotEmpty;
-        _isAuthenticated = true; // For testing purposes only
+        // _isAuthenticated = false;
         _isLoading = false;
       });
     }
