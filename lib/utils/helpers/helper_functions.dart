@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
+import 'package:margintop_solutions/utils/constants/colors_dark.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,7 +14,7 @@ void showErrorSnackbar(
   scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
   scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
-      backgroundColor: Colors.red, // overrides theme
+      backgroundColor: AppColorsDark.error, // overrides theme
       duration: const Duration(seconds: 2),
       content: Center(
         child: Row(
@@ -45,7 +46,7 @@ void showSuccessSnackbar(
   scaffoldMessengerKey.currentState?.removeCurrentSnackBar();
   scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
-      backgroundColor: Colors.green, // overrides theme
+      backgroundColor: AppColorsDark.success, // overrides theme
       duration: const Duration(seconds: 2),
       content: Center(
         child: Row(

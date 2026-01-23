@@ -11,7 +11,9 @@ import 'package:margintop_solutions/common/widgets/heading_title.dart';
 import 'package:margintop_solutions/common/widgets/time_info.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Homepage/checkout_details.dart';
+import 'package:margintop_solutions/utils/constants/colors_dark.dart';
 import 'package:margintop_solutions/utils/constants/enums.dart';
+import 'package:margintop_solutions/utils/constants/image_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/app_globals.dart';
 import 'package:margintop_solutions/utils/local_storage/user_prefs.dart';
@@ -64,7 +66,6 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            spacing: AppSizes.formHeight,
             children: [
               const HeadingTitle(),
               Skeletonizer(
@@ -115,15 +116,17 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           TimeInfo(
                             time: provider.checkIn ?? '',
-                            icon: "🕥",
+                            icon: AppLogos.enter,
+                            color: AppColorsDark.success,
                           ),
                           TimeInfo(
                             time: provider.checkOut ?? '',
-                            icon: "🕒",
+                            icon: AppLogos.exit,
+                            color: AppColorsDark.error,
                           ),
                           TimeInfo(
                             time: provider.checkOut ?? '',
-                            icon: "⏳",
+                            icon: AppLogos.clock,
                           ),
                         ],
                       ),
@@ -131,11 +134,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              const SizedBox(height: AppSizes.md),
               Skeletonizer(
                 enabled: fetchingStatus,
                 enableSwitchAnimation: true,
                 child: const AttendanceReport(),
               ),
+              const SizedBox(height: AppSizes.md),
               Skeletonizer(
                 enabled: fetchingStatus,
                 enableSwitchAnimation: true,
@@ -166,7 +171,7 @@ class _HomePageState extends State<HomePage> {
           } else if (provider.checkIn != null && provider.checkOut == null) {
             navigatorKey.currentState?.push(
               MaterialPageRoute(
-                builder: (context) => const CheckoutDetails(),
+                builder: (context) => const CheckoutDetails(isAbsent: false),
               ),
             );
           } else {
@@ -190,7 +195,7 @@ class _HomePageState extends State<HomePage> {
         child: AutoSizeText(
           "Welcome, Arbin Shrestha ✌️",
           style: context.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

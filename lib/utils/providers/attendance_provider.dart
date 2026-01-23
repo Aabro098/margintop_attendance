@@ -70,11 +70,11 @@ class AttendanceProvider with ChangeNotifier {
       }
 
       if (checkIn != null) {
-        updateStatus(checkIn: formatToTime(checkIn ?? ''));
+        await updateStatus(checkIn: formatToTime(checkIn ?? ''));
       }
 
       if (checkOut != null) {
-        updateStatus(checkOut: formatToTime(checkOut ?? ''));
+        await updateStatus(checkOut: formatToTime(checkOut ?? ''));
       }
     } on DioException {
       rethrow;
@@ -101,6 +101,39 @@ class AttendanceProvider with ChangeNotifier {
     }
   }
 
+  Future<void> userCheckOut(String details) async {
+    isLoading = true;
+    try {
+      final response = await AttendanceServices().checkOut(
+        workSummary: details,
+      );
+      final checkOut = formatToTime(response['data']['check_out_time']);
+      await updateStatus(checkOut: checkOut);
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<void> userAbsent(String details) async {
+    isLoading = true;
+    try {
+      await AttendanceServices().absent(
+        reason: details,
+      );
+      await updateStatus(isAbsent: true);
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    } finally {
+      isLoading = false;
+    }
+  }
+
   Future<void> fetchSummary() async {
     try {
       final response = await AttendanceServices().getSummaryMonth(
@@ -117,6 +150,43 @@ class AttendanceProvider with ChangeNotifier {
       rethrow;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchSummaryDay(DateTime date) async {
+    isLoading = true;
+    final dateTime = DateTime.parse(date.toString());
+    final year = dateTime.year;
+    final month = dateTime.month;
+    final day = dateTime.day;
+
+    try {
+      final response = await AttendanceServices()
+          .getSummaryDay(year: year, month: month, day: day);
+
+      final Map<String, dynamic> responseData;
+      if (response.data.first.status != "absent") {
+        responseData = {
+          'status': response.data.first.status ?? '',
+          'checkIn': response.data.first.checkInTime ?? '',
+          'checkOut': response.data.first.checkOutTime ?? '',
+          'workSummary': response.data.first.workSummary ?? '',
+        };
+      } else {
+        _isAbsent = true;
+        responseData = {
+          'status': response.data.first.status ?? '',
+          'workSummary': response.data.first.workSummary ?? '',
+        };
+      }
+
+      return responseData;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    } finally {
+      isLoading = false;
     }
   }
 
@@ -147,8 +217,3 @@ class AttendanceProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-
-
-// showSuccessSnackbar(
-//         "Check in successfull. Hope you have a wonderful day workmate.",
-//       );

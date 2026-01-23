@@ -1,13 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:margintop_solutions/models/day_summary.dart';
 import 'package:margintop_solutions/models/month_summary.dart';
 import 'package:margintop_solutions/models/status_model.dart';
 import 'package:margintop_solutions/services/dio_services.dart';
 import 'package:margintop_solutions/utils/constants/api_constants.dart';
-import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
-import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
-import 'package:provider/provider.dart';
 
 class AttendanceServices {
   static final AttendanceServices _instance = AttendanceServices._internal();
@@ -38,23 +34,16 @@ class AttendanceServices {
   }
 
   Future<Map<String, dynamic>> checkOut({
-    required BuildContext context,
     required String workSummary,
   }) async {
     try {
-      final provider = context.read<AttendanceProvider>();
       final dio = await DioClient.initClient();
       final formData = FormData.fromMap({
         'work_summary': workSummary,
       });
 
       final response = await dio.post(UrlStrings.checkOut, data: formData);
-
-      final Map<String, dynamic> data = response.data;
-
-      final String checkOut = formatToTime(data['data']['check_out_time']);
-      provider.updateStatus(checkOut: checkOut);
-
+      final data = response.data;
       return data;
     } on DioException {
       rethrow;
@@ -64,21 +53,16 @@ class AttendanceServices {
   }
 
   Future<Map<String, dynamic>> absent({
-    required BuildContext context,
     required String reason,
   }) async {
     try {
-      final provider = context.read<AttendanceProvider>();
       final dio = await DioClient.initClient();
       final formData = FormData.fromMap({
         'work_summary': reason,
       });
 
       final response = await dio.post(UrlStrings.absent, data: formData);
-      final Map<String, dynamic> data = response.data;
-
-      provider.updateStatus(isAbsent: true);
-
+      final data = response.data;
       return data;
     } on DioException {
       rethrow;

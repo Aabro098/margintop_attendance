@@ -13,7 +13,6 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: AppColorsLight.primary,
     colorScheme: AppColorSchemes.lightColorScheme,
@@ -25,7 +24,6 @@ class AppTheme {
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: 'Poppins',
     brightness: Brightness.dark,
     primaryColor: AppColorsDark.primary,
     scaffoldBackgroundColor: AppColorsDark.background,

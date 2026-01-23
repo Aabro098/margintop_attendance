@@ -5,23 +5,21 @@ import 'package:margintop_solutions/utils/theme/custom/text_theme.dart';
 
 class AppAppBarTheme {
   static AppBarTheme lightTheme = AppBarTheme(
-    backgroundColor: AppColorsLight.secondary,
+    backgroundColor: AppColorsLight.primary,
     foregroundColor: Colors.white,
     titleTextStyle:
         AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),
     centerTitle: true,
-    toolbarHeight: 56,
     leadingWidth: 72,
     elevation: 0,
   );
 
   static AppBarTheme darkTheme = AppBarTheme(
-    backgroundColor: AppColorsDark.secondary,
+    backgroundColor: AppColorsDark.primary,
     foregroundColor: Colors.white,
     titleTextStyle:
         AppTypography.lightTextTheme.titleLarge?.copyWith(color: Colors.white),
     centerTitle: true,
-    toolbarHeight: 56,
     leadingWidth: 72,
     elevation: 0,
   );

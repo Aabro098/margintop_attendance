@@ -1,128 +1,129 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTypography {
   AppTypography._();
 
-  static TextTheme lightTextTheme = const TextTheme(
-    headlineLarge: TextStyle(
+  static TextTheme lightTextTheme = TextTheme(
+    headlineLarge: GoogleFonts.openSans(
       fontSize: 36,
       fontWeight: FontWeight.bold,
       color: Colors.black87,
     ),
-    headlineMedium: TextStyle(
+    headlineMedium: GoogleFonts.openSans(
       fontSize: 28,
       fontWeight: FontWeight.w600,
       color: Colors.black87,
     ),
-    headlineSmall: TextStyle(
+    headlineSmall: GoogleFonts.openSans(
       fontSize: 22,
       fontWeight: FontWeight.w500,
       color: Colors.black87,
     ),
-    titleLarge: TextStyle(
+    titleLarge: GoogleFonts.openSans(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       color: Colors.black87,
     ),
-    titleMedium: TextStyle(
+    titleMedium: GoogleFonts.openSans(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: Colors.black87,
     ),
-    titleSmall: TextStyle(
+    titleSmall: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       color: Colors.black87,
     ),
-    bodyLarge: TextStyle(
+    bodyLarge: GoogleFonts.openSans(
       fontSize: 16,
       fontWeight: FontWeight.normal,
       color: Colors.black87,
     ),
-    bodyMedium: TextStyle(
+    bodyMedium: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: Colors.black87,
     ),
-    bodySmall: TextStyle(
+    bodySmall: GoogleFonts.openSans(
       fontSize: 12,
       fontWeight: FontWeight.normal,
       color: Colors.black87,
     ),
-    labelLarge: TextStyle(
+    labelLarge: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.w600,
       color: Colors.black87,
     ),
-    labelMedium: TextStyle(
+    labelMedium: GoogleFonts.openSans(
       fontSize: 12,
       fontWeight: FontWeight.w500,
       color: Colors.black87,
     ),
-    labelSmall: TextStyle(
+    labelSmall: GoogleFonts.openSans(
       fontSize: 11,
       fontWeight: FontWeight.w400,
       color: Colors.black87,
     ),
   );
 
-  static TextTheme darkTextTheme = const TextTheme(
-    headlineLarge: TextStyle(
+  static TextTheme darkTextTheme = TextTheme(
+    headlineLarge: GoogleFonts.openSans(
       fontSize: 36,
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
-    headlineMedium: TextStyle(
+    headlineMedium: GoogleFonts.openSans(
       fontSize: 28,
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
-    headlineSmall: TextStyle(
+    headlineSmall: GoogleFonts.openSans(
       fontSize: 22,
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
-    titleLarge: TextStyle(
+    titleLarge: GoogleFonts.openSans(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
-    titleMedium: TextStyle(
+    titleMedium: GoogleFonts.openSans(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: Colors.white,
     ),
-    titleSmall: TextStyle(
+    titleSmall: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
-    bodyLarge: TextStyle(
+    bodyLarge: GoogleFonts.openSans(
       fontSize: 16,
       fontWeight: FontWeight.normal,
       color: Colors.white,
     ),
-    bodyMedium: TextStyle(
+    bodyMedium: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: Colors.white,
     ),
-    bodySmall: TextStyle(
+    bodySmall: GoogleFonts.openSans(
       fontSize: 12,
       fontWeight: FontWeight.normal,
       color: Colors.white,
     ),
-    labelLarge: TextStyle(
+    labelLarge: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.w600,
       color: Colors.white,
     ),
-    labelMedium: TextStyle(
+    labelMedium: GoogleFonts.openSans(
       fontSize: 12,
       fontWeight: FontWeight.w500,
       color: Colors.white,
     ),
-    labelSmall: TextStyle(
+    labelSmall: GoogleFonts.openSans(
       fontSize: 11,
       fontWeight: FontWeight.w400,
       color: Colors.white,

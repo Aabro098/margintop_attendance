@@ -4,7 +4,6 @@ import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class AttendanceReport extends StatefulWidget {
   const AttendanceReport({super.key});
@@ -33,7 +32,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
         child: Column(
           children: [
             AutoSizeText(
-              "Attendance for this month",
+              "Attendance report for this month",
               style: context.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),

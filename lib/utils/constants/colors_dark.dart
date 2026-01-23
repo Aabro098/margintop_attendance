@@ -32,6 +32,9 @@ class AppColorsDark {
   //! === Error ===
   static const Color error = Color(0xFFB00020); // bright red
 
+  //! === Success ===
+  static const Color success = Color(0xFF4CAF50); // vibrant green
+
   //! === Text Colors ===
   static const Color textPrimary = Colors.white70; // main text
   static const Color textSecondary = Colors.white54; // secondary text

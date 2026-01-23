@@ -1,16 +1,20 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:margintop_solutions/services/attendance_services.dart';
+import 'package:margintop_solutions/common/reusables/custom_button.dart';
+import 'package:margintop_solutions/extensions/extensions.dart';
+import 'package:margintop_solutions/services/dio_services.dart';
 import 'package:margintop_solutions/utils/constants/app_strings.dart';
 import 'package:margintop_solutions/utils/constants/sizes.dart';
 import 'package:margintop_solutions/utils/helpers/helper_functions.dart';
+import 'package:margintop_solutions/utils/providers/attendance_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
 class CheckoutDetails extends StatefulWidget {
-  const CheckoutDetails({super.key});
+  final bool isAbsent;
+  const CheckoutDetails({super.key, required this.isAbsent});
 
   @override
   State<CheckoutDetails> createState() => _CheckoutDetailsState();
@@ -18,84 +22,58 @@ class CheckoutDetails extends StatefulWidget {
 
 class _CheckoutDetailsState extends State<CheckoutDetails> {
   final QuillController _controller = QuillController.basic();
-  final FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
-  bool _isLoading = false;
 
   String _getString() {
-    // Get document from controller
     final doc = _controller.document;
-
-    // Convert document to Delta
     final delta = doc.toDelta();
-
-    // Convert Delta to HTML
     final converter = QuillDeltaToHtmlConverter(delta.toJson());
     final html = converter.convert();
-
     return html;
   }
 
-  Future<void> _checkOut() async {
+  Future<void> _submit() async {
     final details = _getString();
-    if (details.isEmpty) {
-      showErrorSnackbar(
-        "Your work details cannot be empty.",
-      );
+    if (details.trim().isEmpty) {
+      showErrorSnackbar("Please provide the details.");
       return;
     }
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
     try {
-      final response = await AttendanceServices().checkOut(
-        context: context,
-        workSummary: details,
-      );
-      if (response != null) {
-        if (response['message'] == "Success" && response['status'] == 1) {
-          showSuccessSnackbar(
-            "Check out successfull. Hope you had a wonderful day workmate.",
-          );
-          Navigator.pop(context);
-        } else {
-          showErrorSnackbar(
-            response['message'],
-          );
-        }
+      if (widget.isAbsent) {
+        await context.read<AttendanceProvider>().userAbsent(details);
       } else {
-        showErrorSnackbar(
-          AppStrings.error,
-        );
+        await context.read<AttendanceProvider>().userCheckOut(details);
       }
-    } catch (e) {
-      showErrorSnackbar(
-        AppStrings.error,
+      showSuccessSnackbar(
+        widget.isAbsent
+            ? "Absent marked successfully."
+            : "Check out successful. Hope you had a wonderful day.",
       );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } on DioException catch (e) {
+      final errorMessage = DioClient.parseDioError(e);
+      showErrorSnackbar(errorMessage);
+      return;
+    } catch (e) {
+      showErrorSnackbar(AppStrings.error);
+      return;
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _focusNode.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isAbsent = widget.isAbsent;
     return Scaffold(
       appBar: AppBar(
-        title: const AutoSizeText("Check Out"),
+        title: AutoSizeText(isAbsent ? "Absent" : "Check Out"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
@@ -128,43 +106,35 @@ class _CheckoutDetailsState extends State<CheckoutDetails> {
                 height: AppSizes.md,
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.6,
+                height: MediaQuery.of(context).size.height * 0.4,
                 width: double.infinity,
                 padding: const EdgeInsets.all(AppSizes.sm),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.sm),
-                    border: Border.all(width: 2, color: Colors.grey)),
+                  borderRadius: BorderRadius.circular(AppSizes.sm),
+                  border: Border.all(width: 2, color: Colors.grey),
+                ),
                 child: QuillEditor(
                   controller: _controller,
                   config: const QuillEditorConfig(
-                    placeholder: "Tell us about your day...",
+                    placeholder: "Please provide the description here...",
                   ),
-                  focusNode: _focusNode,
+                  focusNode: FocusNode(),
                   scrollController: _scrollController,
                 ),
               ),
-              const SizedBox(
-                height: AppSizes.md,
-              ),
-              SizedBox(
-                width: 172,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        AppSizes.sm,
-                      ),
-                    ),
+              const SizedBox(height: AppSizes.md),
+              Consumer<AttendanceProvider>(
+                  builder: (context, attendanceProvider, child) {
+                return SizedBox(
+                  width: 236,
+                  child: CustomElevatedButton(
+                    color: context.colorScheme.error,
+                    isLoading: attendanceProvider.isLoading,
+                    onPressed: () async => await _submit(),
+                    label: isAbsent ? "Absent" : "Check Out",
                   ),
-                  onPressed: () {
-                    _checkOut();
-                  },
-                  child: const Text(
-                    "Check Out",
-                  ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         ),

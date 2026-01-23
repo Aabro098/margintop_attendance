@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:margintop_solutions/common/reusables/bottom_navbar.dart';
 import 'package:margintop_solutions/common/reusables/custom_button.dart';
+import 'package:margintop_solutions/common/widgets/social_media.dart';
 import 'package:margintop_solutions/common/widgets/text_field.dart';
 import 'package:margintop_solutions/extensions/extensions.dart';
 import 'package:margintop_solutions/screens/Auth/change_request.dart';
@@ -77,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _loginFormKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: AppSizes.xl),
                   Image.asset(
@@ -91,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
                     'Enter your credentials to continue.',
                     style: context.textTheme.titleMedium?.copyWith(
@@ -159,8 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           horizontal: AppSizes.sm,
                         ),
                         child: AutoSizeText(
-                          'Or',
-                          style: context.textTheme.bodySmall?.copyWith(
+                          'Find us',
+                          style: context.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
                             color: context.colorScheme.primary,
                           ),
@@ -174,22 +175,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSizes.md),
-                  GestureDetector(
-                    onTap: () async {
-                      await launchUrlString(
-                          'https://margintopsolutions.com.np/');
-                    },
-                    child: AutoSizeText(
-                      'Visit Our Website',
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        color: context.colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSizes.xl * 2),
+                  const SizedBox(height: AppSizes.lg),
+                  const SocialMedia(),
                 ],
               ),
             ),

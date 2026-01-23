@@ -19,7 +19,6 @@ class _AddBlogState extends State<AddBlog> {
   final QuillController _controller = QuillController.basic();
   final FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
-  bool _isLoading = false;
 
   String _getString() {
     // Get document from controller
@@ -41,11 +40,6 @@ class _AddBlogState extends State<AddBlog> {
       showErrorSnackbar("Your work details cannot be empty.");
       return;
     }
-    if (mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
     try {
       // final response = await AttendanceServices().checkOut(
       //   context: context,
@@ -66,12 +60,6 @@ class _AddBlogState extends State<AddBlog> {
       // }
     } catch (e) {
       showErrorSnackbar(AppStrings.error);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 
